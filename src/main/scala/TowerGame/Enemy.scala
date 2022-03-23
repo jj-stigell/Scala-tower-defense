@@ -28,8 +28,6 @@ case class Enemy(mass: Double, speed: Vector2D, var place: Vector2D) {
     }
   }
 
-  // Enemy moves forward by adding the speed vector to the position vector.
-  // If the position vector implies that the asteroid exits the screen, the position "goes around".
 
   def move() = {
 
@@ -37,7 +35,6 @@ case class Enemy(mass: Double, speed: Vector2D, var place: Vector2D) {
 
     place = place + speed
     place = place.bound(Game.width, (4 * mass).toInt, Game.height, (4 * mass).toInt)
-    //angle += rotation // asteroid also rotates
 
 
 
@@ -62,9 +59,6 @@ case class Enemy(mass: Double, speed: Vector2D, var place: Vector2D) {
     if (this.alive && this.onTheScreen) {
 
 
-
-      println("koko on: " + enemySize)
-
       val circle = new Ellipse2D.Double(10, 10, enemySize, enemySize)
 
       g.setColor(new Color(255, 0, 0))
@@ -73,8 +67,6 @@ case class Enemy(mass: Double, speed: Vector2D, var place: Vector2D) {
       val oldTransform = g.getTransform()
 
       g.translate(place.x, place.y)
-      //g.rotate(angle)
-      //g.fill(shape)
 
       g.fill(circle)
 
