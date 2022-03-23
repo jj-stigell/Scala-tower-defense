@@ -44,4 +44,8 @@ object Settings {
   // how many blocks the map has, horizontal and vertical
   val totalHorizontalBlocks = map(0).length
   val totalVerticalBlocks = map.length
+
+  val blockLengthX = width / totalHorizontalBlocks
+  val blockLengthY = height / totalVerticalBlocks
+
 }

@@ -7,7 +7,11 @@ import scala.swing.Color
 /**
  * Enemy is a ball (visible as its radius), speed vector, position vector
  */
-case class Enemy(mass: Double, speed: Vector2D, var place: Vector2D) {
+case class Enemy(speed: Vector2D, var place: Vector2D) {
+
+  private var currentSpeed = speed
+
+  val mass = 100
 
   private var alive: Boolean = true
   private var health: Int = Settings.enemyHealth
@@ -31,10 +35,26 @@ case class Enemy(mass: Double, speed: Vector2D, var place: Vector2D) {
 
   def move() = {
 
+    //println("place on: " + place)
+    /*
+    place on: Vector2D(1463.0,100.0)
+    place on: Vector2D(1464.0,100.0)
+    place on: Vector2D(1465.0,100.0)
+    place on: Vector2D(1466.0,100.0)
+    place on: Vector2D(1467.0,100.0)
+    place on: Vector2D(1468.0,100.0)
+    place on: Vector2D(1469.0,100.0)
+    place on: Vector2D(1470.0,100.0)
+    place on: Vector2D(1471.0,100.0)
+    place on: Vector2D(1472.0,100.0)
+    place on: Vector2D(1473.0,100.0)
+    place on: Vector2D(1474.0,100.0)
+    */
 
 
     place = place + speed
     place = place.bound(Game.width, (4 * mass).toInt, Game.height, (4 * mass).toInt)
+
 
 
 
