@@ -69,7 +69,7 @@ object Game extends SimpleSwingApplication {
         for (row <- map) {
           var columnNumber = 0
           for (element <- row) {
-            if (element == 1) {
+            if (element == 1 || element == 2 || element == 3) {
               val x0 = columnNumber * blockWidth
               val y0 = rowNumber * blockHeight
               g.fillRect(x0, y0, blockWidth, blockHeight)

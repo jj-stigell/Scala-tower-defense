@@ -25,17 +25,20 @@ object Settings {
   )
   */
 
+  // 1 road, roads cannot be side to side
+  // 2 entry point, must be on the side, only one
+  // 3 out point, must be on the side, only one
 
   val map = Array(
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    Array(1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+    Array(2, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1)
+    Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3)
   )
 
   // how many blocks the map has, horizontal and vertical
