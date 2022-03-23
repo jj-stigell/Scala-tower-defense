@@ -1,0 +1,24 @@
+Raportoitavia asioita ovat:
+
+- 1-3 rivin kuvaus, mitä luokkia on lisätty tai päivitetty ja mitä toimintoja niissä on saatu toteutettua (vaikka olisi keskenkin).
+- Mitä metodeja / toiminnallisuuksia on saatu testattua ko. luokissa, niin että ne toimivat oikein?
+- Mitä mahdollisia hankalia virheitä on esiintynyt ja onko niitä saatu ratkaistua?
+- Mikä on käytetty työmäärä tänä aikana noin 5 tunnin tarkkuudella.
+- Oletko tässä vaiheessa (suurin piirtein) edellä vai jäljessä projektisuunnitelmassa arvioimaasi tilannetta.
+
+
+Keskiviikko 23.2.2022
+
+- initial commit, hieman myöhässä, pahoittelen, paljon kiireitä kurssien ja duunin kanssa ja sekoitin viikot keskenään eli eka raportti viikon myöhässä.
+- peruspohja on tehty pelille. Mallina käytettiin hieman Laama ja asteroidi pelejä.
+- kartan polku piirtyy array tiedoston kautta.
+- vihollinen hieman liikkuu kartalla.
+- perus napit toiminnoille, eivät vielä reagoi mihinkään.
+- työaika 20h.
+- hieman jäljessä projektin aikataulusta mutta yritän kuroa tällä ja ensiviikolla.
+- päätin kokeilla tehdä pathfinderin joilloin custom kartat helpottuu, hieman vaikea.
+
+
+Keskiviikko 30.3.2022
+
+Keskiviikko 13.4.2022
