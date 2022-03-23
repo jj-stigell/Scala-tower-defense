@@ -12,6 +12,7 @@ object Settings {
   val coolDownPerCycle = 1
   val enemyHealth = 10
   val enemySpeed = 1              // scalar for the enemy speed
+  val maxWaves = 10
 
   val title = "TowerDefense"
   val resizable = false

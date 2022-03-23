@@ -11,6 +11,7 @@ object Game extends SimpleSwingApplication {
   val height = Settings.height
   val fullHeight = Settings.fullHeight
   val map = Settings.map
+  var wave = 1
 
   val blockWidth = width / Settings.totalHorizontalBlocks
   val blockHeight = height / Settings.totalVerticalBlocks
@@ -25,6 +26,9 @@ object Game extends SimpleSwingApplication {
 
   val moneyInTheBank = new Label
   moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
+
+  val waveNumber = new Label
+  waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
 
 
   /**
@@ -101,6 +105,7 @@ object Game extends SimpleSwingApplication {
     controlPanel.contents += buyTowerButton
     controlPanel.contents += healthPoints
     controlPanel.contents += moneyInTheBank
+    controlPanel.contents += waveNumber
 
 
     verticalPanel.contents += arena
@@ -139,7 +144,7 @@ object Game extends SimpleSwingApplication {
     // Timer sends ActionEvent to ActionListener every 6ms,
     // when the space moves forward and the screen is redrawn.
     // This code therefore allows animation
-    val timer = new javax.swing.Timer(6, listener)
+    val timer = new javax.swing.Timer(16, listener)
     timer.start()
 
   }
