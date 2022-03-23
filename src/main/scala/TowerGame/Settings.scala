@@ -4,13 +4,14 @@ object Settings {
 
   val width = 1200
   val height = 800
-  val fullHeight = 810
+  val fullHeight = height + 50    // take into account the control panel at the bottom
   val towerPrice = 10
   val maxHealth = 100
   val hpLossPerEnemy = 1
   val coolDownTime = 100
   val coolDownPerCycle = 1
   val enemyHealth = 10
+  val enemySpeed = 1              // scalar for the enemy speed
 
   val title = "TowerDefense"
   val resizable = false
@@ -31,14 +32,14 @@ object Settings {
 
   val map = Array(
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    Array(2, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+    Array(3, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3)
+    Array(0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0)
   )
 
   // how many blocks the map has, horizontal and vertical
