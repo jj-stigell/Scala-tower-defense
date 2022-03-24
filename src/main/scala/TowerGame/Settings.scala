@@ -13,41 +13,38 @@ object Settings {
   val enemyHealth = 10
   val enemySpeed = 1              // scalar for the enemy speed
   val maxWaves = 10
-
   val title = "TowerDefense"
   val resizable = false
 
   // Each row must be same lenght
-  /*
-  val map = Array(
-    Array(1, 1, 0, 0),
-    Array(0, 1, 0, 0),
-    Array(0, 1, 1, 1),
-    Array(0, 0, 0, 0)
-  )
-  */
-
   // 1 road, roads cannot be side to side
   // 2 entry point, must be on the side, only one
   // 3 out point, must be on the side, only one
-
-  val map = Array(
+  // Default map
+  var map = Array(
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    Array(3, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+    Array(2, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0)
+    Array(0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0)
   )
 
   // how many blocks the map has, horizontal and vertical
-  val totalHorizontalBlocks = map(0).length
-  val totalVerticalBlocks = map.length
+  val totalHorizontalBlocks = this.map(0).length
+  val totalVerticalBlocks = this.map.length
+  val blockLengthX = this.width / this.totalHorizontalBlocks
+  val blockLengthY = this.height / this.totalVerticalBlocks
 
-  val blockLengthX = width / totalHorizontalBlocks
-  val blockLengthY = height / totalVerticalBlocks
+  def setMap(newMap: Array[Array[Int]] ) = {
+    this.map = newMap
+    val totalHorizontalBlocks = this.map(0).length
+    val totalVerticalBlocks = this.map.length
+    val blockLengthX = this.width / totalHorizontalBlocks
+    val blockLengthY = this.height / totalVerticalBlocks
+  }
 
 }

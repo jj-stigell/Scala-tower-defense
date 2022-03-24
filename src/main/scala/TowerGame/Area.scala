@@ -9,8 +9,16 @@ object Area {
   val enemies = Buffer[Enemy]()
 
   // Initialize the starting location of enemies and the direction
-  val enemyInitialLocation = DirLoc.enemyInitialLocation()
-  val enemyInitialDirection = DirLoc.enemyInitialDirection(enemyInitialLocation)
+  val enemyInitialLocation = PathFinder.enemyInitialLocation()
+  val enemyInitialDirection = PathFinder.findInitialDirection(enemyInitialLocation)
+
+  val pathAndDirections = (PathFinder.enemyPath(enemyInitialLocation, enemyInitialDirection)).unzip
+
+  val path = pathAndDirections._1
+  val directions = pathAndDirections._2
+
+  println("path on:       " + path.mkString(" "))
+  println("directions on: " + directions.mkString(" "))
 
   // speed, place
   enemies += Enemy(
