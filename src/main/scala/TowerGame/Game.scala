@@ -132,7 +132,7 @@ object Game extends SimpleSwingApplication {
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
 
-        //Updater.updateConditions()
+
 
         if (gameOver) {
           JOptionPane.showMessageDialog(new JFrame("Game Over!!!"), "Game Over!!!")

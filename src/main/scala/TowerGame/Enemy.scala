@@ -40,6 +40,8 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
       this.health -= this.damagePerHit
     } else {
       this.alive = false
+      Player.addMoney(Settings.rewardFromKill)
+      Updater.updateStats()
     }
   }
 
