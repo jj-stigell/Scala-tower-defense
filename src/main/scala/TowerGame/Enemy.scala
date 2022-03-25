@@ -10,30 +10,20 @@ import scala.swing.Color
  */
 case class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double, Double)], enemyDirections: Buffer[(Double, Double)]) {
 
-
-  private var location = initLoc
-  private var speed = initDir
-  private var currentSpeed = speed
-  //val mass = 100
+  private var location: Vector2D = initLoc
+  private var speed: Vector2D = initDir
   private var alive: Boolean = true
   private var health: Int = Settings.enemyHealth
   private val damagePerHit: Int = Settings.hpLossPerEnemy
-  private var onTheScreen = true
-  private var path = enemyPath.drop(1)            // drop first, because first is set as the turning point
-  private var directions = enemyDirections.drop(1)
-  private var turningPoint = Vector2D((enemyPath.head._1), (enemyPath.head._2))       // start with the first turning point
-
-  private val enemySize = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
+  private var path = enemyPath.drop(1)                                                // drop first, because first is set as the first turning point
+  private var directions = enemyDirections.drop(1)                                    // drop first, already as the initial direction
+  private var turningPoint: Vector2D = Vector2D((enemyPath.head._1), (enemyPath.head._2))       // start with the first turning point
+  private val enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
 
-
-
-
-  def isAlive: Boolean = this.alive
-
-
-
-
+  /**
+   * Player can attack the enemy when close by, kills the enemy if health goes zero
+   */
   def gethit(): Unit = {
     if (this.health - this.damagePerHit > 0) {
       this.health -= this.damagePerHit
@@ -42,7 +32,10 @@ case class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Do
     }
   }
 
-
+  /**
+   * Move the enemy if alive to the direction of current movement
+   * If enemy reaches player tower, reduce player health and update stats
+   */
   def move() = {
 
     if (this.alive) {
@@ -54,9 +47,9 @@ case class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Do
           Game.updateStats()
         } else {
         speed = Vector2D(directions.head._1, directions.head._2)
-        directions = directions.drop(1)    // drop the first from directions
+        directions = directions.drop(1)
         turningPoint = Vector2D((path.head._1), (path.head._2))
-        path = path.drop(1)            // drop one from path
+        path = path.drop(1)
         }
 
       } else {
@@ -65,31 +58,24 @@ case class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Do
     }
   }
 
-
-
-
+  /**
+   * Check if the enemy is close to the turning point. Compare enemy location and turningpoint location.
+   * Takes into account the enemy speed and difference it creates to the compared values.
+   *
+   * @return Boolean true if the enemy is close to turning point, otherwise false
+   */
   def closeToTurningPoint: Boolean = (this.location.x - turningPoint.x).abs < Settings.enemySpeed && (this.location.y - turningPoint.y).abs < Settings.enemySpeed
 
-
-
-
+  /**
+   * Draw the enemy on the map.
+   *
+   * @param g Graphics2D
+   */
   def draw(g: Graphics2D) = {
-
-    /*
-    double	height
-    The overall height of the Ellipse2D.
-    double	width
-    The overall width of this Ellipse2D.
-    double	x
-    The X coordinate of the upper-left corner of the framing rectangle of this Ellipse2D.
-    double	y
-    The Y coordinate of the upper-left corner of the framing rectangle of this Ellipse2D.
-    */
-
-    if (this.alive && this.onTheScreen) {
+    if (this.alive) {
       val circle = new Ellipse2D.Double(10, 10, enemySize, enemySize)
       g.setColor(new Color(255, 0, 0))
-      val oldTransform = g.getTransform()
+      val oldTransform = g.getTransform
       g.translate(location.x, location.y)
       g.fill(circle)
       g.setTransform(oldTransform)
