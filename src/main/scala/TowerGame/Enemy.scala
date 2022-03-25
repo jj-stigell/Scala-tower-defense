@@ -25,6 +25,10 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
   private var turningPoint: Vector2D = Vector2D((enemyPath.head._1), (enemyPath.head._2))       // start with the first turning point
   private val enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
+  /**
+   *
+   * @return Boolean on the state of the enemy, dead or alive
+   */
   def isAlive: Boolean = this.alive
 
   /**
