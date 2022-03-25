@@ -6,23 +6,28 @@ package TowerGame
  */
 object Settings {
 
+  // Game
   val width: Int = 1200
   val height: Int = 800
-  val fullHeight: Int = height + 40       // take into account the control panel at the bottom
+  val fullHeight: Int = height + 40                         // take into account the control panel at the bottom
+  val title: String = "TowerDefense"
+  val resizable: Boolean = false
+  val maxWaves: Int = 10
+
+  // Player
   val towerPrice: Int = 10
   val rewardFromKill: Int = 5
-  val maxHealth: Int = 3
+  val maxHealth: Int = 20
   val hpLossPerEnemy: Int = 1
   val coolDownTime: Int = 100
   val coolDownPerCycle: Int = 1
+
+  // Enemy
   val enemyHealth: Int = 10
-  val enemySpeed: Double = 7.0            // scalar for the enemy speed
-  val maxWaves: Int = 10
-  val title: String = "TowerDefense"
-  val resizable: Boolean = false
-  val interval: Int = 6                   // enemy update interval, in milliseconds, please keep at 6
-  val enemyInterval: Int = 200            // time between enemy addition, in milliseconds
-  val numberOfEnemies: Int = 20           // How many enemies in total appears on the map
+  val enemySpeed: Double = 7.0                              // scalar for the enemy speed
+  val interval: Int = 6                                     // enemy update interval, in milliseconds, please keep at 6
+  val enemyInterval: Int = 200                              // time between enemy addition, in milliseconds
+  val numberOfEnemies: Int = 10                             // How many enemies in total appears on the map
   val correctedInterval: Int = enemyInterval / interval
 
   // Each row must be same length
@@ -34,12 +39,12 @@ object Settings {
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
     Array(2, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
-    Array(0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
-    Array(0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0)
+    Array(0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 3),
+    Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0),
+    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
   )
 
   // how many blocks the map has, horizontal and vertical and thei lengths
