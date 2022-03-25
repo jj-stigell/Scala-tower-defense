@@ -25,7 +25,7 @@ case class Vector2D(x: Double, y: Double) {
   }
 
   /**
-   * Coordinates "turn around" so that asteroids appear from the other side of the area.
+   * Coordinates "turn around" so that enemies appear from the other side of the area.
    * Bound gets as parameters the window size and shape size.
    */
   def bound(xBound: Int, shapeWidth: Int, yBound: Int, shapeHeight: Int) = {

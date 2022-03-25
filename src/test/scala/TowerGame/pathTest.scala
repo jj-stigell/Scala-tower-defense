@@ -222,9 +222,57 @@ class UnitTests {
       Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
       Array(0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0)
     ))
-    var pathAndDirections = (PathFinder.enemyPath((0, 1), (1, 0))).unzip
-    assertEquals("Wrong path:", mutable.Buffer[(Int, Int)]((3,1), (3,3), (5,3), (5,1), (7,1), (7,3), (9,3), (9,6), (6,6), (6,8)), pathAndDirections._1)
-    assertEquals("Wrong directions:", mutable.Buffer[(Int, Int)]((1,0), (0,1), (1,0), (0,-1), (1,0), (0,1), (1,0), (0,1), (-1,0), (0,1)), pathAndDirections._2)
+    val pathAndDirections1 = (PathFinder.enemyPath((0, 1), (1, 0))).unzip
+    assertEquals("Wrong path:", mutable.Buffer[(Int, Int)]((3,1), (3,3), (5,3), (5,1), (7,1), (7,3), (9,3), (9,6), (6,6), (6,8)), pathAndDirections1._1)
+    assertEquals("Wrong directions:", mutable.Buffer[(Int, Int)]((1,0), (0,1), (1,0), (0,-1), (1,0), (0,1), (1,0), (0,1), (-1,0), (0,1)), pathAndDirections1._2)
+
+    // Start direction to up (0, -1), start location (6, 8)
+    Settings.setMap( Array(
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+      Array(3, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0)
+    ))
+    val pathAndDirections2 = (PathFinder.enemyPath((6, 8), (0, -1))).unzip
+    assertEquals("Wrong path:", mutable.Buffer[(Int, Int)]((6,6), (9,6), (9,3), (7,3), (7,1), (5,1), (5,3), (3,3), (3,1), (0,1)), pathAndDirections2._1)
+    assertEquals("Wrong directions:", mutable.Buffer[(Int, Int)]((0,-1), (1,0), (0,-1), (-1,0), (0,-1), (-1,0), (0,1), (-1,0), (0,-1), (-1,0)), pathAndDirections2._2)
+
+    // Start direction to down (0, -1), start location (3, 0)
+    Settings.setMap( Array(
+      Array(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0),
+      Array(0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 3),
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    ))
+    val pathAndDirections3 = (PathFinder.enemyPath((3, 0), (0, 1))).unzip
+    assertEquals("Wrong path:", mutable.Buffer[(Int, Int)]((3,4), (1,4), (1,6), (5,6), (5,1), (7,1), (7,3), (9,3), (9,6), (12,6)), pathAndDirections3._1)
+    assertEquals("Wrong directions:", mutable.Buffer[(Int, Int)]((0,1), (-1,0), (0,1), (1,0), (0,-1), (1,0), (0,1), (1,0), (0,1), (1,0)), pathAndDirections3._2)
+
+    // Start direction to laft (-1, 0), start location (12, 6)
+    Settings.setMap( Array(
+      Array(0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0),
+      Array(0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2),
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+      Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    ))
+    val pathAndDirections4 = (PathFinder.enemyPath((12, 6), (-1, 0))).unzip
+    assertEquals("Wrong path:", mutable.Buffer[(Int, Int)]((9,6), (9,3), (7,3), (7,1), (5,1), (5,6), (1,6), (1,4), (3,4), (3,0)), pathAndDirections4._1)
+    assertEquals("Wrong directions:", mutable.Buffer[(Int, Int)]((-1,0), (0,-1), (-1,0), (0,-1), (-1,0), (0,1), (-1,0), (0,-1), (1,0), (0,-1)), pathAndDirections4._2)
   }
 
 }
