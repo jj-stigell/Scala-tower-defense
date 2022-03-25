@@ -4,14 +4,14 @@ object Settings {
 
   val width = 1200
   val height = 800
-  val fullHeight = height + 50    // take into account the control panel at the bottom
+  val fullHeight = height + 40    // take into account the control panel at the bottom
   val towerPrice = 10
   val maxHealth = 100
   val hpLossPerEnemy = 1
   val coolDownTime = 100
   val coolDownPerCycle = 1
   val enemyHealth = 10
-  val enemySpeed = 1              // scalar for the enemy speed
+  val enemySpeed: Double = 7.0              // scalar for the enemy speed
   val maxWaves = 10
   val title = "TowerDefense"
   val resizable = false

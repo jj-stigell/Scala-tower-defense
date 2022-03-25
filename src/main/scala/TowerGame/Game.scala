@@ -1,7 +1,7 @@
 package TowerGame
 
 import java.awt.event.ActionListener
-import java.awt.{Color, Graphics2D}
+import java.awt.{Color, Graphics2D, RenderingHints}
 import scala.swing._
 import scala.swing.event.ButtonClicked
 
@@ -29,6 +29,22 @@ object Game extends SimpleSwingApplication {
 
   val waveNumber = new Label
   waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
+
+
+
+  def updateStats() = {
+
+    healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
+
+    moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
+
+    waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
+
+
+  }
+
+
+
 
 
   /**
@@ -73,19 +89,24 @@ object Game extends SimpleSwingApplication {
         for (row <- map) {
           var columnNumber = 0
           for (element <- row) {
-            if (element == 1 || element == 2 || element == 3) {
+            if (element == 1 || element == 2) {
               val x0 = columnNumber * blockWidth
               val y0 = rowNumber * blockHeight
               g.fillRect(x0, y0, blockWidth, blockHeight)
+            } else if (element == 3) {
+              g.setColor(new Color(87, 83, 198))
+              val x0 = columnNumber * blockWidth
+              val y0 = rowNumber * blockHeight
+              g.fillRect(x0, y0, blockWidth, blockHeight)
+              g.setColor(new Color(198, 140, 83))
             }
             columnNumber += 1
           }
           rowNumber += 1
         }
 
-
         // Ask Graphics2D to provide us smoother graphics, i.e., antialising
-        //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
         // change paint color to white and ask the space to redraw itself.
         g.setColor(Color.white)
@@ -94,10 +115,7 @@ object Game extends SimpleSwingApplication {
 
     }
 
-
-
     val verticalPanel = new BoxPanel(Orientation.Vertical)
-
     val controlPanel = new BoxPanel(Orientation.Horizontal)
 
     controlPanel.contents += startButton
@@ -106,13 +124,9 @@ object Game extends SimpleSwingApplication {
     controlPanel.contents += healthPoints
     controlPanel.contents += moneyInTheBank
     controlPanel.contents += waveNumber
-
-
     verticalPanel.contents += arena
     verticalPanel.contents += controlPanel
-
     contents = verticalPanel
-
 
     // ask the object to listed mouse events in our arena panel
     listenTo(arena.mouse.clicks)
@@ -124,9 +138,7 @@ object Game extends SimpleSwingApplication {
     // and now that the class responds to events, we shoot in the space simulation at the same point
     this.reactions += {
       //case scala.swing.event.MousePressed(src, point, _, _, _) => Area.shoot(point.x, point.y)
-
       //case wheelEvent: MouseMoved => println("x on: " + wheelEvent.point.x + " y on: " + wheelEvent.point.y)
-
       case clickEvent: ButtonClicked => println("klikattu: " + clickEvent.source.text)
     }
 
@@ -141,10 +153,13 @@ object Game extends SimpleSwingApplication {
       }
     }
 
+
+
+
     // Timer sends ActionEvent to ActionListener every 6ms,
     // when the space moves forward and the screen is redrawn.
     // This code therefore allows animation
-    val timer = new javax.swing.Timer(16, listener)
+    val timer = new javax.swing.Timer(6, listener)
     timer.start()
 
   }
