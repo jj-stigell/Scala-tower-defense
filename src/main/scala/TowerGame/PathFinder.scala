@@ -41,12 +41,11 @@ object PathFinder {
     pathCollection.zip(directionCollection)
   }
 
-
   /**
    * Find new direction for the enemy path after hitting a corner.
    *
-   * @param currentDirection
-   * @param currentLocation
+   * @param currentDirection  Direction the enemy is going at the moment
+   * @param currentLocation   Current locatoin of the enemy
    * @return New direction on the map.
    */
   def findNewDirection(currentDirection: (Int, Int), currentLocation: (Int, Int)): (Int, Int) = {
@@ -71,7 +70,6 @@ object PathFinder {
     }
     newDirection
   }
-
 
   /**
    * Find the entry point of the enemy in the map array
@@ -98,7 +96,6 @@ object PathFinder {
     }
     (x, y)
   }
-
 
   /**
    * Find the start direction of the enemy in the map
