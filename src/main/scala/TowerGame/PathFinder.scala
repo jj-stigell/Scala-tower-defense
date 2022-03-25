@@ -13,6 +13,8 @@ object PathFinder {
    */
   def enemyPath(Location: (Int, Int), Direction: (Int, Int)) = {
 
+    //println(Settings.map.mkString(" "))
+
     val map = Settings.map
     var pathCollection = mutable.Buffer[(Int, Int)]()
     var directionCollection = mutable.Buffer[(Int, Int)]()
@@ -30,6 +32,8 @@ object PathFinder {
         pathCollection += newLocation
         directionCollection += currentDirection
       } else if (pathValue == 0) {
+        //println("pathvalue on 0")
+        //println()
         // Direction changes when hit 0
         pathCollection += currentLocation
         directionCollection += currentDirection
@@ -59,15 +63,17 @@ object PathFinder {
     val option4 = (currentLocation._1, currentLocation._2 - 1)
     var newDirection = (0, 0)
 
-    if (map(option1._2)(option1._1) == 1 && (previousLocation._1 - 1, previousLocation._2) != currentLocation) {
+    if ((map(option1._2)(option1._1) == 1 || map(option1._2)(option1._1) == 3) && (previousLocation._1 - 1, previousLocation._2) != currentLocation) {
       newDirection = (1, 0)
-    } else if (map(option2._2)(option2._1) == 1 && (previousLocation._1, previousLocation._2 - 1) != currentLocation) {
+    } else if ((map(option2._2)(option2._1) == 1 || map(option2._2)(option2._1) == 3) && (previousLocation._1, previousLocation._2 - 1) != currentLocation) {
       newDirection = (0, 1)
-    } else if (map(option3._2)(option3._1) == 1 && (previousLocation._1 + 1, previousLocation._2) != currentLocation) {
+    } else if ((map(option3._2)(option3._1) == 1 || map(option3._2)(option3._1) == 3) && (previousLocation._1 + 1, previousLocation._2) != currentLocation) {
       newDirection = (-1, 0)
-    } else if (map(option4._2)(option4._1) == 1 && (previousLocation._1, previousLocation._2 + 1) != currentLocation) {
+    } else if ((map(option4._2)(option4._1) == 1 || map(option4._2)(option4._1) == 3) && (previousLocation._1, previousLocation._2 + 1) != currentLocation) {
       newDirection = (0, -1)
     }
+    //println("etsitään uutta suuntaa ")
+    //println("uusisuunta:            " + newDirection)
     newDirection
   }
 
