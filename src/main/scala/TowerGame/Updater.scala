@@ -12,7 +12,7 @@ object Updater {
   }
 
   /**
-   * Update the game changing conditions
+   * Update the game changing conditions.
    */
   def updateConditions() = {
     Game.gameOver = !Player.isAlive
@@ -21,7 +21,15 @@ object Updater {
   }
 
   /**
-   * Reset the game area for the next wave
+   * Updates the buttons in the GUI.
+   */
+  def updateButtons() = {
+    if (Player.moneyIntheBank >= Settings.towerPrice) Game.startButton.enabled = true else Game.startButton.enabled = false
+    if (Game.roundOver) Game.startButton.enabled = true else Game.startButton.enabled = false
+  }
+
+  /**
+   * Reset the game area for the next wave.
    */
   def resetArea() = {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
