@@ -4,6 +4,7 @@ import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
 import scala.swing._
 import scala.swing.event.ButtonClicked
+import javax.swing.{JFrame, JOptionPane}
 
 object Game extends SimpleSwingApplication {
 
@@ -12,10 +13,12 @@ object Game extends SimpleSwingApplication {
   val fullHeight = Settings.fullHeight
   val map = Settings.map
   var wave = 1
+  var gameOver = false
+  var gameWon = false
+  var roundWon = false
 
   val blockWidth = width / Settings.totalHorizontalBlocks
   val blockHeight = height / Settings.totalVerticalBlocks
-
 
   val startButton = new Button("Start new wave!")
   val menuButton = new Button("Menu")
@@ -31,20 +34,14 @@ object Game extends SimpleSwingApplication {
   waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
 
 
-
   def updateStats() = {
-
     healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
-
     moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
-
     waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
-
-
+    gameOver = !Player.isAlive
+    roundWon = Player.isAlive && Area.enemies.forall(!_.isAlive)
+    gameWon = this.wave > Settings.maxWaves
   }
-
-
-
 
 
   /**
@@ -146,8 +143,13 @@ object Game extends SimpleSwingApplication {
 
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
-        Area.step()
-        arena.repaint()
+
+        if (gameOver) {
+          JOptionPane.showMessageDialog(new JFrame("Game Over!!!"), "Game Over!!!")
+        } else {
+          Area.step()
+          arena.repaint()
+        }
       }
     }
 

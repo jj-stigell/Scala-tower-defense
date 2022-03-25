@@ -11,7 +11,7 @@ object Settings {
   val fullHeight: Int = height + 40       // take into account the control panel at the bottom
   val towerPrice: Int = 10
   val rewardFromKill: Int = 5
-  val maxHealth: Int = 100
+  val maxHealth: Int = 3
   val hpLossPerEnemy: Int = 1
   val coolDownTime: Int = 100
   val coolDownPerCycle: Int = 1

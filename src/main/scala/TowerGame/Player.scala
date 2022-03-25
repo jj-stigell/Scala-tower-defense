@@ -5,10 +5,10 @@ object Player {
   private var health: Int = Settings.maxHealth
   private var alive: Boolean = true
   private val damagePerHit: Int = Settings.hpLossPerEnemy
-  private var money = 0
+  private var money: Int = 0
 
 
-  def getHealth = this.health
+  def getHealth: Int = this.health
 
   def isAlive: Boolean = this.alive
 
@@ -16,10 +16,11 @@ object Player {
 
 
   def gethit(): Unit = {
-    if (this.health - this.damagePerHit > 0) {
+    if (this.health > 0) {
       this.health -= this.damagePerHit
     } else {
       this.alive = false
+      Game.gameOver = true
     }
   }
 
