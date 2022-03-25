@@ -9,7 +9,6 @@ object Updater {
     Game.healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
     Game.moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
     Game.waveNumber.text = "Current wave: " + WaveController.currentWave + "/" + Settings.maxWaves
-    updateConditions()
   }
 
   /**
@@ -18,7 +17,7 @@ object Updater {
   def updateConditions() = {
     Game.gameOver = !Player.isAlive
     Game.roundOver = Player.isAlive && Area.enemies.forall(!_.isAlive)
-    Game.gameWon = WaveController.currentWave > Settings.maxWaves
+    Game.gameWon = WaveController.currentWave == Settings.maxWaves && Game.roundOver
   }
 
   /**

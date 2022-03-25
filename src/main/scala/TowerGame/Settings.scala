@@ -12,22 +12,22 @@ object Settings {
   val fullHeight: Int = height + 40                         // take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false
-  val maxWaves: Int = 10
+  val maxWaves: Int = 3
 
   // Player
   val towerPrice: Int = 10
   val rewardFromKill: Int = 5
-  val maxHealth: Int = 20
+  val maxHealth: Int = 5
   val hpLossPerEnemy: Int = 1
   val coolDownTime: Int = 100
   val coolDownPerCycle: Int = 1
 
   // Enemy
   val enemyHealth: Int = 10
-  val enemySpeed: Double = 7.0                              // scalar for the enemy speed
+  val enemySpeed: Double = 9.0                              // scalar for the enemy speed
   val interval: Int = 6                                     // enemy update interval, in milliseconds, please keep at 6
   val enemyInterval: Int = 200                              // time between enemy addition, in milliseconds
-  val numberOfEnemies: Int = 10                             // How many enemies in total appears on the map
+  val numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
   val correctedInterval: Int = enemyInterval / interval
 
   // Each row must be same length

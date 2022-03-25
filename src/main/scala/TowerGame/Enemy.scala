@@ -18,6 +18,7 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
   private var location: Vector2D = initLoc
   private var speed: Vector2D = initDir
   private var alive: Boolean = true
+  private var playerHit: Boolean = false
   private var health: Int = Settings.enemyHealth
   private val damagePerHit: Int = Settings.hpLossPerEnemy
   private var path = enemyPath.drop(1)                                                          // drop first, because first is set as the first turning point
@@ -48,13 +49,15 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
    */
   def move() = {
 
-    if (this.alive) {
+    if (isAlive) {
       if (this.closeToTurningPoint) {
 
-        if (path.isEmpty) {
+        if (path.isEmpty && !playerHit) {
           Player.gethit()
+          this.playerHit = true
           this.alive = false
-          Game.updateStats()
+          Updater.updateStats()
+          Updater.updateConditions()
         } else {
         speed = Vector2D(directions.head._1, directions.head._2)
         directions = directions.drop(1)
@@ -82,7 +85,7 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
    * @param g Graphics2D
    */
   def draw(g: Graphics2D) = {
-    if (this.alive) {
+    if (isAlive) {
       val circle = new Ellipse2D.Double(10, 10, enemySize, enemySize)
       g.setColor(new Color(255, 0, 0))
       val oldTransform = g.getTransform

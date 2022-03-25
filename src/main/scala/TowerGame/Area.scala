@@ -6,7 +6,7 @@ import scala.collection.mutable.Buffer
 object Area {
   
   // Store enemies into a buffer
-  val enemies = Buffer[Enemy]()
+  var enemies = Buffer[Enemy]()
   var numberOfEnemies = Settings.numberOfEnemies
   var tick = 0
 
@@ -39,6 +39,8 @@ object Area {
     tick += 1
     enemies.foreach(_.move())
   }
+
+  def resetEnemyBuffer() = enemies = Buffer[Enemy](new Enemy(correctedInitlDir, correctedInitlLoc, correctedPath, correctedDirections))
 
   // Drawing all enemies to the map
   def draw(g: Graphics2D) = enemies foreach (_.draw(g))

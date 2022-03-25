@@ -12,37 +12,23 @@ object Game extends SimpleSwingApplication {
   val height = Settings.height
   val fullHeight = Settings.fullHeight
   val map = Settings.map
-  var wave = 1
+  val blockWidth = Settings.blockLengthX
+  val blockHeight = Settings.blockLengthY
+
   var gameOver = false
   var gameWon = false
-  var roundWon = false
+  var roundOver = true
 
-  val blockWidth = width / Settings.totalHorizontalBlocks
-  val blockHeight = height / Settings.totalVerticalBlocks
-
+  // Buttons and Labels
   val startButton = new Button("Start new wave!")
   val menuButton = new Button("Menu")
   val buyTowerButton = new Button("Buy Tower: " + Settings.towerPrice + "$")
-
   val healthPoints = new Label
   healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
-
   val moneyInTheBank = new Label
   moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
-
   val waveNumber = new Label
-  waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
-
-
-  def updateStats() = {
-    healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
-    moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
-    waveNumber.text = "Current wave: " + wave + "/" + Settings.maxWaves
-    gameOver = !Player.isAlive
-    roundWon = Player.isAlive && Area.enemies.forall(!_.isAlive)
-    gameWon = this.wave > Settings.maxWaves
-  }
-
+  waveNumber.text = "Current wave: " + WaveController.currentWave + "/" + Settings.maxWaves
 
   /**
    * MainFrame is the application window class in scala-swing.
@@ -51,7 +37,6 @@ object Game extends SimpleSwingApplication {
 
     title = Settings.title
     resizable = Settings.resizable
-
     minimumSize = new Dimension(width, fullHeight)
     preferredSize = new Dimension(width, fullHeight)
     maximumSize = new Dimension(width, fullHeight)
@@ -59,7 +44,6 @@ object Game extends SimpleSwingApplication {
     /**
      * The panel inside our window, where the enemies are moving.
      */
-
     val arena = new Panel {
 
       /**
@@ -69,18 +53,14 @@ object Game extends SimpleSwingApplication {
        * a Graphics2D object, through which it is possible to draw into the object,
        * change colors, coordinates, line thickness etc.
        */
-
       override def paintComponent(g: Graphics2D) = {
 
-        // Paint on the old image a rectangle with bright blue (red=80, green=180, blue=235)
         g.setColor(new Color(51, 153, 51))
         g.fillRect(0, 0, width, fullHeight)
-
         g.setColor(new Color(198, 140, 83))
-
         var rowNumber = 0
 
-        // draw path
+        // Draw path and tower at the end
         for (row <- map) {
           var columnNumber = 0
           for (element <- row) {
@@ -103,18 +83,18 @@ object Game extends SimpleSwingApplication {
         // Ask Graphics2D to provide us smoother graphics, i.e., antialising
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
-        // change paint color to white and ask the space to redraw itself.
-        g.setColor(Color.white)
+        // Draw the area
         Area.draw(g)
       }
-
     }
 
+    // Panels
     val verticalPanel = new BoxPanel(Orientation.Vertical)
     val controlPanel = new BoxPanel(Orientation.Horizontal)
 
-    controlPanel.contents += startButton
+    // Add buttons and labels to panels
     controlPanel.contents += menuButton
+    controlPanel.contents += startButton
     controlPanel.contents += buyTowerButton
     controlPanel.contents += healthPoints
     controlPanel.contents += moneyInTheBank
@@ -123,18 +103,26 @@ object Game extends SimpleSwingApplication {
     verticalPanel.contents += controlPanel
     contents = verticalPanel
 
-    // ask the object to listed mouse events in our arena panel
+    // Ask the object to listed mouse events in our arena panel
     listenTo(arena.mouse.clicks)
     listenTo(arena.mouse.moves)
     listenTo(startButton)
     listenTo(menuButton)
     listenTo(buyTowerButton)
 
-    // and now that the class responds to events, we shoot in the space simulation at the same point
+
+    // And now that the class responds to events
     this.reactions += {
       //case scala.swing.event.MousePressed(src, point, _, _, _) => Area.shoot(point.x, point.y)
       //case wheelEvent: MouseMoved => println("x on: " + wheelEvent.point.x + " y on: " + wheelEvent.point.y)
-      case clickEvent: ButtonClicked => println("klikattu: " + clickEvent.source.text)
+      case clickEvent: ButtonClicked => {
+        clickEvent.source match {
+          case Game.menuButton => println("klikattu menua nappie")
+          case Game.startButton => WaveController.launchNewWave()
+          case Game.buyTowerButton => println("klikattu osto nappie")
+          case _ =>
+        }
+      }
     }
 
     // This event listener and swing timer allow periodic repetitive
@@ -144,8 +132,14 @@ object Game extends SimpleSwingApplication {
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
 
+        //Updater.updateConditions()
+
         if (gameOver) {
           JOptionPane.showMessageDialog(new JFrame("Game Over!!!"), "Game Over!!!")
+        } else if (gameWon) {
+          JOptionPane.showMessageDialog(new JFrame("Peli voitettu!!!"), "Peli voitettu!!!")
+        } else if (roundOver) {
+          Game.startButton.enabled = true
         } else {
           Area.step()
           arena.repaint()
