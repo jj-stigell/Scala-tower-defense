@@ -6,23 +6,28 @@ import scala.collection.mutable.Buffer
 import scala.swing.Color
 
 /**
- * Enemy is a ball (visible as its radius), speed vector, position vector
+ * Enemy is a ball that moves on the predetermined path and tries to reach the players tower.
+ *
+ * @param initDir         Initial direction the enemy moves to
+ * @param initLoc         Initial location from where the enemy starts
+ * @param enemyPath       Full path the enemy moves
+ * @param enemyDirections All the directions enemy will move on the map
  */
-case class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double, Double)], enemyDirections: Buffer[(Double, Double)]) {
+class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double, Double)], enemyDirections: Buffer[(Double, Double)]) {
 
   private var location: Vector2D = initLoc
   private var speed: Vector2D = initDir
   private var alive: Boolean = true
   private var health: Int = Settings.enemyHealth
   private val damagePerHit: Int = Settings.hpLossPerEnemy
-  private var path = enemyPath.drop(1)                                                // drop first, because first is set as the first turning point
-  private var directions = enemyDirections.drop(1)                                    // drop first, already as the initial direction
+  private var path = enemyPath.drop(1)                                                          // drop first, because first is set as the first turning point
+  private var directions = enemyDirections.drop(1)                                              // drop first, already as the initial direction
   private var turningPoint: Vector2D = Vector2D((enemyPath.head._1), (enemyPath.head._2))       // start with the first turning point
   private val enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
 
   /**
-   * Player can attack the enemy when close by, kills the enemy if health goes zero
+   * Player can attack the enemy when close by, kills the enemy if health goes zero.
    */
   def gethit(): Unit = {
     if (this.health - this.damagePerHit > 0) {
@@ -33,8 +38,8 @@ case class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Do
   }
 
   /**
-   * Move the enemy if alive to the direction of current movement
-   * If enemy reaches player tower, reduce player health and update stats
+   * Move the enemy if alive to the direction of current movement.
+   * If enemy reaches player tower, reduce player health and update stats.
    */
   def move() = {
 

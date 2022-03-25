@@ -20,6 +20,10 @@ object Settings {
   val maxWaves: Int = 10
   val title: String = "TowerDefense"
   val resizable: Boolean = false
+  val interval: Int = 6                   // enemy update interval, in milliseconds, please keep at 6
+  val enemyInterval: Int = 200            // time between enemy addition, in milliseconds
+  val numberOfEnemies: Int = 20           // How many enemies in total appears on the map
+  val correctedInterval: Int = enemyInterval / interval
 
   // Each row must be same length
   // 1 road, roads cannot be side to side

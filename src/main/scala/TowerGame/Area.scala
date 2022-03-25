@@ -7,6 +7,8 @@ object Area {
   
   // Store enemies into a buffer
   val enemies = Buffer[Enemy]()
+  var numberOfEnemies = Settings.numberOfEnemies
+  var tick = 0
 
   // Initialize the starting location of enemies and the direction
   val initLoc = PathFinder.enemyInitialLocation()
@@ -20,21 +22,23 @@ object Area {
   val correctedInitlDir = Vector2D(initDir._1 * Settings.enemySpeed, initDir._2 * Settings.enemySpeed)
   val correctedInitlLoc = Vector2D(Settings.blockLengthX * (initLoc._1 + (-1 * initDir._1)), Settings.blockLengthY* (initLoc._2 + (-1 * initDir._2)))
 
-
   // Vector multiplied with the speed scalar
   val correctedDirections: Buffer[(Double, Double)] = directions.map(_._1 * Settings.enemySpeed).zip(directions.map(_._2 * Settings.enemySpeed))
   val correctedPath: Buffer[(Double, Double)] = path.map(_._1 * Settings.blockLengthX.toDouble).zip(path.map(_._2 * Settings.blockLengthY.toDouble))
 
+  // add the initial enemy
+  enemies += new Enemy(correctedInitlDir, correctedInitlLoc, correctedPath, correctedDirections)
 
-  println("corrected path: " + correctedPath)
-
-
-
-  // speed, place
-  enemies += Enemy(correctedInitlDir, correctedInitlLoc, correctedPath, correctedDirections)
 
   // When space steps one time unit forward, all enemies move a step forward
-  def step() = enemies.foreach(_.move())
+  def step() = {
+    if (numberOfEnemies > 0 && tick % Settings.correctedInterval == 0) {
+      enemies += new Enemy(correctedInitlDir, correctedInitlLoc, correctedPath, correctedDirections)
+      numberOfEnemies -= 1
+    }
+    tick += 1
+    enemies.foreach(_.move())
+  }
 
   // Drawing all enemies to the map
   def draw(g: Graphics2D) = enemies foreach (_.draw(g))

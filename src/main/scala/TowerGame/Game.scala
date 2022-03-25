@@ -50,8 +50,6 @@ object Game extends SimpleSwingApplication {
   /**
    * MainFrame is the application window class in scala-swing.
    */
-
-
   def top = new MainFrame {
 
     title = Settings.title
@@ -159,7 +157,7 @@ object Game extends SimpleSwingApplication {
     // Timer sends ActionEvent to ActionListener every 6ms,
     // when the space moves forward and the screen is redrawn.
     // This code therefore allows animation
-    val timer = new javax.swing.Timer(6, listener)
+    val timer = new javax.swing.Timer(Settings.interval, listener)
     timer.start()
 
   }
