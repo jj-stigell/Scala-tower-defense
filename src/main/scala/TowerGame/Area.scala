@@ -1,5 +1,7 @@
 package TowerGame
 
+import TowerGame.Towers.{Tower, SmallTower}
+
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
@@ -8,32 +10,34 @@ import scala.swing.event.MouseMoved
 
 object Area {
   
-  // Store enemies into a buffer
-  var enemies = Buffer[Enemy]()
-  var towers = Buffer[Tower]()
-  var numberOfEnemies = Settings.numberOfEnemies
-  var tick = 0
+  // Store enemies and towers into buffers
+  var enemies: Buffer[Enemy] = Buffer[Enemy]()
+  var towers: Buffer[Tower] = Buffer[Tower]()
+  var numberOfEnemies: Int = Settings.numberOfEnemies
+  var tick: Int = 0
   var towerLocation: Vector2D = Vector2D(0, 0)
 
   private val towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
   // Initialize the starting location of enemies and the direction and calculate path and directions on the map
-  val initLoc = PathFinder.enemyInitialLocation()
-  val initDir = PathFinder.findInitialDirection(initLoc)
-  val path = (PathFinder.enemyPath(initLoc, initDir)).map(_._1)
-  val directions = (PathFinder.enemyPath(initLoc, initDir)).map(_._2)
+  val initLoc: (Int, Int) = PathFinder.enemyInitialLocation()
+  val initDir: (Int, Int) = PathFinder.findInitialDirection(initLoc)
+  val path: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._1)
+  val directions: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._2)
 
-  // Correct values based on the gui dimensions
-  val correctedInitlDir = Vector2D(initDir._1 * Settings.enemySpeed, initDir._2 * Settings.enemySpeed)
-  val correctedInitlLoc = Vector2D(Settings.blockLengthX * (initLoc._1 + (-1 * initDir._1)), Settings.blockLengthY* (initLoc._2 + (-1 * initDir._2)))
-  val correctedDirections = directions.map( x => Vector2D(x._1 * Settings.enemySpeed, x._2 * Settings.enemySpeed))
-  val correctedPath = path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
+  // Correct values based on the gui dimensions and enemy speed
+  val correctedInitlDir: Vector2D = Vector2D(initDir._1 * Settings.enemySpeed, initDir._2 * Settings.enemySpeed)
+  val correctedInitlLoc: Vector2D = Vector2D(Settings.blockLengthX * (initLoc._1 + (-1 * initDir._1)), Settings.blockLengthY* (initLoc._2 + (-1 * initDir._2)))
+  val correctedDirections: Buffer[Vector2D] = directions.map( x => Vector2D(x._1 * Settings.enemySpeed, x._2 * Settings.enemySpeed))
+  val correctedPath: Buffer[Vector2D] = Buffer(correctedInitlLoc) ++ path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
 
+  // Surrounding areas the enemy moves in
+  val enemyPathSquares = PathFinder.findBannedAreas(correctedPath)
 
   // When space steps one time unit forward, all enemies move a step forward
   def step() = {
     if (numberOfEnemies > 0 && tick % Settings.correctedInterval == 0) {
-      enemies += new Enemy(Buffer(correctedInitlLoc) ++ correctedPath, correctedDirections)
+      enemies += new Enemy(correctedPath, correctedDirections)
       numberOfEnemies -= 1
     }
     tick += 1
@@ -41,37 +45,25 @@ object Area {
     //towers foreach (_.move())
   }
 
-
   // Drawing all enemies to the map
   def draw(g: Graphics2D) = {
-    enemies foreach (_.draw(g))
-    towers foreach (_.draw(g))
-
+    enemies.foreach(_.draw(g))
+    towers.foreach(_.draw(g))
     if (Game.towerBuying) this.drawNewTower(g)
-
   }
-
 
   def resetEnemyBuffer() = enemies = Buffer[Enemy]()
 
-
   def checkBlocking() = {
-    if (towers.exists(tower => (tower.place.x - towerLocation.x).abs < towerSize && (tower.place.y - towerLocation.y).abs < towerSize)) Game.blocked = true else Game.blocked = false
-
-    println(correctedInitlLoc)
-    println(correctedPath)
+    if (towers.exists(tower => (tower.getLocation.x - towerLocation.x).abs < towerSize && (tower.getLocation.y - towerLocation.y).abs < towerSize) ||
+        enemyPathSquares.exists( spots => (spots._1._1 <= towerLocation.x && towerLocation.x <= spots._2._1 && spots._1._2 <= towerLocation.y && towerLocation.y <= spots._2._2))) {
+      Game.blocked = true
+    } else {
+      Game.blocked = false
+    }
   }
 
-
   def newTowerLocation(locationMouse: MouseMoved) = towerLocation = Vector2D(locationMouse.point.x - Settings.xCorrection, locationMouse.point.y - Settings.yCorrection)
-
-
-    /*
-    if (towers.nonEmpty) println("tower at buffer: (" + towers.head.place.x + "," + towers.head.place.y + ")")
-    println("mouse at: (" + towerLocation.x + "," + towerLocation.y + ")     Blocking = " + Game.blocked)
-    println()
-    */
-
 
   def drawNewTower(g: Graphics2D) = {
 
@@ -92,13 +84,8 @@ object Area {
   }
 
   def placeTower(x: Int, y: Int) = {
-    towers += new Tower(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
-    println("tower placed to x: " + x + " y: " + y)
+    towers += new SmallTower(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
     Game.towerBuying = false
   }
-
-
-
-
 
 }

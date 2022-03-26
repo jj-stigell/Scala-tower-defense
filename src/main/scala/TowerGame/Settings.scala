@@ -22,6 +22,7 @@ object Settings {
   val hpLossPerEnemy: Int = 1
   val coolDownTime: Int = 100
   val coolDownPerCycle: Int = 1
+  val towerRange: Double = 1.0                              // Radius of attack range
 
   // Tower placing
   val xCorrection = 40
@@ -41,13 +42,13 @@ object Settings {
   // 3 out point, must be on the side, only one
   // Default map
   var map: Array[Array[Int]] = Array(
-    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    Array(2, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
-    Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
-    Array(0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0),
-    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
-    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
-    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 3),
+    Array(0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0),
+    Array(0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0),
+    Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0),
+    Array(0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0),
     Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
   )

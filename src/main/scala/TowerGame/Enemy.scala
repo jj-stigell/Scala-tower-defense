@@ -20,7 +20,7 @@ class Enemy(enemyPath: Buffer[Vector2D], enemyDirections: Buffer[Vector2D]) {
   private var health: Int = Settings.enemyHealth
   private val damagePerHit: Int = Settings.hpLossPerEnemy
   private var turningPoint: Vector2D = enemyPath(1)                                             // Start with the first turning point
-  private var path = enemyPath.drop(2)                                                          // Drop first, because first is set as the first turning point
+  private var path = enemyPath.drop(2)                                                          // Drop first 2, because first is set as the first location and second one as the first turning point
   private var directions = enemyDirections.drop(1)                                              // Drop first, already as the initial direction
   private val enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
@@ -29,6 +29,13 @@ class Enemy(enemyPath: Buffer[Vector2D], enemyDirections: Buffer[Vector2D]) {
    * @return Boolean on the state of the enemy, dead or alive
    */
   def isAlive: Boolean = this.alive
+
+  /**
+   * For tower to check the location of the enemy.
+   *
+   * @return Location Vector2D
+   */
+  def getLocation: Vector2D = this.location
 
   /**
    * Player can attack the enemy when close by, kills the enemy if health goes zero.
