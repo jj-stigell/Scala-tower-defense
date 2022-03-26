@@ -8,22 +8,20 @@ import scala.swing.Color
 /**
  * Enemy is a ball that moves on the predetermined path and tries to reach the players tower.
  *
- * @param initDir         Initial direction the enemy moves to
- * @param initLoc         Initial location from where the enemy starts
  * @param enemyPath       Full path the enemy moves
  * @param enemyDirections All the directions enemy will move on the map
  */
-class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[Vector2D], enemyDirections: Buffer[Vector2D]) {
+class Enemy(enemyPath: Buffer[Vector2D], enemyDirections: Buffer[Vector2D]) {
 
-  private var location: Vector2D = initLoc
-  private var speed: Vector2D = initDir
+  private var location: Vector2D = enemyPath.head                                               //initLoc
+  private var speed: Vector2D = enemyDirections.head                                            // Initial direction (head of directions) set as the speed
   private var alive: Boolean = true
   private var playerHit: Boolean = false
   private var health: Int = Settings.enemyHealth
   private val damagePerHit: Int = Settings.hpLossPerEnemy
-  private var path = enemyPath.drop(1)                                                          // drop first, because first is set as the first turning point
-  private var directions = enemyDirections.drop(1)                                              // drop first, already as the initial direction
-  private var turningPoint: Vector2D = enemyPath.head                                           // start with the first turning point
+  private var turningPoint: Vector2D = enemyPath(1)                                             // Start with the first turning point
+  private var path = enemyPath.drop(2)                                                          // Drop first, because first is set as the first turning point
+  private var directions = enemyDirections.drop(1)                                              // Drop first, already as the initial direction
   private val enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
   /**

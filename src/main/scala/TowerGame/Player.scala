@@ -16,12 +16,13 @@ object Player {
   def addMoney(amount: Int): Unit = this.money = this.money + amount
 
   def gethit(): Unit = {
-    if (this.health > 0) {
-      this.health -= this.damagePerHit
-    } else {
+    this.health -= this.damagePerHit
+    if (this.health <= 0) {
+      this.health = 0
       this.alive = false
       Game.gameOver = true
     }
+
   }
 
 }
