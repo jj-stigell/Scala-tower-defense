@@ -42,6 +42,7 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
       this.alive = false
       Player.addMoney(Settings.rewardFromKill)
       Updater.updateStats()
+      Updater.updateButtons()
     }
   }
 

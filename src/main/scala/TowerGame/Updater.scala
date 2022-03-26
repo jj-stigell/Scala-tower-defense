@@ -2,7 +2,7 @@ package TowerGame
 
 object Updater {
 
-    /**
+  /**
    * Update the stats on the screen: health, money, wave.
    */
   def updateStats() = {

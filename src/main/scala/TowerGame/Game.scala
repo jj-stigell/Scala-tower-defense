@@ -2,9 +2,9 @@ package TowerGame
 
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
-import scala.swing._
-import scala.swing.event.ButtonClicked
 import javax.swing.{JFrame, JOptionPane}
+import scala.swing._
+import scala.swing.event.{ButtonClicked, MouseMoved}
 
 object Game extends SimpleSwingApplication {
 
@@ -18,6 +18,8 @@ object Game extends SimpleSwingApplication {
   var gameOver = false
   var gameWon = false
   var roundOver = true
+  var towerBuying = false
+  var blocked = false
 
   // Buttons and Labels
   val startButton = new Button("Start new wave!")
@@ -113,13 +115,13 @@ object Game extends SimpleSwingApplication {
 
     // And now that the class responds to events
     this.reactions += {
-      //case scala.swing.event.MousePressed(src, point, _, _, _) => Area.shoot(point.x, point.y)
-      //case wheelEvent: MouseMoved => println("x on: " + wheelEvent.point.x + " y on: " + wheelEvent.point.y)
+      case scala.swing.event.MousePressed(src, point, _, _, _) => if (towerBuying && !blocked) Area.placeTower(point.x, point.y)
+      case locationMouse: MouseMoved => if (towerBuying) Area.newTowerLocation(locationMouse)
       case clickEvent: ButtonClicked => {
         clickEvent.source match {
           case Game.menuButton => println("klikattu menua nappie")
           case Game.startButton => WaveController.launchNewWave()
-          case Game.buyTowerButton => println("klikattu osto nappie")
+          case Game.buyTowerButton => towerBuying = true  //Area.placeTower()
           case _ =>
         }
       }
@@ -139,7 +141,8 @@ object Game extends SimpleSwingApplication {
         } else if (gameWon) {
           JOptionPane.showMessageDialog(new JFrame("Peli voitettu!!!"), "Peli voitettu!!!")
         } else if (roundOver) {
-          Game.startButton.enabled = true
+          Updater.updateButtons()
+          arena.repaint()
         } else {
           Area.step()
           arena.repaint()

@@ -18,17 +18,21 @@ object Settings {
   val towerPrice: Int = 10
   val startingMoney: Int = 10
   val rewardFromKill: Int = 5                               // How much money player gets from destroying enemy
-  val maxHealth: Int = 5
+  val maxHealth: Int = 15
   val hpLossPerEnemy: Int = 1
   val coolDownTime: Int = 100
   val coolDownPerCycle: Int = 1
+
+  // Tower placing
+  val xCorrection = 40
+  val yCorrection = 40
 
   // Enemy
   val enemyHealth: Int = 10
   val enemySpeed: Double = 9.0                              // Scalar for the enemy speed
   val interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
   val enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
-  val numberOfEnemies: Int = 50                             // How many enemies in total appears on the map
+  val numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
   val correctedInterval: Int = enemyInterval / interval
 
   // Each row must be same length
