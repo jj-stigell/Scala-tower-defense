@@ -29,9 +29,19 @@ object Area {
   val correctedInitlDir = Vector2D(initDir._1 * Settings.enemySpeed, initDir._2 * Settings.enemySpeed)
   val correctedInitlLoc = Vector2D(Settings.blockLengthX * (initLoc._1 + (-1 * initDir._1)), Settings.blockLengthY* (initLoc._2 + (-1 * initDir._2)))
 
+
+
+
   // Vector multiplied with the speed scalar
-  val correctedDirections: Buffer[(Double, Double)] = directions.map(_._1 * Settings.enemySpeed).zip(directions.map(_._2 * Settings.enemySpeed))
-  val correctedPath: Buffer[(Double, Double)] = path.map(_._1 * Settings.blockLengthX.toDouble).zip(path.map(_._2 * Settings.blockLengthY.toDouble))
+
+  val correctedDirections = directions.map( x => Vector2D(x._1 * Settings.enemySpeed, x._2 * Settings.enemySpeed))
+  val correctedPath = path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
+
+  //val correctedDirections: Buffer[(Double, Double)] = directions.map(_._1 * Settings.enemySpeed).zip(directions.map(_._2 * Settings.enemySpeed))
+  //val correctedPath: Buffer[(Double, Double)] = path.map(_._1 * Settings.blockLengthX.toDouble).zip(path.map(_._2 * Settings.blockLengthY.toDouble))
+
+
+
 
   // add the initial enemy
   enemies += new Enemy(correctedInitlDir, correctedInitlLoc, correctedPath, correctedDirections)
@@ -60,9 +70,27 @@ object Area {
 
   def resetEnemyBuffer() = enemies = Buffer[Enemy](new Enemy(correctedInitlDir, correctedInitlLoc, correctedPath, correctedDirections))
 
-  def checkBlocking() = if (towers.exists(tower => (tower.place.x - towerLocation.x).abs < towerSize && (tower.place.y - towerLocation.y).abs < towerSize)) Game.blocked = true else Game.blocked = false
+  def checkBlocking() = {
+    if (towers.exists(tower => (tower.place.x - towerLocation.x).abs < towerSize && (tower.place.y - towerLocation.y).abs < towerSize)) Game.blocked = true else Game.blocked = false
+
+
+    println(correctedInitlLoc)
+    println(correctedPath)
+
+
+
+  }
+
+
+
+
+
+
 
   def newTowerLocation(locationMouse: MouseMoved) = towerLocation = Vector2D(locationMouse.point.x - Settings.xCorrection, locationMouse.point.y - Settings.yCorrection)
+
+
+
 
     /*
     if (towers.nonEmpty) println("tower at buffer: (" + towers.head.place.x + "," + towers.head.place.y + ")")

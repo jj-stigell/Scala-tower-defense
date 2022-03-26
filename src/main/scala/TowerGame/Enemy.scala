@@ -13,7 +13,7 @@ import scala.swing.Color
  * @param enemyPath       Full path the enemy moves
  * @param enemyDirections All the directions enemy will move on the map
  */
-class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double, Double)], enemyDirections: Buffer[(Double, Double)]) {
+class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[Vector2D], enemyDirections: Buffer[Vector2D]) {
 
   private var location: Vector2D = initLoc
   private var speed: Vector2D = initDir
@@ -23,7 +23,7 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
   private val damagePerHit: Int = Settings.hpLossPerEnemy
   private var path = enemyPath.drop(1)                                                          // drop first, because first is set as the first turning point
   private var directions = enemyDirections.drop(1)                                              // drop first, already as the initial direction
-  private var turningPoint: Vector2D = Vector2D((enemyPath.head._1), (enemyPath.head._2))       // start with the first turning point
+  private var turningPoint: Vector2D = enemyPath.head                                           // start with the first turning point
   private val enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
   /**
@@ -62,9 +62,9 @@ class Enemy(initDir: Vector2D, var initLoc: Vector2D, enemyPath: Buffer[(Double,
           Updater.updateStats()
           Updater.updateConditions()
         } else {
-        speed = Vector2D(directions.head._1, directions.head._2)
+        speed = directions.head
         directions = directions.drop(1)
-        turningPoint = Vector2D((path.head._1), (path.head._2))
+        turningPoint = path.head
         path = path.drop(1)
         }
 
