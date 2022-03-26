@@ -1,6 +1,7 @@
 package TowerGame
 
 import scala.collection.mutable
+import scala.collection.mutable.Buffer
 
 object PathFinder {
 
@@ -45,7 +46,7 @@ object PathFinder {
    *
    * @param currentDirection  Direction the enemy is going at the moment
    * @param currentLocation   Current locatoin of the enemy
-   * @return New direction on the map.
+   * @return New direction on the map
    */
   def findNewDirection(currentDirection: (Int, Int), currentLocation: (Int, Int)): (Int, Int) = {
 
@@ -71,7 +72,7 @@ object PathFinder {
   }
 
   /**
-   * Find the entry point of the enemy in the map array
+   * Find the entry point of the enemy in the map array.
    *
    * @return x and y coordinate in the map array where the enemy will start the movement
    */
@@ -129,6 +130,36 @@ object PathFinder {
     else if (x == 0 && y > 0) (0,1)
     else if (x == 0 && y < 0) (0,-1)
     else (0,0)
+  }
+
+  /**
+   * Needed for calculating the area surrounding the enemy path.
+   *
+   * @param correctedPath Path where the enemies move
+   * @return              Padding for the enemy path to stop placing towers in the middle of the enemy path
+   */
+  def findBannedAreas(correctedPath: Buffer[Vector2D]) = {
+
+    // Buffer[((x1, y1), (x2, y2))]
+    var blockPath: Buffer[((Double, Double), (Double, Double))] = Buffer[((Double, Double), (Double, Double))]()
+    var i: Int = 0
+    val modifier: Double = 1.2
+
+    while (i < correctedPath.length - 1) {
+
+      val x1 = correctedPath(i).x
+      val x2 = correctedPath(i + 1).x
+      val y1 = correctedPath(i).y
+      val y2 = correctedPath(i + 1).y
+
+      if (x1 < x2) blockPath = blockPath :+ ((x1, y1 - ((1.0 * Settings.blockLengthY) / modifier)), (x2,  y2 + ((1.0 * Settings.blockLengthY) / modifier)))
+      else if (x1 > x2) blockPath = blockPath :+ ((x2, y2 - ((1.0 * Settings.blockLengthY) / modifier)), (x1,  y1 + ((1.0 * Settings.blockLengthY) / modifier)))
+      else if (y1 < y2) blockPath = blockPath :+ ((x1 - ((1.0 * Settings.blockLengthX) / modifier), y1),((x2 + ((1.0 * Settings.blockLengthX) / modifier),  y2)))
+      else blockPath = blockPath :+ ((x2 - ((1.0 * Settings.blockLengthX) / modifier), y2),((x1 + ((1.0 * Settings.blockLengthX) / modifier),  y1)))
+
+      i += 1
+    }
+    blockPath
   }
 
 }
