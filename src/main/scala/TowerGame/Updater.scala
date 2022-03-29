@@ -1,5 +1,8 @@
 package TowerGame
 
+import TowerGame.Enemies.Enemy
+import scala.collection.mutable.Buffer
+
 object Updater {
 
   /**
@@ -24,7 +27,7 @@ object Updater {
    * Updates the buttons in the GUI.
    */
   def updateButtons() = {
-    if (Player.moneyIntheBank >= Settings.towerPrice) Game.startButton.enabled = true else Game.startButton.enabled = false
+    if (Player.moneyIntheBank >= Settings.towerPrice) Game.buyTowerButton.enabled = true else Game.buyTowerButton.enabled = false
     if (Game.roundOver) Game.startButton.enabled = true else Game.startButton.enabled = false
   }
 
@@ -34,7 +37,7 @@ object Updater {
   def resetArea() = {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
     Area.tick = 0
-    Area.resetEnemyBuffer()
+    Area.enemies = Buffer[Enemy]()
   }
 
 }

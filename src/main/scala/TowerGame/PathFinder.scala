@@ -12,7 +12,7 @@ object PathFinder {
    * @param Direction Starting direction of the enemy
    * @return          Zip with turning points on the map and direction to there
    */
-  def enemyPath(Location: (Int, Int), Direction: (Int, Int)) = {
+  def enemyPath(Location: (Int, Int), Direction: (Int, Int)): Buffer[((Int, Int), (Int, Int))] = {
 
     val map = Settings.map
     var pathCollection = mutable.Buffer[(Int, Int)]()

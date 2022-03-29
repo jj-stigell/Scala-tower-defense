@@ -121,7 +121,7 @@ object Game extends SimpleSwingApplication {
         clickEvent.source match {
           case Game.menuButton => println("klikattu menua nappie")
           case Game.startButton => WaveController.launchNewWave()
-          case Game.buyTowerButton => towerBuying = true  //Area.placeTower()
+          case Game.buyTowerButton => towerBuying = true
           case _ =>
         }
       }
@@ -133,9 +133,6 @@ object Game extends SimpleSwingApplication {
 
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
-
-
-
         if (gameOver) {
           JOptionPane.showMessageDialog(new JFrame("Game Over!!!"), "Game Over!!!")
         } else if (gameWon) {

@@ -1,11 +1,12 @@
 package TowerGame
 
+import TowerGame.Enemies.Enemy
+
 object Player {
 
-  private var health: Int = Settings.maxHealth
-  private var alive: Boolean = true
-  private val damagePerHit: Int = Settings.hpLossPerEnemy
-  private var money: Int = Settings.startingMoney
+  var health: Int = Settings.maxHealth
+  var alive: Boolean = true
+  var money: Int = Settings.startingMoney
 
   def getHealth: Int = this.health
 
@@ -15,14 +16,15 @@ object Player {
 
   def addMoney(amount: Int): Unit = this.money = this.money + amount
 
-  def gethit(): Unit = {
-    this.health -= this.damagePerHit
+  def removeMoney(amount: Int): Unit = this.money = this.money - amount
+
+  def getHitByEnemy(enemy: Enemy): Unit = {
+    this.health -= enemy.damageGivenPerHit
     if (this.health <= 0) {
       this.health = 0
       this.alive = false
       Game.gameOver = true
     }
-
   }
 
 }

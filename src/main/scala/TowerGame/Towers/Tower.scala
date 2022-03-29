@@ -1,32 +1,46 @@
 package TowerGame.Towers
 
-import TowerGame.Vector2D
+import TowerGame.Enemies.Enemy
+import TowerGame.{Game, Settings, Vector2D}
+
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
-import scala.swing.Color
+import scala.collection.mutable.Buffer
+import scala.swing.{Color, Rectangle}
 
 abstract class Tower(location: Vector2D) {
 
+  val redBar: Color = new Color(255, 0, 0)
+  val greenBar: Color = new Color(0, 255, 0)
   val coolDownTime: Int
   val towerSize: Int
   val range: Double
   val towerColor: Color
   val coolDownPerCycle: Int
-  val damagePerHit: Int
-  var enemyNearBy = false
+  val damageGivenPerHit: Int  // To the enemy if tower shoots
   var coolDownCounter = 0
 
   def getLocation = this.location
 
-  def scanProximity() = ???
-
-  def shoot() = {
+  def scanProximity(enemies: Buffer[Enemy]) = {
     if (this.coolDownCounter > 0) {
       this.coolDownCounter -= this.coolDownPerCycle
     } else {
-      // shoot near by enemy, search enemies on proximity
-      this.coolDownCounter = this.coolDownTime
+      println("scanning")
+      println("rundi ohi: " + Game.roundOver)
+      var foundEnemies = enemies.filter(enemy => enemy.isAlive && (enemy.getLocation.x - this.location.x).abs < range && (enemy.getLocation.y - this.location.y).abs < range)
+      if (foundEnemies.nonEmpty){
+        println("found enemies!!1")
+        this.shoot(foundEnemies.head)
+      }
     }
+  }
+
+  def shoot(enemy: Enemy) = {
+    // shoot near by enemy, search enemies on proximity
+    enemy.getHitByTower(this.damageGivenPerHit)
+    this.coolDownCounter = this.coolDownTime
+
   }
 
   def draw(g: Graphics2D) = {
@@ -35,6 +49,18 @@ abstract class Tower(location: Vector2D) {
     val oldTransform = g.getTransform
     g.translate(this.location.x, this.location.y)
     g.fill(circle)
+    g.setTransform(oldTransform)
+
+    var coolMeter = new Rectangle(45, 10, this.coolDownTime, Settings.height / 100)
+    g.setColor(this.greenBar)
+    g.translate(this.location.x, this.location.y)
+    g.fill(coolMeter)
+    g.setTransform(oldTransform)
+
+    coolMeter = new Rectangle(45, 10, this.coolDownCounter, Settings.height / 100)
+    g.setColor(this.redBar)
+    g.translate(this.location.x, this.location.y)
+    g.fill(coolMeter)
     g.setTransform(oldTransform)
   }
 

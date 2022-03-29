@@ -12,14 +12,13 @@ object Settings {
   val fullHeight: Int = height + 40                         // Take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false
-  val maxWaves: Int = 3
+  val maxWaves: Int = 15
 
   // Player
   val towerPrice: Int = 10
   val startingMoney: Int = 10
   val rewardFromKill: Int = 5                               // How much money player gets from destroying enemy
-  val maxHealth: Int = 15
-  val hpLossPerEnemy: Int = 1
+  val maxHealth: Int = 10
   val coolDownTime: Int = 100
   val coolDownPerCycle: Int = 1
   val towerRange: Double = 1.0                              // Radius of attack range
@@ -29,12 +28,11 @@ object Settings {
   val yCorrection = 40
 
   // Enemy
-  val enemyHealth: Int = 10
-  val enemySpeed: Double = 9.0                              // Scalar for the enemy speed
+  //val enemySpeed: Double = 9.0                              // Scalar for the enemy speed
   val interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
   val enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
   val numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
-  val correctedInterval: Int = enemyInterval / interval
+  val correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length
   // 1 road, roads cannot be side to side
@@ -66,10 +64,10 @@ object Settings {
    */
   def setMap(newMap: Array[Array[Int]] ) = {
     this.map = newMap
-    totalHorizontalBlocks = this.map(0).length
-    totalVerticalBlocks = this.map.length
-    blockLengthX = this.width / totalHorizontalBlocks
-    blockLengthY = this.height / totalVerticalBlocks
+    this.totalHorizontalBlocks = this.map(0).length
+    this.totalVerticalBlocks = this.map.length
+    this.blockLengthX = this.width / this.totalHorizontalBlocks
+    this.blockLengthY = this.height / this.totalVerticalBlocks
   }
 
 }
