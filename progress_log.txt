@@ -9,16 +9,30 @@ Raportoitavia asioita ovat:
 
 Keskiviikko 23.2.2022
 
-- initial commit, hieman myöhässä, pahoittelen, paljon kiireitä kurssien ja duunin kanssa ja sekoitin viikot keskenään eli eka raportti viikon myöhässä.
-- peruspohja on tehty pelille. Mallina käytettiin hieman Laama ja asteroidi pelejä.
-- kartan polku piirtyy array tiedoston kautta.
-- vihollinen hieman liikkuu kartalla.
-- perus napit toiminnoille, eivät vielä reagoi mihinkään.
-- työaika 20h.
-- hieman jäljessä projektin aikataulusta mutta yritän kuroa tällä ja ensiviikolla.
-- päätin kokeilla tehdä pathfinderin joilloin custom kartat helpottuu, hieman vaikea.
+- Initial commit, hieman myöhässä, pahoittelen, paljon kiireitä kurssien ja duunin kanssa ja sekoitin viikot keskenään eli eka raportti viikon myöhässä.
+- Peruspohja on tehty pelille. Mallina käytettiin hieman Laama ja asteroidi pelejä.
+- Kartan polku piirtyy array tiedoston kautta.
+- Vihollinen hieman liikkuu kartalla.
+- Perus napit toiminnoille, eivät vielä reagoi mihinkään.
+- Työaika 20h.
+- Hieman jäljessä projektin aikataulusta mutta yritän kuroa tällä ja ensiviikolla.
+- Päätin kokeilla tehdä pathfinderin joilloin custom kartat helpottuu, hieman vaikea.
 
 
 Keskiviikko 30.3.2022
+
+- Pathfinder ja sen testit ovat valmiita, random kartan voi laittaa map arrayhin settings.scala tiedostoon ja sille muodostetaan polku sisältäne suunnat ja käännökset.
+  Ei kovin kaunis algoritmi mutta hoitaa hommansa ja se suoritetaan vain kerran kartan latauksen aikana eli varmaan turha alkaa optimoimaan.
+- Pathfinder testit kokeilevat että oikea polku löytyy, suunnat ovat oikeat, oikea aloituspiste ja aloitussuunta löytyvät.
+- Viholliset kulkevat kartalla alusta loppuun ongelmitta.
+- Torneja voi nyt laittaa kartalle, niitä ei voi laittaa päällekkäin tai vihollisen polulle, polun tunnistusalgoritmi tarvitsee vielä hiomista, aiheuttaa ongelmia käännöksissä.
+- Työaika 20h (yhteensä 40h).
+- Ongelmia tuottaa nyt torni ja vihollis-luokan laajennus, aluksi suunnittelin, että olisi vain yksi vihollis- ja torni-tyyppi mutta ehkä olisikin parempi kirjoittaa
+  pelin koodi niin, että sitä voisi laajentaa vaivattomasti. En saa laajennusta millään toimimaan, en trait, absraction tai normaalin luokan laajennuksen kanssa.
+  Tämän ongelman ratkomiseen on mennyt liikaa mutta en ole saanut fiksattua. Jätän myöhemmälle tämän, ei ole prioriteetti nro 1
+- Menun laajennus niin, että pelistä voi poistua, lataa pelin ja tallentaa pelin (lataus/tallennus ei toimi vielä)
+- Useampi kartta ja peli alueen resetointi, uuden kartan ja reittien päivitys kun siirrytään uuteen karttaan.
+- Pelin voitto mahdollisuus, kun pääsee läpi viimeisen kartan voittaa pelin.
+- Olen saanut kirittyä projektisuunnitelmaa ja uskon, että 13.4 mennessä pitäisi olla täysin toimiva eka versio pelistä.
 
 Keskiviikko 13.4.2022
