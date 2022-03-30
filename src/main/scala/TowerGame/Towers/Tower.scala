@@ -1,8 +1,7 @@
 package TowerGame.Towers
 
 import TowerGame.Enemies.Enemy
-import TowerGame.{Game, Settings, Vector2D}
-
+import TowerGame.{Settings, Vector2D}
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
@@ -20,14 +19,20 @@ abstract class Tower(location: Vector2D) {
   val damageGivenPerHit: Int  // To the enemy if tower shoots
   var coolDownCounter = 0
 
+  /**
+   * @return Location vector of the tower
+   */
   def getLocation = this.location
 
+  /**
+   * Scan the tower proximity and if enemy is found attack one of the enemies.
+   *
+   * @param enemies Buffer with all enemies
+   */
   def scanProximity(enemies: Buffer[Enemy]) = {
     if (this.coolDownCounter > 0) {
       this.coolDownCounter -= this.coolDownPerCycle
     } else {
-      println("scanning")
-      println("rundi ohi: " + Game.roundOver)
       var foundEnemies = enemies.filter(enemy => enemy.isAlive && (enemy.getLocation.x - this.location.x).abs < range && (enemy.getLocation.y - this.location.y).abs < range)
       if (foundEnemies.nonEmpty){
         this.shoot(foundEnemies.head)
@@ -35,13 +40,22 @@ abstract class Tower(location: Vector2D) {
     }
   }
 
+  /**
+   * Shoot one close by enemy.
+   *
+   * @param enemy Enemy to be shot
+   */
   def shoot(enemy: Enemy) = {
     // shoot near by enemy, search enemies on proximity
     enemy.getHitByTower(this.damageGivenPerHit)
     this.coolDownCounter = this.coolDownTime
-
   }
 
+  /**
+   * Draw the tower and its cool down meter.
+   *
+   * @param g Graphics2D
+   */
   def draw(g: Graphics2D) = {
     val circle = new Ellipse2D.Double(10, 10, this.towerSize, this.towerSize)
     g.setColor(this.towerColor)
@@ -50,6 +64,7 @@ abstract class Tower(location: Vector2D) {
     g.fill(circle)
     g.setTransform(oldTransform)
 
+    // Cool down meter indicating when tower can shoot again
     var coolMeter = new Rectangle(45, 10, this.coolDownTime, Settings.height / 100)
     g.setColor(this.greenBar)
     g.translate(this.location.x, this.location.y)
