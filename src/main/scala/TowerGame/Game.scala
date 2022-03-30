@@ -2,7 +2,6 @@ package TowerGame
 
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
-import javax.swing.{JFrame, JOptionPane}
 import scala.swing._
 import scala.swing.event.{ButtonClicked, MouseMoved}
 
@@ -24,6 +23,10 @@ object Game extends SimpleSwingApplication {
   // Buttons and Labels
   val startButton = new Button("Start new wave!")
   val menuButton = new Button("Menu")
+  val loadGameButton = new Button("Load Game")
+  val saveGameButton = new Button("Save Game")
+  val restartMap = new Button("Restart Game")
+  restartMap.visible = false
   val buyTowerButton = new Button("Buy Tower: " + Settings.towerPrice + "$")
   val healthPoints = new Label
   healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
@@ -57,6 +60,14 @@ object Game extends SimpleSwingApplication {
        */
       override def paintComponent(g: Graphics2D) = {
 
+
+        if (Game.gameOver) {
+          g.setColor(new Color(0, 0, 0))
+          g.fillRect(0, 0, width, height)
+          g.setColor(new Color(255, 255, 255))
+          g.drawString("GAME OVER, RESTART FROM MENU!", width / 2, height / 2)
+        } else {
+
         g.setColor(new Color(51, 153, 51))
         g.fillRect(0, 0, width, fullHeight)
         g.setColor(new Color(198, 140, 83))
@@ -87,6 +98,7 @@ object Game extends SimpleSwingApplication {
 
         // Draw the area
         Area.draw(g)
+        }
       }
     }
 
@@ -96,12 +108,17 @@ object Game extends SimpleSwingApplication {
 
     // Add buttons and labels to panels
     controlPanel.contents += menuButton
+    controlPanel.contents += saveGameButton
+    controlPanel.contents += loadGameButton
+    controlPanel.contents += restartMap
     controlPanel.contents += startButton
     controlPanel.contents += buyTowerButton
     controlPanel.contents += healthPoints
     controlPanel.contents += moneyInTheBank
     controlPanel.contents += waveNumber
     verticalPanel.contents += arena
+    verticalPanel.contents += controlPanel
+    verticalPanel.contents -= controlPanel
     verticalPanel.contents += controlPanel
     contents = verticalPanel
 
@@ -111,6 +128,9 @@ object Game extends SimpleSwingApplication {
     listenTo(startButton)
     listenTo(menuButton)
     listenTo(buyTowerButton)
+    listenTo(loadGameButton)
+    listenTo(saveGameButton)
+    listenTo(restartMap)
 
 
     // And now that the class responds to events
@@ -122,6 +142,9 @@ object Game extends SimpleSwingApplication {
           case Game.menuButton => println("klikattu menua nappie")
           case Game.startButton => WaveController.launchNewWave()
           case Game.buyTowerButton => towerBuying = true
+          case Game.loadGameButton => SaveLoad.loadGame()
+          case Game.saveGameButton => SaveLoad.saveGame()
+          case Game.restartMap => WaveController.resetWaves()
           case _ =>
         }
       }
@@ -133,11 +156,13 @@ object Game extends SimpleSwingApplication {
 
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
-        if (gameOver) {
-          JOptionPane.showMessageDialog(new JFrame("Game Over!!!"), "Game Over!!!")
-        } else if (gameWon) {
-          JOptionPane.showMessageDialog(new JFrame("Peli voitettu!!!"), "Peli voitettu!!!")
-        } else if (roundOver) {
+        if (Game.gameOver) {
+          Updater.updateButtons()
+          arena.repaint()
+        } else if (Game.gameWon) {
+          Updater.updateButtons()
+          arena.repaint()
+        } else if (Game.roundOver) {
           Updater.updateButtons()
           arena.repaint()
         } else {
@@ -147,9 +172,6 @@ object Game extends SimpleSwingApplication {
       }
     }
 
-
-
-
     // Timer sends ActionEvent to ActionListener every 6ms,
     // when the space moves forward and the screen is redrawn.
     // This code therefore allows animation
@@ -157,6 +179,5 @@ object Game extends SimpleSwingApplication {
     timer.start()
 
   }
-
 
 }

@@ -18,6 +18,12 @@ object Player {
 
   def removeMoney(amount: Int): Unit = this.money = this.money - amount
 
+  def resetPlayer() = {
+    this.health = Settings.maxHealth
+    this.alive = true
+    this.money = Settings.startingMoney
+  }
+
   def getHitByEnemy(enemy: Enemy): Unit = {
     this.health -= enemy.damageGivenPerHit
     if (this.health <= 0) {

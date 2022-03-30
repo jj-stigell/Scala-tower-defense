@@ -30,7 +30,6 @@ abstract class Tower(location: Vector2D) {
       println("rundi ohi: " + Game.roundOver)
       var foundEnemies = enemies.filter(enemy => enemy.isAlive && (enemy.getLocation.x - this.location.x).abs < range && (enemy.getLocation.y - this.location.y).abs < range)
       if (foundEnemies.nonEmpty){
-        println("found enemies!!1")
         this.shoot(foundEnemies.head)
       }
     }

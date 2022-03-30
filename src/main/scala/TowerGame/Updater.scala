@@ -1,6 +1,8 @@
 package TowerGame
 
 import TowerGame.Enemies.Enemy
+import TowerGame.Towers.Tower
+
 import scala.collection.mutable.Buffer
 
 object Updater {
@@ -27,8 +29,27 @@ object Updater {
    * Updates the buttons in the GUI.
    */
   def updateButtons() = {
-    if (Player.moneyIntheBank >= Settings.towerPrice) Game.buyTowerButton.enabled = true else Game.buyTowerButton.enabled = false
-    if (Game.roundOver) Game.startButton.enabled = true else Game.startButton.enabled = false
+    if (Game.gameOver) {
+      Game.restartMap.visible = true
+      Game.saveGameButton.visible = false
+      Game.menuButton.visible = false
+      Game.buyTowerButton.visible = false
+      Game.startButton.visible = false
+      Game.healthPoints.visible = false
+      Game.moneyInTheBank.visible = false
+      Game.waveNumber.visible = false
+    } else {
+      Game.restartMap.visible = false
+      Game.saveGameButton.visible = true
+      Game.menuButton.visible = true
+      Game.buyTowerButton.visible = true
+      Game.startButton.visible = true
+      Game.healthPoints.visible = true
+      Game.moneyInTheBank.visible = true
+      Game.waveNumber.visible = true
+      if (Player.moneyIntheBank >= Settings.towerPrice) Game.buyTowerButton.enabled = true else Game.buyTowerButton.enabled = false
+      if (Game.roundOver) Game.startButton.enabled = true else Game.startButton.enabled = false
+    }
   }
 
   /**
@@ -38,6 +59,11 @@ object Updater {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
     Area.tick = 0
     Area.enemies = Buffer[Enemy]()
+    if (Game.gameOver) Area.towers = Buffer[Tower]()
+  }
+
+  def updateMap() = {
+    ???
   }
 
 }
