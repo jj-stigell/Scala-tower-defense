@@ -2,7 +2,6 @@ package TowerGame
 
 import TowerGame.Enemies.Enemy
 import TowerGame.Towers.Tower
-
 import scala.collection.mutable.Buffer
 
 object Updater {
@@ -23,11 +22,11 @@ object Updater {
     Game.gameOver = !Player.isAlive
     Game.roundOver = Player.isAlive && Area.enemies.forall(!_.isAlive)
     Game.mapWon = WaveController.currentWave == Settings.maxWaves && Game.roundOver
-    Game.gameWon = SaveLoad.currentMap == SaveLoad.maxMaps && Game.roundOver
+    Game.gameWon = WaveController.currentWave == Settings.maxWaves && SaveLoad.currentMap == SaveLoad.maxMaps && Game.roundOver
   }
 
   /**
-   * Updates the buttons in the GUI.
+   * Updates the buttons in the GUI depending on the current game situation.
    */
   def updateButtons() = {
     if (Game.gameOver) {
@@ -40,8 +39,7 @@ object Updater {
       Game.healthPoints.visible = false
       Game.moneyInTheBank.visible = false
       Game.waveNumber.visible = false
-    } else if (Game.mapWon) {
-      Game.nextMap.visible = true
+    } else if (Game.gameWon) {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
@@ -51,7 +49,8 @@ object Updater {
       Game.healthPoints.visible = false
       Game.moneyInTheBank.visible = false
       Game.waveNumber.visible = false
-    } else if (Game.gameWon) {
+    } else if (Game.mapWon) {
+      Game.nextMap.visible = true
       Game.restartMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
@@ -86,6 +85,9 @@ object Updater {
     if (Game.gameOver || Game.mapWon) Area.towers = Buffer[Tower]()
   }
 
+  /**
+   * Resets all waves, stats and area for a new game.
+   */
   def resetWaves() = {
     Updater.resetArea()           // Reset area before setting gameOver to false
     Player.resetPlayer()

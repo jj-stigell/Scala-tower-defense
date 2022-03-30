@@ -19,15 +19,15 @@ object Area {
   val towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
 
   // Initialize the starting location of enemies and the direction and calculate path and directions on the map
-  val initLoc: (Int, Int) = PathFinder.enemyInitialLocation()
-  val initDir: (Int, Int) = PathFinder.findInitialDirection(initLoc)
-  val path: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._1)
-  val directions: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._2)
-  val correctedInitlLoc: Vector2D = Vector2D(Settings.blockLengthX * (this.initLoc._1 + (-1 * this.initDir._1)), Settings.blockLengthY* (this.initLoc._2 + (-1 * this.initDir._2)))
-  val correctedPath: Buffer[Vector2D] = Buffer(this.correctedInitlLoc) ++ this.path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
+  var initLoc: (Int, Int) = PathFinder.enemyInitialLocation()
+  var initDir: (Int, Int) = PathFinder.findInitialDirection(initLoc)
+  var path: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._1)
+  var directions: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._2)
+  var correctedInitlLoc: Vector2D = Vector2D(Settings.blockLengthX * (this.initLoc._1 + (-1 * this.initDir._1)), Settings.blockLengthY* (this.initLoc._2 + (-1 * this.initDir._2)))
+  var correctedPath: Buffer[Vector2D] = Buffer(this.correctedInitlLoc) ++ this.path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
 
   // Surrounding areas the enemy moves in
-  val enemyPathSquares = PathFinder.findBannedAreas(correctedPath)
+  var enemyPathSquares = PathFinder.findBannedAreas(correctedPath)
 
   // When space steps one time unit forward, all enemies move a step forward
   def step() = {
@@ -76,6 +76,16 @@ object Area {
     Player.removeMoney(Settings.towerPrice)
     Updater.updateStats()
     Updater.updateButtons()
+  }
+
+  def updatePathAndDirs() = {
+    this.initLoc = PathFinder.enemyInitialLocation()
+    this.initDir = PathFinder.findInitialDirection(this.initLoc)
+    this.path = (PathFinder.enemyPath(this.initLoc, this.initDir)).map(_._1)
+    this.directions = (PathFinder.enemyPath(this.initLoc, this.initDir)).map(_._2)
+    this.correctedInitlLoc = Vector2D(Settings.blockLengthX * (this.initLoc._1 + (-1 * this.initDir._1)), Settings.blockLengthY* (this.initLoc._2 + (-1 * this.initDir._2)))
+    this.correctedPath = Buffer(this.correctedInitlLoc) ++ this.path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
+    this.enemyPathSquares = PathFinder.findBannedAreas(correctedPath)
   }
 
 }

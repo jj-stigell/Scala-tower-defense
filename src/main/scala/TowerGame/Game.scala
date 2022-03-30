@@ -43,11 +43,9 @@ object Game extends SimpleSwingApplication {
   waveNumber.text = "Current wave: " + WaveController.currentWave + "/" + Settings.maxWaves
 
   def refreshMap() = {
-
-  this.map = Settings.map
-  this.blockWidth = Settings.blockLengthX
-  this.blockHeight = Settings.blockLengthY
-
+    this.map = Settings.map
+    this.blockWidth = Settings.blockLengthX
+    this.blockHeight = Settings.blockLengthY
   }
 
 
@@ -76,52 +74,45 @@ object Game extends SimpleSwingApplication {
        */
       override def paintComponent(g: Graphics2D) = {
 
-
-        if (Game.gameOver) {
+        if (Game.gameOver || Game.gameWon || Game.mapWon) {
           g.setColor(new Color(0, 0, 0))
           g.fillRect(0, 0, width, height)
           g.setColor(new Color(255, 255, 255))
-          g.drawString("GAME OVER, RESTART FROM MENU!", width / 2, height / 2)
-        } else if (mapWon) {
-
-          g.setColor(new Color(0, 0, 0))
-          g.fillRect(0, 0, width, height)
-          g.setColor(new Color(255, 255, 255))
-          g.drawString("YOU WIN THIS MAP! ADVANCE TO NEXT MAP FROM MENU!", width / 2, height / 2)
-
-
+          if (Game.gameOver) g.drawString("GAME OVER, RESTART FROM MENU!", width / 2, height / 2)
+          else if (Game.gameWon) g.drawString("YOU WIN THE GAME CONGRATS!", width / 2, height / 2)
+          else g.drawString("YOU WIN THIS MAP! ADVANCE TO NEXT MAP FROM MENU!", width / 2, height / 2)
         } else {
 
-        g.setColor(new Color(51, 153, 51))
-        g.fillRect(0, 0, width, fullHeight)
-        g.setColor(new Color(198, 140, 83))
-        var rowNumber = 0
+          g.setColor(new Color(51, 153, 51))
+          g.fillRect(0, 0, width, fullHeight)
+          g.setColor(new Color(198, 140, 83))
+          var rowNumber = 0
 
-        // Draw path and tower at the end
-        for (row <- map) {
-          var columnNumber = 0
-          for (element <- row) {
-            if (element == 1 || element == 2) {
-              val x0 = columnNumber * blockWidth
-              val y0 = rowNumber * blockHeight
-              g.fillRect(x0, y0, blockWidth, blockHeight)
-            } else if (element == 3) {
-              g.setColor(new Color(87, 83, 198))
-              val x0 = columnNumber * blockWidth
-              val y0 = rowNumber * blockHeight
-              g.fillRect(x0, y0, blockWidth, blockHeight)
-              g.setColor(new Color(198, 140, 83))
+          // Draw path and tower at the end
+          for (row <- map) {
+            var columnNumber = 0
+            for (element <- row) {
+              if (element == 1 || element == 2) {
+                val x0 = columnNumber * blockWidth
+                val y0 = rowNumber * blockHeight
+                g.fillRect(x0, y0, blockWidth, blockHeight)
+              } else if (element == 3) {
+                g.setColor(new Color(87, 83, 198))
+                val x0 = columnNumber * blockWidth
+                val y0 = rowNumber * blockHeight
+                g.fillRect(x0, y0, blockWidth, blockHeight)
+                g.setColor(new Color(198, 140, 83))
+              }
+              columnNumber += 1
             }
-            columnNumber += 1
+            rowNumber += 1
           }
-          rowNumber += 1
-        }
 
-        // Ask Graphics2D to provide us smoother graphics, i.e., antialising
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+          // Ask Graphics2D to provide us smoother graphics, i.e., antialising
+          g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
-        // Draw the area
-        Area.draw(g)
+          // Draw the area
+          Area.draw(g)
         }
       }
     }
@@ -173,7 +164,7 @@ object Game extends SimpleSwingApplication {
           case Game.saveGameButton => SaveLoad.saveGame()
           case Game.restartMap => Updater.resetWaves()
           case Game.nextMap => SaveLoad.loadMap()
-          case Game.quitGameButton => if (JOptionPane.showConfirmDialog(null, "Exit Program?", "EXIT", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) System.exit(0)
+          case Game.quitGameButton => if (JOptionPane.showConfirmDialog(null, "Exit Program?\nRemember to save game!", "EXIT", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) System.exit(0)
           case _ =>
         }
       }

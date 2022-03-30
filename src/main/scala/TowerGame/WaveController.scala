@@ -5,7 +5,9 @@ object WaveController {
   val maxWaves = Settings.maxWaves
   var currentWave = 0
 
-  // New Wave
+  /**
+   * Launch new wave if there is still waves left
+   */
   def launchNewWave() = {
     if (currentWave <= maxWaves) {
       currentWave += 1
@@ -15,7 +17,5 @@ object WaveController {
       Game.roundOver = false
     }
   }
-
-
 
 }
