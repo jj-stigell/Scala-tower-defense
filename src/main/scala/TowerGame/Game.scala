@@ -4,6 +4,7 @@ import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
 import scala.swing._
 import scala.swing.event.{ButtonClicked, MouseMoved}
+import javax.swing.JOptionPane
 
 object Game extends SimpleSwingApplication {
 
@@ -172,7 +173,7 @@ object Game extends SimpleSwingApplication {
           case Game.saveGameButton => SaveLoad.saveGame()
           case Game.restartMap => Updater.resetWaves()
           case Game.nextMap => SaveLoad.loadMap()
-          case Game.quitGameButton => System.exit(0)
+          case Game.quitGameButton => if (JOptionPane.showConfirmDialog(null, "Exit Program?", "EXIT", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) System.exit(0)
           case _ =>
         }
       }
