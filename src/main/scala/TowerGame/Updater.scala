@@ -22,7 +22,7 @@ object Updater {
   def updateConditions() = {
     Game.gameOver = !Player.isAlive
     Game.roundOver = Player.isAlive && Area.enemies.forall(!_.isAlive)
-    Game.gameWon = WaveController.currentWave == Settings.maxWaves && Game.roundOver
+    Game.mapWon = WaveController.currentWave == Settings.maxWaves && Game.roundOver
   }
 
   /**
@@ -32,6 +32,18 @@ object Updater {
     if (Game.gameOver) {
       Game.restartMap.visible = true
       Game.saveGameButton.visible = false
+      Game.loadGameButton.visible = false
+      Game.menuButton.visible = false
+      Game.buyTowerButton.visible = false
+      Game.startButton.visible = false
+      Game.healthPoints.visible = false
+      Game.moneyInTheBank.visible = false
+      Game.waveNumber.visible = false
+    } else if (Game.mapWon) {
+      Game.nextMap.visible = true
+      Game.restartMap.visible = false
+      Game.saveGameButton.visible = false
+      Game.loadGameButton.visible = false
       Game.menuButton.visible = false
       Game.buyTowerButton.visible = false
       Game.startButton.visible = false
@@ -41,6 +53,7 @@ object Updater {
     } else {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = true
+      Game.loadGameButton.visible = true
       Game.menuButton.visible = true
       Game.buyTowerButton.visible = true
       Game.startButton.visible = true

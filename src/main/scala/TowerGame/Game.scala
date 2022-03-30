@@ -15,6 +15,7 @@ object Game extends SimpleSwingApplication {
   val blockHeight = Settings.blockLengthY
 
   var gameOver = false
+  var mapWon = false
   var gameWon = false
   var roundOver = true
   var towerBuying = false
@@ -25,9 +26,13 @@ object Game extends SimpleSwingApplication {
   val menuButton = new Button("Menu")
   val loadGameButton = new Button("Load Game")
   val saveGameButton = new Button("Save Game")
+  val buyTowerButton = new Button("Buy Tower: " + Settings.towerPrice + "$")
+
   val restartMap = new Button("Restart Game")
   restartMap.visible = false
-  val buyTowerButton = new Button("Buy Tower: " + Settings.towerPrice + "$")
+  val nextMap = new Button("Next Map")
+  nextMap.visible = false
+
   val healthPoints = new Label
   healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
   val moneyInTheBank = new Label
@@ -66,6 +71,14 @@ object Game extends SimpleSwingApplication {
           g.fillRect(0, 0, width, height)
           g.setColor(new Color(255, 255, 255))
           g.drawString("GAME OVER, RESTART FROM MENU!", width / 2, height / 2)
+        } else if (mapWon) {
+
+          g.setColor(new Color(0, 0, 0))
+          g.fillRect(0, 0, width, height)
+          g.setColor(new Color(255, 255, 255))
+          g.drawString("YOU WIN THIS MAP! ADVANCE TO NEXT MAP FROM MENU!", width / 2, height / 2)
+
+
         } else {
 
         g.setColor(new Color(51, 153, 51))
@@ -110,6 +123,7 @@ object Game extends SimpleSwingApplication {
     controlPanel.contents += menuButton
     controlPanel.contents += saveGameButton
     controlPanel.contents += loadGameButton
+    controlPanel.contents += nextMap
     controlPanel.contents += restartMap
     controlPanel.contents += startButton
     controlPanel.contents += buyTowerButton
@@ -131,7 +145,7 @@ object Game extends SimpleSwingApplication {
     listenTo(loadGameButton)
     listenTo(saveGameButton)
     listenTo(restartMap)
-
+    listenTo(nextMap)
 
     // And now that the class responds to events
     this.reactions += {
@@ -145,6 +159,7 @@ object Game extends SimpleSwingApplication {
           case Game.loadGameButton => SaveLoad.loadGame()
           case Game.saveGameButton => SaveLoad.saveGame()
           case Game.restartMap => WaveController.resetWaves()
+          case Game.nextMap => SaveLoad.nextMap()
           case _ =>
         }
       }
@@ -153,13 +168,12 @@ object Game extends SimpleSwingApplication {
     // This event listener and swing timer allow periodic repetitive
     // activity in the event listening thread. The game is light enough
     // to be drawn in the thread without additional buffers or threads.
-
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         if (Game.gameOver) {
           Updater.updateButtons()
           arena.repaint()
-        } else if (Game.gameWon) {
+        } else if (Game.mapWon) {
           Updater.updateButtons()
           arena.repaint()
         } else if (Game.roundOver) {
