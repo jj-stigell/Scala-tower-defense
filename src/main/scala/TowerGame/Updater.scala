@@ -23,6 +23,7 @@ object Updater {
     Game.gameOver = !Player.isAlive
     Game.roundOver = Player.isAlive && Area.enemies.forall(!_.isAlive)
     Game.mapWon = WaveController.currentWave == Settings.maxWaves && Game.roundOver
+    Game.gameWon = SaveLoad.currentMap == SaveLoad.maxMaps && Game.roundOver
   }
 
   /**
@@ -41,6 +42,16 @@ object Updater {
       Game.waveNumber.visible = false
     } else if (Game.mapWon) {
       Game.nextMap.visible = true
+      Game.restartMap.visible = false
+      Game.saveGameButton.visible = false
+      Game.loadGameButton.visible = false
+      Game.menuButton.visible = false
+      Game.buyTowerButton.visible = false
+      Game.startButton.visible = false
+      Game.healthPoints.visible = false
+      Game.moneyInTheBank.visible = false
+      Game.waveNumber.visible = false
+    } else if (Game.gameWon) {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
@@ -72,8 +83,21 @@ object Updater {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
     Area.tick = 0
     Area.enemies = Buffer[Enemy]()
-    if (Game.gameOver) Area.towers = Buffer[Tower]()
+    if (Game.gameOver || Game.mapWon) Area.towers = Buffer[Tower]()
   }
+
+  def resetWaves() = {
+    Updater.resetArea()           // Reset area before setting gameOver to false
+    Player.resetPlayer()
+    Game.gameOver = false
+    Game.mapWon = false
+    Game.roundOver = true
+    WaveController.currentWave = 0
+    Updater.updateButtons()
+    Updater.updateStats()
+    Updater.updateConditions()
+  }
+
 
   def updateMap() = {
     ???

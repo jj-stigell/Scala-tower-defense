@@ -10,9 +10,9 @@ object Game extends SimpleSwingApplication {
   val width = Settings.width
   val height = Settings.height
   val fullHeight = Settings.fullHeight
-  val map = Settings.map
-  val blockWidth = Settings.blockLengthX
-  val blockHeight = Settings.blockLengthY
+  var map = Settings.map
+  var blockWidth = Settings.blockLengthX
+  var blockHeight = Settings.blockLengthY
 
   var gameOver = false
   var mapWon = false
@@ -26,6 +26,7 @@ object Game extends SimpleSwingApplication {
   val menuButton = new Button("Menu")
   val loadGameButton = new Button("Load Game")
   val saveGameButton = new Button("Save Game")
+  val quitGameButton = new Button("Quit")
   val buyTowerButton = new Button("Buy Tower: " + Settings.towerPrice + "$")
 
   val restartMap = new Button("Restart Game")
@@ -39,6 +40,15 @@ object Game extends SimpleSwingApplication {
   moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
   val waveNumber = new Label
   waveNumber.text = "Current wave: " + WaveController.currentWave + "/" + Settings.maxWaves
+
+  def refreshMap() = {
+
+  this.map = Settings.map
+  this.blockWidth = Settings.blockLengthX
+  this.blockHeight = Settings.blockLengthY
+
+  }
+
 
   /**
    * MainFrame is the application window class in scala-swing.
@@ -130,6 +140,7 @@ object Game extends SimpleSwingApplication {
     controlPanel.contents += healthPoints
     controlPanel.contents += moneyInTheBank
     controlPanel.contents += waveNumber
+    controlPanel.contents += quitGameButton
     verticalPanel.contents += arena
     verticalPanel.contents += controlPanel
     verticalPanel.contents -= controlPanel
@@ -146,6 +157,7 @@ object Game extends SimpleSwingApplication {
     listenTo(saveGameButton)
     listenTo(restartMap)
     listenTo(nextMap)
+    listenTo(quitGameButton)
 
     // And now that the class responds to events
     this.reactions += {
@@ -158,8 +170,9 @@ object Game extends SimpleSwingApplication {
           case Game.buyTowerButton => towerBuying = true
           case Game.loadGameButton => SaveLoad.loadGame()
           case Game.saveGameButton => SaveLoad.saveGame()
-          case Game.restartMap => WaveController.resetWaves()
-          case Game.nextMap => SaveLoad.nextMap()
+          case Game.restartMap => Updater.resetWaves()
+          case Game.nextMap => SaveLoad.loadMap()
+          case Game.quitGameButton => System.exit(0)
           case _ =>
         }
       }

@@ -5,12 +5,13 @@ object SaveLoad {
   var currentMap: Int = 1
   val maxMaps: Int = Settings.allMaps.length
 
-  def nextMap() = {
+  def loadMap() = {
 
     if (currentMap != maxMaps) {
       Settings.setMap(Settings.allMaps(currentMap))
+      Updater.resetWaves()
+      Game.refreshMap()
       currentMap += 1
-      WaveController.resetWaves()
     }
   }
 
