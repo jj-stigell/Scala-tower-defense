@@ -17,7 +17,7 @@ object Settings {
   // Player
   val towerPrice: Int = 10
   val startingMoney: Int = 10
-  val maxHealth: Int = 1088
+  val maxHealth: Int = 150
 
   // Tower placing
   val xCorrection = 40

@@ -31,6 +31,7 @@ object Updater {
   def updateButtons() = {
     if (Game.gameOver) {
       Game.restartMap.visible = true
+      Game.nextMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
       Game.menuButton.visible = false
@@ -41,6 +42,7 @@ object Updater {
       Game.waveNumber.visible = false
     } else if (Game.gameWon) {
       Game.restartMap.visible = false
+      Game.nextMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
       Game.menuButton.visible = false
