@@ -17,7 +17,7 @@ object Settings {
   // Player
   val towerPrice: Int = 10
   val startingMoney: Int = 10
-  val maxHealth: Int = 10
+  val maxHealth: Int = 1088
 
   // Tower placing
   val xCorrection = 40
@@ -34,7 +34,8 @@ object Settings {
   // 2 entry point, must be on the side, only one
   // 3 out point, must be on the side, only one
   // Default map
-  var map: Array[Array[Int]] = Array(
+  val allMaps: Array[Array[Array[Int]]] = Array(
+    Array(
     Array(0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0),
     Array(0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0),
     Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0),
@@ -44,7 +45,31 @@ object Settings {
     Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0),
     Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0),
     Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    ),Array(
+    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+    Array(3, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+    Array(0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0),
+    Array(0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0),
+    Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0),
+    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0)
+    ), Array(
+    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0),
+    Array(0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0),
+    Array(0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0),
+    Array(3, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0),
+    Array(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0),
+    Array(0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0),
+    Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    )
   )
+
+  // Set allMaps head as the first map
+  var map: Array[Array[Int]] = allMaps.head
 
   // How many blocks the map has, horizontal and vertical and their lengths
   var totalHorizontalBlocks: Int = this.map(0).length
