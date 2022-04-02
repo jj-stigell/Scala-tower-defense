@@ -1,12 +1,11 @@
 package TowerGame
 
-import TowerGame.Loader.SaveLoad
-
+import TowerGame.FileIO.{GameLoader, GameSaver}
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
+import javax.swing.JOptionPane
 import scala.swing._
 import scala.swing.event.{ButtonClicked, MouseMoved}
-import javax.swing.JOptionPane
 
 object Game extends SimpleSwingApplication {
 
@@ -162,10 +161,10 @@ object Game extends SimpleSwingApplication {
           case Game.menuButton => println("klikattu menua nappie")
           case Game.startButton => WaveController.launchNewWave()
           case Game.buyTowerButton => towerBuying = true
-          case Game.loadGameButton => SaveLoad.loadGame()
-          case Game.saveGameButton => SaveLoad.saveGame()
+          case Game.loadGameButton => GameLoader.loadGame()
+          case Game.saveGameButton => GameSaver.saveGame()
           case Game.restartMap => Updater.resetWaves()
-          case Game.nextMap => SaveLoad.loadMap()
+          case Game.nextMap => GameLoader.loadMap()
           case Game.quitGameButton => if (JOptionPane.showConfirmDialog(null, "Exit Program?\nRemember to save game!", "EXIT", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) System.exit(0)
           case _ =>
         }

@@ -1,14 +1,14 @@
-package TowerGame.Loader
+package TowerGame.FileIO
 
 import TowerGame.Enemies.Enemy
-import TowerGame.Loader.Reader.{readEnemies, readMap, readWaves}
+import TowerGame.FileIO.Reader.{readEnemies, readMap, readWaves}
 import TowerGame.{Area, Game, Settings, Updater}
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
 import javax.swing.{JFileChooser, JFrame}
 import javax.swing.filechooser.FileNameExtensionFilter
 import scala.collection.mutable.Buffer
 
-object SaveLoad {
+object GameLoader {
 
   var currentMap: Int = 1
   val maxMaps: Int = Settings.allMaps.length
@@ -25,8 +25,6 @@ object SaveLoad {
       currentMap += 1
     }
   }
-
-  def saveGame() = ???
 
   def loadGame() = {
 

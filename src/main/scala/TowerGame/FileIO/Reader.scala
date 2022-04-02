@@ -1,4 +1,4 @@
-package TowerGame.Loader
+package TowerGame.FileIO
 
 import java.io.BufferedReader
 
