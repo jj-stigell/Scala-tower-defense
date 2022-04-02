@@ -1,6 +1,8 @@
 package TowerGame.Enemies
 
-import TowerGame.{Settings, Vector2D}
+import TowerGame.Helpers.Vector2D
+import TowerGame.Settings
+
 import scala.collection.mutable.Buffer
 import scala.swing.Color
 

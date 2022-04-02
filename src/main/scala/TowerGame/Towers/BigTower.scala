@@ -1,6 +1,8 @@
 package TowerGame.Towers
 
-import TowerGame.{Settings, Vector2D}
+import TowerGame.Helpers.Vector2D
+import TowerGame.Settings
+
 import scala.swing.Color
 
 class BigTower(val location: Vector2D) extends Tower(location) {

@@ -24,9 +24,9 @@ object Settings {
   val yCorrection = 40
 
   // Enemy
-  val interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
-  val enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
-  val numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
+  var interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
+  var enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
+  var numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
   val correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length

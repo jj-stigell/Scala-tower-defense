@@ -2,7 +2,9 @@ package TowerGame.FileIO
 
 import TowerGame.Enemies.Enemy
 import TowerGame.FileIO.Reader.{readEnemies, readMap, readWaves}
-import TowerGame.{Area, Game, Settings, Updater}
+import TowerGame.Helpers.Updater
+import TowerGame.{Area, Game, Settings}
+
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
 import javax.swing.{JFileChooser, JFrame}
 import javax.swing.filechooser.FileNameExtensionFilter

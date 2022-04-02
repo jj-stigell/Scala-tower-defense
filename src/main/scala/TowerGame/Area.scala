@@ -1,7 +1,9 @@
 package TowerGame
 
 import TowerGame.Enemies.{Enemy, SmallEnemy}
+import TowerGame.Helpers.{PathFinder, Updater, Vector2D}
 import TowerGame.Towers.{SmallTower, Tower}
+
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer

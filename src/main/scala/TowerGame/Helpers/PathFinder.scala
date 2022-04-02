@@ -1,4 +1,6 @@
-package TowerGame
+package TowerGame.Helpers
+
+import TowerGame.Settings
 
 import scala.collection.mutable
 import scala.collection.mutable.Buffer
@@ -10,7 +12,7 @@ object PathFinder {
    *
    * @param Location  Starting location of the enemy
    * @param Direction Starting direction of the enemy
-   * @return          Zip with turning points on the map and direction to there
+   * @return Zip with turning points on the map and directions to each point
    */
   def enemyPath(Location: (Int, Int), Direction: (Int, Int)): Buffer[((Int, Int), (Int, Int))] = {
 
@@ -44,8 +46,8 @@ object PathFinder {
   /**
    * Find new direction for the enemy path after hitting a corner.
    *
-   * @param currentDirection  Direction the enemy is going at the moment
-   * @param currentLocation   Current locatoin of the enemy
+   * @param currentDirection Direction the enemy is going at the moment
+   * @param currentLocation  Current locatoin of the enemy
    * @return New direction on the map
    */
   def findNewDirection(currentDirection: (Int, Int), currentLocation: (Int, Int)): (Int, Int) = {
@@ -101,7 +103,7 @@ object PathFinder {
    * Find the start direction of the enemy in the map
    *
    * @param entryLocation Location where the enemy enter the game arena, marked 2 on the map array
-   * @return              Direction of movement on the map array, either horizontal or vertical but not diagonal
+   * @return Direction of movement on the map array, either horizontal or vertical but not diagonal
    */
   def findInitialDirection(entryLocation: (Int, Int)): (Int, Int) = {
 
@@ -125,18 +127,18 @@ object PathFinder {
       }
       rowNumber += 1
     }
-    if (x > 0 && y == 0) (1,0)
-    else if (x < 0 && y == 0) (-1,0)
-    else if (x == 0 && y > 0) (0,1)
-    else if (x == 0 && y < 0) (0,-1)
-    else (0,0)
+    if (x > 0 && y == 0) (1, 0)
+    else if (x < 0 && y == 0) (-1, 0)
+    else if (x == 0 && y > 0) (0, 1)
+    else if (x == 0 && y < 0) (0, -1)
+    else (0, 0)
   }
 
   /**
    * Needed for calculating the area surrounding the enemy path.
    *
    * @param correctedPath Path where the enemies move
-   * @return              Padding for the enemy path to stop placing towers in the middle of the enemy path
+   * @return Padding for the enemy path to stop placing towers in the middle of the enemy path
    */
   def findBannedAreas(correctedPath: Buffer[Vector2D]) = {
 
@@ -152,10 +154,10 @@ object PathFinder {
       val y1 = correctedPath(i).y
       val y2 = correctedPath(i + 1).y
 
-      if (x1 < x2) blockPath = blockPath :+ ((x1, y1 - ((1.0 * Settings.blockLengthY) / modifier)), (x2,  y2 + ((1.0 * Settings.blockLengthY) / modifier)))
-      else if (x1 > x2) blockPath = blockPath :+ ((x2, y2 - ((1.0 * Settings.blockLengthY) / modifier)), (x1,  y1 + ((1.0 * Settings.blockLengthY) / modifier)))
-      else if (y1 < y2) blockPath = blockPath :+ ((x1 - ((1.0 * Settings.blockLengthX) / modifier), y1),((x2 + ((1.0 * Settings.blockLengthX) / modifier),  y2)))
-      else blockPath = blockPath :+ ((x2 - ((1.0 * Settings.blockLengthX) / modifier), y2),((x1 + ((1.0 * Settings.blockLengthX) / modifier),  y1)))
+      if (x1 < x2) blockPath = blockPath :+ ((x1, y1 - ((1.0 * Settings.blockLengthY) / modifier)), (x2, y2 + ((1.0 * Settings.blockLengthY) / modifier)))
+      else if (x1 > x2) blockPath = blockPath :+ ((x2, y2 - ((1.0 * Settings.blockLengthY) / modifier)), (x1, y1 + ((1.0 * Settings.blockLengthY) / modifier)))
+      else if (y1 < y2) blockPath = blockPath :+ ((x1 - ((1.0 * Settings.blockLengthX) / modifier), y1), ((x2 + ((1.0 * Settings.blockLengthX) / modifier), y2)))
+      else blockPath = blockPath :+ ((x2 - ((1.0 * Settings.blockLengthX) / modifier), y2), ((x1 + ((1.0 * Settings.blockLengthX) / modifier), y1)))
 
       i += 1
     }

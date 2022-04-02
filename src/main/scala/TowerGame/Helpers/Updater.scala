@@ -1,8 +1,9 @@
-package TowerGame
+package TowerGame.Helpers
 
 import TowerGame.Enemies.Enemy
 import TowerGame.FileIO.GameLoader
 import TowerGame.Towers.Tower
+import TowerGame._
 
 import scala.collection.mutable.Buffer
 
@@ -93,7 +94,7 @@ object Updater {
    * Resets all waves, stats and area for a new game.
    */
   def resetWaves() = {
-    Updater.resetArea()           // Reset area before setting gameOver to false
+    Updater.resetArea() // Reset area before setting gameOver to false
     Player.resetPlayer()
     Game.gameOver = false
     Game.mapWon = false

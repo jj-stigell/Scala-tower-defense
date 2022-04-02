@@ -1,7 +1,9 @@
 package TowerGame.Towers
 
 import TowerGame.Enemies.Enemy
-import TowerGame.{Settings, Vector2D}
+import TowerGame.Helpers.Vector2D
+import TowerGame.Settings
+
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer

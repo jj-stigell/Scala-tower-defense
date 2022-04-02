@@ -1,6 +1,8 @@
 package TowerGame
 
 import TowerGame.FileIO.{GameLoader, GameSaver}
+import TowerGame.Helpers.Updater
+
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
 import javax.swing.JOptionPane

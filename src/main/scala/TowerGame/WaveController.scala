@@ -1,5 +1,7 @@
 package TowerGame
 
+import TowerGame.Helpers.Updater
+
 object WaveController {
 
   val maxWaves = Settings.maxWaves
