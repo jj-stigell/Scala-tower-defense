@@ -1,5 +1,7 @@
 package TowerGame
 
+import TowerGame.Loader.SaveLoad
+
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
 import scala.swing._
