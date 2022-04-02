@@ -3,8 +3,7 @@ package TowerGame.FileIO
 import TowerGame.Enemies.Enemy
 import TowerGame.FileIO.Reader.{readEnemies, readMap, readWaves}
 import TowerGame.Helpers.Updater
-import TowerGame.{Area, Game, Settings}
-
+import TowerGame.{Area, Game, Settings, WaveController}
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
 import javax.swing.{JFileChooser, JFrame}
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -13,7 +12,7 @@ import scala.collection.mutable.Buffer
 object GameLoader {
 
   var currentMap: Int = 1
-  val maxMaps: Int = Settings.allMaps.length
+  var maxMaps: Int = Settings.allMaps.length
 
   // For loading a new map
   var loadedMap: Array[Array[Int]] = Array(Array(0,0))
@@ -27,7 +26,15 @@ object GameLoader {
   def loadMap(fromFile: Boolean = false) = {
 
     if (fromFile) {
-
+      Settings.setMap(this.loadedMap)
+      Updater.resetWaves()
+      WaveController.currentWave = this.loadedCurrentWave
+      WaveController.maxWaves = this.loadedMaxWaves
+      Settings.maxWaves = this.loadedMaxWaves
+      Settings.numberOfEnemies = this.loadedEnemies.length
+      Game.refreshMap()
+      Area.updatePathAndDirs()
+      this.currentMap = this.maxMaps
     } else {
       if (currentMap != maxMaps) {
         Settings.setMap(Settings.allMaps(currentMap))
@@ -82,13 +89,10 @@ object GameLoader {
               case _ => linesIn.readLine()
             }
           }
+          // Load the new map with enemies
+          this.loadMap(true)
 
         } finally {
-          /*
-          println("map on: " + loadedMap.mkString("Array(", ", ", ")"))
-          println("enemies on: " + loadedEnemies.mkString(","))
-          println("current wave: " + loadedCurrentWave + " max waves: " + loadedMaxWaves)
-          */
           // Close open streams
           // This will be executed if the file has been opened
           // regardless of whether or not there were any exceptions.

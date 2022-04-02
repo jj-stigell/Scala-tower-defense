@@ -4,7 +4,7 @@ import TowerGame.Helpers.Updater
 
 object WaveController {
 
-  val maxWaves = Settings.maxWaves
+  var maxWaves = Settings.maxWaves
   var currentWave = 0
 
   /**
@@ -16,6 +16,8 @@ object WaveController {
       Updater.resetArea()
       Updater.updateStats()
       Game.startButton.enabled = false
+      Game.saveGameButton.enabled = false
+      Game.loadGameButton.enabled = false
       Game.roundOver = false
     }
   }

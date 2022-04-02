@@ -37,7 +37,6 @@ object Updater {
       Game.nextMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
-      Game.menuButton.visible = false
       Game.buyTowerButton.visible = false
       Game.startButton.visible = false
       Game.healthPoints.visible = false
@@ -48,7 +47,6 @@ object Updater {
       Game.nextMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
-      Game.menuButton.visible = false
       Game.buyTowerButton.visible = false
       Game.startButton.visible = false
       Game.healthPoints.visible = false
@@ -59,7 +57,6 @@ object Updater {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
-      Game.menuButton.visible = false
       Game.buyTowerButton.visible = false
       Game.startButton.visible = false
       Game.healthPoints.visible = false
@@ -69,14 +66,21 @@ object Updater {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = true
       Game.loadGameButton.visible = true
-      Game.menuButton.visible = true
       Game.buyTowerButton.visible = true
       Game.startButton.visible = true
       Game.healthPoints.visible = true
       Game.moneyInTheBank.visible = true
       Game.waveNumber.visible = true
       if (Player.moneyIntheBank >= Settings.towerPrice) Game.buyTowerButton.enabled = true else Game.buyTowerButton.enabled = false
-      if (Game.roundOver) Game.startButton.enabled = true else Game.startButton.enabled = false
+      if (Game.roundOver) {
+        Game.startButton.enabled = true
+        Game.saveGameButton.enabled = true
+        Game.loadGameButton.enabled = true
+      } else {
+        Game.startButton.enabled = false
+        Game.saveGameButton.enabled = false
+        Game.loadGameButton.enabled = false
+      }
     }
   }
 
@@ -87,6 +91,7 @@ object Updater {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
     Area.tick = 0
     Area.enemies = Buffer[Enemy]()
+    // Reset the towers only if game over or ready for the nex map
     if (Game.gameOver || Game.mapWon) Area.towers = Buffer[Tower]()
   }
 

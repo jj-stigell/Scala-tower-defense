@@ -27,7 +27,6 @@ object Game extends SimpleSwingApplication {
 
   // Buttons and Labels
   val startButton = new Button("Start new wave!")
-  val menuButton = new Button("Menu")
   val loadGameButton = new Button("Load Game")
   val saveGameButton = new Button("Save Game")
   val quitGameButton = new Button("Quit")
@@ -125,7 +124,6 @@ object Game extends SimpleSwingApplication {
     val controlPanel = new BoxPanel(Orientation.Horizontal)
 
     // Add buttons and labels to panels
-    controlPanel.contents += menuButton
     controlPanel.contents += saveGameButton
     controlPanel.contents += loadGameButton
     controlPanel.contents += nextMap
@@ -146,7 +144,6 @@ object Game extends SimpleSwingApplication {
     listenTo(arena.mouse.clicks)
     listenTo(arena.mouse.moves)
     listenTo(startButton)
-    listenTo(menuButton)
     listenTo(buyTowerButton)
     listenTo(loadGameButton)
     listenTo(saveGameButton)
@@ -160,7 +157,6 @@ object Game extends SimpleSwingApplication {
       case locationMouse: MouseMoved => if (towerBuying) Area.newTowerLocation(locationMouse)
       case clickEvent: ButtonClicked => {
         clickEvent.source match {
-          case Game.menuButton => println("klikattu menua nappie")
           case Game.startButton => WaveController.launchNewWave()
           case Game.buyTowerButton => towerBuying = true
           case Game.loadGameButton => GameLoader.loadGame()

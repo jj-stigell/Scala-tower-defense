@@ -12,7 +12,7 @@ object Settings {
   val fullHeight: Int = height + 40                         // Take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false
-  val maxWaves: Int = 2
+  var maxWaves: Int = 2
 
   // Player
   val towerPrice: Int = 10
