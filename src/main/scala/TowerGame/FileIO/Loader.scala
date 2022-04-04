@@ -9,7 +9,7 @@ import javax.swing.{JFileChooser, JFrame}
 import javax.swing.filechooser.FileNameExtensionFilter
 import scala.collection.mutable.Buffer
 
-object GameLoader {
+object Loader {
 
   var currentMap: Int = 1
   var maxMaps: Int = Settings.allMaps.length
@@ -59,7 +59,7 @@ object GameLoader {
     fileChooser.addChoosableFileFilter(filter)
     fileChooser.setFileFilter(filter)
 
-    val frame = new JFrame("Loader")
+    val frame = new JFrame("Load")
     val response = fileChooser.showSaveDialog(frame)
 
     if (response == JFileChooser.APPROVE_OPTION) {

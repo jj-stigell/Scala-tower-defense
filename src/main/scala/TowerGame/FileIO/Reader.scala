@@ -19,7 +19,7 @@ object Reader {
 			line = reader.readLine()
 		}
 
-    GameLoader.loadedMap = map.drop(1)
+    Loader.loadedMap = map.drop(1)
 		line
   }
 
@@ -37,7 +37,7 @@ object Reader {
 			line = reader.readLine()
 		}
 
-		GameLoader.loadedEnemies = enemies
+		Loader.loadedEnemies = enemies
 		line
 	}
 
@@ -48,8 +48,8 @@ object Reader {
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
 				val numbers = line.split("/").map(_.toInt)
-				GameLoader.loadedCurrentWave = numbers(0)
-				GameLoader.loadedMaxWaves = numbers(1)
+				Loader.loadedCurrentWave = numbers(0)
+				Loader.loadedMaxWaves = numbers(1)
 			}
 			line = reader.readLine()
 		}

@@ -1,6 +1,6 @@
 package TowerGame
 
-import TowerGame.FileIO.{GameLoader, GameSaver}
+import TowerGame.FileIO.{Loader, Saver}
 import TowerGame.Helpers.Updater
 
 import java.awt.event.ActionListener
@@ -159,10 +159,10 @@ object Game extends SimpleSwingApplication {
         clickEvent.source match {
           case Game.startButton => WaveController.launchNewWave()
           case Game.buyTowerButton => towerBuying = true
-          case Game.loadGameButton => GameLoader.loadGame()
-          case Game.saveGameButton => GameSaver.saveGame()
+          case Game.loadGameButton => Loader.loadGame()
+          case Game.saveGameButton => Saver.saveGame()
           case Game.restartMap => Updater.resetWaves()
-          case Game.nextMap => GameLoader.loadMap()
+          case Game.nextMap => Loader.loadMap()
           case Game.quitGameButton => if (JOptionPane.showConfirmDialog(null, "Exit Program?\nRemember to save game!", "EXIT", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) System.exit(0)
           case _ =>
         }

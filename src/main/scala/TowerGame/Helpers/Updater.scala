@@ -1,7 +1,7 @@
 package TowerGame.Helpers
 
 import TowerGame.Enemies.Enemy
-import TowerGame.FileIO.GameLoader
+import TowerGame.FileIO.Loader
 import TowerGame.Towers.Tower
 import TowerGame._
 
@@ -25,7 +25,7 @@ object Updater {
     Game.gameOver = !Player.isAlive
     Game.roundOver = Player.isAlive && Area.enemies.forall(!_.isAlive)
     Game.mapWon = WaveController.currentWave == Settings.maxWaves && Game.roundOver
-    Game.gameWon = WaveController.currentWave == Settings.maxWaves && GameLoader.currentMap == GameLoader.maxMaps && Game.roundOver
+    Game.gameWon = WaveController.currentWave == Settings.maxWaves && Loader.currentMap == Loader.maxMaps && Game.roundOver
   }
 
   /**
