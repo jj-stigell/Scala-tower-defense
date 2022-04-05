@@ -5,6 +5,7 @@ import TowerGame.Settings
 import scala.collection.mutable.Buffer
 import scala.swing.Color
 
+/** Small enemy is fast but weak */
 class SmallEnemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) extends Enemy(enemyPath, directionSet) {
   speed = 20.0
   rewardFromDestroying = 10                                  // How much money player gets from destroying the enemy of this type

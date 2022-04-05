@@ -5,8 +5,17 @@ import TowerGame.Enemies.{Enemy, SmallEnemy}
 import java.io.BufferedReader
 import scala.collection.mutable.Buffer
 
+/**
+ * Reader has functions for reading from a saved file all the game attributes.
+ */
 object Reader {
 
+	/**
+	 * Read line by line the game map.
+	 *
+	 * @param reader 	BufferedReader
+	 * @return 				Last read line
+	 */
   def readMap(reader: BufferedReader): String = {
 
 		var map: Array[Array[Int]] = Array(Array())
@@ -23,6 +32,12 @@ object Reader {
 		line
   }
 
+	/**
+	 * Read the amount of enemies
+	 *
+	 * @param reader 	BufferedReader
+	 * @return 				Last read line
+	 */
 	def readEnemies(reader: BufferedReader): String = {
 
 		var enemies: Buffer[Enemy] = Buffer[Enemy]()
@@ -32,7 +47,7 @@ object Reader {
 			if (line.nonEmpty) {
 				var numbers = line.split("/").map(_.toInt)
 				if (numbers(0) == 0) for (i <- 1 to numbers(1)) enemies += new SmallEnemy(correctedPath, directions)
-				else if (numbers(0) == 1) for (i <- 1 to numbers(1)) {/*pass until new enemy type created*/}
+				else if (numbers(0) == 1) for (i <- 1 to numbers(1)) {/*pass until second enemy type created*/}
 			}
 			line = reader.readLine()
 		}
@@ -41,6 +56,12 @@ object Reader {
 		line
 	}
 
+	/**
+	 * Read the current wave and total number of waves.
+	 *
+	 * @param reader 	BufferedReader
+	 * @return 				Last read line
+	 */
   def readWaves(reader: BufferedReader): String = {
 
 		var line = reader.readLine()

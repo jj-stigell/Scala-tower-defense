@@ -4,23 +4,19 @@ import TowerGame.Enemies.Enemy
 import TowerGame.FileIO.Loader
 import TowerGame.Towers.Tower
 import TowerGame._
-
 import scala.collection.mutable.Buffer
 
+/** Helping funtions for updating/resetting buttons, game condition, maps and routes */
 object Updater {
 
-  /**
-   * Update the stats on the screen: health, money, wave.
-   */
+  /** Update the stats on the screen: health, money, wave. */
   def updateStats() = {
-    Game.healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
-    Game.moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
-    Game.waveNumber.text = "Current wave: " + WaveController.currentWave + "/" + Settings.maxWaves
+    Game.healthPoints.text = s"Current Health: ${Player.getHealth}/${Settings.maxHealth}"
+    Game.moneyInTheBank.text = s"Money: ${Player.moneyIntheBank}€"
+    Game.waveNumber.text = s"Current wave: ${WaveController.currentWave}/${Settings.maxWaves}"
   }
 
-  /**
-   * Update the game changing conditions.
-   */
+  /** Update the game changing conditions. */
   def updateConditions() = {
     Game.gameOver = !Player.isAlive
     Game.roundOver = Player.isAlive && Area.enemies.forall(!_.isAlive)
@@ -28,9 +24,7 @@ object Updater {
     Game.gameWon = WaveController.currentWave == Settings.maxWaves && Loader.currentMap == Loader.maxMaps && Game.roundOver
   }
 
-  /**
-   * Updates the buttons in the GUI depending on the current game situation.
-   */
+  /** Updates the buttons in the GUI depending on the current game situation. */
   def updateButtons() = {
     if (Game.gameOver) {
       Game.restartMap.visible = true
@@ -84,35 +78,25 @@ object Updater {
     }
   }
 
-  /**
-   * Reset the game area for the next wave.
-   */
+  /** Reset the game area for the next wave. */
   def resetArea() = {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
     Area.tick = 0
     Area.enemies = Buffer[Enemy]()
-    // Reset the towers only if game over or ready for the nex map
-    if (Game.gameOver || Game.mapWon) Area.towers = Buffer[Tower]()
+    if (Game.gameOver || Game.mapWon) Area.towers = Buffer[Tower]() // Reset the towers only if game over or ready for the nex map
   }
 
-  /**
-   * Resets all waves, stats and area for a new game.
-   */
+  /** Resets all waves, stats and area for a new game. */
   def resetWaves() = {
-    Updater.resetArea() // Reset area before setting gameOver to false
+    this.resetArea() // Reset area before setting gameOver to false
     Player.resetPlayer()
     Game.gameOver = false
     Game.mapWon = false
     Game.roundOver = true
     WaveController.currentWave = 0
-    Updater.updateButtons()
-    Updater.updateStats()
-    Updater.updateConditions()
-  }
-
-
-  def updateMap() = {
-    ???
+    this.updateButtons()
+    this.updateStats()
+    this.updateConditions()
   }
 
 }

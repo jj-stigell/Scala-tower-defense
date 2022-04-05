@@ -2,7 +2,6 @@ package TowerGame
 
 import TowerGame.FileIO.{Loader, Saver}
 import TowerGame.Helpers.Updater
-
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
 import javax.swing.JOptionPane
@@ -25,7 +24,7 @@ object Game extends SimpleSwingApplication {
   var towerBuying = false
   var blocked = false
 
-  // Buttons and Labels
+  // Buttons and labels
   val startButton = new Button("Start new wave!")
   val loadGameButton = new Button("Load Game")
   val saveGameButton = new Button("Save Game")
@@ -38,12 +37,13 @@ object Game extends SimpleSwingApplication {
   nextMap.visible = false
 
   val healthPoints = new Label
-  healthPoints.text = "Current Health: " + Player.getHealth + "/" + Settings.maxHealth
+  healthPoints.text = s"Current Health: ${Player.getHealth}/${Settings.maxHealth}"
   val moneyInTheBank = new Label
-  moneyInTheBank.text = "Money: " + Player.moneyIntheBank + "$"
+  moneyInTheBank.text = s"Money: ${Player.moneyIntheBank}€"
   val waveNumber = new Label
-  waveNumber.text = "Current wave: " + WaveController.currentWave + "/" + Settings.maxWaves
+  waveNumber.text = s"Current wave: ${WaveController.currentWave}/${Settings.maxWaves}"
 
+  /** Refresh map after setting new map */
   def refreshMap() = {
     this.map = Settings.map
     this.blockWidth = Settings.blockLengthX
@@ -51,9 +51,7 @@ object Game extends SimpleSwingApplication {
   }
 
 
-  /**
-   * MainFrame is the application window class in scala-swing.
-   */
+  /** MainFrame is the application window class in scala-swing */
   def top = new MainFrame {
 
     title = Settings.title
@@ -62,9 +60,7 @@ object Game extends SimpleSwingApplication {
     preferredSize = new Dimension(width, fullHeight)
     maximumSize = new Dimension(width, fullHeight)
 
-    /**
-     * The panel inside our window, where the enemies are moving.
-     */
+    /** The panel inside our window, where the enemies are moving */
     val arena = new Panel {
 
       /**
@@ -140,7 +136,7 @@ object Game extends SimpleSwingApplication {
     verticalPanel.contents += controlPanel
     contents = verticalPanel
 
-    // Ask the object to listed mouse events in our arena panel
+    // Ask the object to listed mouse and button events in our arena panel
     listenTo(arena.mouse.clicks)
     listenTo(arena.mouse.moves)
     listenTo(startButton)
@@ -169,9 +165,11 @@ object Game extends SimpleSwingApplication {
       }
     }
 
-    // This event listener and swing timer allow periodic repetitive
-    // activity in the event listening thread. The game is light enough
-    // to be drawn in the thread without additional buffers or threads.
+    /**
+     * This event listener and swing timer allow periodic repetitive
+     * activity in the event listening thread. The game is light enough
+     * to be drawn in the thread without additional buffers or threads.
+     */
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         if (Game.gameOver) {
@@ -190,9 +188,10 @@ object Game extends SimpleSwingApplication {
       }
     }
 
-    // Timer sends ActionEvent to ActionListener every 6ms,
-    // when the space moves forward and the screen is redrawn.
-    // This code therefore allows animation
+    /**
+     * Timer sends ActionEvent to ActionListener, interval set in Settings,
+     * when the space moves forward and the screen is redrawn.
+     */
     val timer = new javax.swing.Timer(Settings.interval, listener)
     timer.start()
 

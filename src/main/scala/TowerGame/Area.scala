@@ -3,7 +3,6 @@ package TowerGame
 import TowerGame.Enemies.{Enemy, SmallEnemy}
 import TowerGame.Helpers.{PathFinder, Updater, Vector2D}
 import TowerGame.Towers.{SmallTower, Tower}
-
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
@@ -28,10 +27,10 @@ object Area {
   var correctedInitlLoc: Vector2D = Vector2D(Settings.blockLengthX * (this.initLoc._1 + (-1 * this.initDir._1)), Settings.blockLengthY* (this.initLoc._2 + (-1 * this.initDir._2)))
   var correctedPath: Buffer[Vector2D] = Buffer(this.correctedInitlLoc) ++ this.path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
 
-  // Surrounding areas the enemy moves in
-  var enemyPathSquares = PathFinder.findBannedAreas(correctedPath)
+  // Path the enemy moves that is banned from adding towers
+  var towerBannedPath = PathFinder.findBannedAreas(correctedPath)
 
-  // When space steps one time unit forward, all enemies move a step forward
+  /** When space steps one time unit forward, all enemies move a step forward */
   def step() = {
     if (numberOfEnemies > 0 && tick % Settings.correctedInterval == 0) {
       this.enemies += new SmallEnemy(correctedPath, directions)
@@ -42,24 +41,27 @@ object Area {
     this.towers.foreach(_.scanProximity(this.enemies))
   }
 
-  // Drawing all enemies to the map
+  /** Drawing all enemies to the map */
   def draw(g: Graphics2D) = {
     enemies.foreach(_.draw(g))
     towers.foreach(_.draw(g))
     if (Game.towerBuying) this.drawNewTower(g)
   }
 
+  /** Check for new tower that it is not blocking with the enemy path or towers previously placed on the map */
   def checkBlocking() = {
     if (towers.exists(tower => (tower.getLocation.x - towerLocation.x).abs < towerSize && (tower.getLocation.y - towerLocation.y).abs < towerSize) ||
-        enemyPathSquares.exists( spots => (spots._1._1 <= towerLocation.x && towerLocation.x <= spots._2._1 && spots._1._2 <= towerLocation.y && towerLocation.y <= spots._2._2))) {
+        towerBannedPath.exists(spots => (spots._1._1 <= towerLocation.x && towerLocation.x <= spots._2._1 && spots._1._2 <= towerLocation.y && towerLocation.y <= spots._2._2))) {
       Game.blocked = true
     } else {
       Game.blocked = false
     }
   }
 
+  /** Update the location of the tower that is being placed on the map */
   def newTowerLocation(locationMouse: MouseMoved) = towerLocation = Vector2D(locationMouse.point.x - Settings.xCorrection, locationMouse.point.y - Settings.yCorrection)
 
+  /** Draw the new tower that is being placed */
   def drawNewTower(g: Graphics2D) = {
     checkBlocking()
     if (Game.blocked) g.setColor(new Color(255, 0, 0))
@@ -72,6 +74,7 @@ object Area {
     g.setTransform(oldTransform)
   }
 
+  /** Place the new tower to the map */
   def placeTower(x: Int, y: Int) = {
     towers += new SmallTower(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
     Game.towerBuying = false
@@ -80,6 +83,7 @@ object Area {
     Updater.updateButtons()
   }
 
+  /** Update the enemy path and directions after loading new map */
   def updatePathAndDirs() = {
     this.initLoc = PathFinder.enemyInitialLocation()
     this.initDir = PathFinder.findInitialDirection(this.initLoc)
@@ -87,7 +91,7 @@ object Area {
     this.directions = (PathFinder.enemyPath(this.initLoc, this.initDir)).map(_._2)
     this.correctedInitlLoc = Vector2D(Settings.blockLengthX * (this.initLoc._1 + (-1 * this.initDir._1)), Settings.blockLengthY* (this.initLoc._2 + (-1 * this.initDir._2)))
     this.correctedPath = Buffer(this.correctedInitlLoc) ++ this.path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
-    this.enemyPathSquares = PathFinder.findBannedAreas(correctedPath)
+    this.towerBannedPath = PathFinder.findBannedAreas(correctedPath)
   }
 
 }

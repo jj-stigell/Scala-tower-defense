@@ -20,9 +20,7 @@ object Loader {
   var loadedCurrentWave: Int = 0
   var loadedMaxWaves: Int = 0
 
-  /**
-   * Load map, new map from file, save game form file or next map from the default maps list in Settings.scala file.
-   */
+  // Load map, new map from file, save game form file or next map from the default maps list in Settings.scala file.
   def loadMap(fromFile: Boolean = false) = {
 
     if (fromFile) {
@@ -46,6 +44,7 @@ object Loader {
     }
   }
 
+  // Load game from sav-file.
   def loadGame() = {
 
     var mapRead = false

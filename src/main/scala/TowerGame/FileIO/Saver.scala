@@ -5,6 +5,7 @@ import java.io.{File, PrintWriter}
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.{JFileChooser, JFrame}
 
+/** Save game state (map, enemies, waves and towers) to a sav-file */
 object Saver {
 
     def saveGame() = {
@@ -32,6 +33,7 @@ object Saver {
             for (row <- map) saveFile.println(row.mkString(","))
             saveFile.println("#ENEMY")
             saveFile.println(s"0/$enemies")
+            //saveFile.println(s"1/$enemies")   // Missing still different types of enemies
             saveFile.println("#WAVES")
             saveFile.println(s"$currentWave/$maxWaves")
             saveFile.close()

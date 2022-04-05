@@ -3,7 +3,6 @@ package TowerGame.Towers
 import TowerGame.Enemies.Enemy
 import TowerGame.Helpers.Vector2D
 import TowerGame.Settings
-
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
@@ -18,17 +17,15 @@ abstract class Tower(location: Vector2D) {
   val range: Double
   val towerColor: Color
   val coolDownPerCycle: Int
-  val damageGivenPerHit: Int  // To the enemy if tower shoots
+  val damageGivenPerHit: Int  // Damage given to the enemy if tower shoots
+  val price: Int
   var coolDownCounter = 0
 
-  /**
-   * @return Location vector of the tower
-   */
+  /** Location vector of the tower */
   def getLocation = this.location
 
   /**
    * Scan the tower proximity and if enemy is found attack one of the enemies.
-   *
    * @param enemies Buffer with all enemies
    */
   def scanProximity(enemies: Buffer[Enemy]) = {
@@ -44,18 +41,15 @@ abstract class Tower(location: Vector2D) {
 
   /**
    * Shoot one close by enemy.
-   *
    * @param enemy Enemy to be shot
    */
   def shoot(enemy: Enemy) = {
-    // shoot near by enemy, search enemies on proximity
     enemy.getHitByTower(this.damageGivenPerHit)
     this.coolDownCounter = this.coolDownTime
   }
 
   /**
    * Draw the tower and its cool down meter.
-   *
    * @param g Graphics2D
    */
   def draw(g: Graphics2D) = {

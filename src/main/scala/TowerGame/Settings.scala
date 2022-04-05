@@ -1,9 +1,6 @@
 package TowerGame
 
-/**
- * Settings for the game, do not edit any other part of the game code except these
- * Mind the correct datatypes
- */
+/** Settings for the game, do not edit any other part of the game code except these */
 object Settings {
 
   // Game
@@ -15,25 +12,25 @@ object Settings {
   var maxWaves: Int = 2
 
   // Player
-  val towerPrice: Int = 10
-  val startingMoney: Int = 10
-  val maxHealth: Int = 150
+  var towerPrice: Int = 10
+  var startingMoney: Int = 10
+  var maxHealth: Int = 150
 
   // Tower placing
-  val xCorrection = 40
-  val yCorrection = 40
+  var xCorrection = 40
+  var yCorrection = 40
 
   // Enemy
   var interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
   var enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
   var numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
-  val correctedInterval: Int = this.enemyInterval / this.interval
+  var correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length
   // 1 road, roads cannot be side to side
   // 2 entry point, must be on the side, only one
   // 3 out point, must be on the side, only one
-  // Default map
+  // Default maps
   val allMaps: Array[Array[Array[Int]]] = Array(
     Array(
       Array(0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0),
@@ -81,7 +78,6 @@ object Settings {
 
   /**
    * Set new map for the game and update blocks and lengths
-   *
    * @param newMap New map Array[Array[Int]]
    */
   def setMap(newMap: Array[Array[Int]] ) = {

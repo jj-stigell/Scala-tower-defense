@@ -1,7 +1,6 @@
 package TowerGame.Helpers
 
 import TowerGame.Settings
-
 import scala.collection.mutable
 import scala.collection.mutable.Buffer
 
@@ -9,7 +8,6 @@ object PathFinder {
 
   /**
    * Finds the enemy path through the map from starting point (2 on array) to the ending point (3 on array).
-   *
    * @param Location  Starting location of the enemy
    * @param Direction Starting direction of the enemy
    * @return Zip with turning points on the map and directions to each point
@@ -45,7 +43,6 @@ object PathFinder {
 
   /**
    * Find new direction for the enemy path after hitting a corner.
-   *
    * @param currentDirection Direction the enemy is going at the moment
    * @param currentLocation  Current locatoin of the enemy
    * @return New direction on the map
@@ -75,7 +72,6 @@ object PathFinder {
 
   /**
    * Find the entry point of the enemy in the map array.
-   *
    * @return x and y coordinate in the map array where the enemy will start the movement
    */
   def enemyInitialLocation(): (Int, Int) = {
@@ -101,7 +97,6 @@ object PathFinder {
 
   /**
    * Find the start direction of the enemy in the map
-   *
    * @param entryLocation Location where the enemy enter the game arena, marked 2 on the map array
    * @return Direction of movement on the map array, either horizontal or vertical but not diagonal
    */
@@ -136,7 +131,6 @@ object PathFinder {
 
   /**
    * Needed for calculating the area surrounding the enemy path.
-   *
    * @param correctedPath Path where the enemies move
    * @return Padding for the enemy path to stop placing towers in the middle of the enemy path
    */

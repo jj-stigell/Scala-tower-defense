@@ -34,3 +34,20 @@
 
 #WAVES
 20/25
+
+#TOWERS
+0/5
+1/7
+
+#LOCATIONS
+(1,2), (2,3)
+(1,2), (2,3)
+
+#PLAYER
+10/20
+300
+
+missing:
+- towers
+- player money
+- player health
