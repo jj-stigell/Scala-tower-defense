@@ -32,5 +32,19 @@
 0/5
 1/7
 
+#TOWERS
+0/5
+1/7
+
+#TOWERLOCATIONS
+(1,2), (2,3)
+(1,2), (2,3)
+
+#HEALTH
+10/20
+
+#MONEY
+300
+
 #WAVES
 20/25

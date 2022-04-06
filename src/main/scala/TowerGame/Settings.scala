@@ -4,8 +4,8 @@ package TowerGame
 object Settings {
 
   // Game
-  val width: Int = 1200
-  val height: Int = 800
+  val width: Int = 1440
+  val height: Int = 960
   val fullHeight: Int = height + 40                         // Take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false

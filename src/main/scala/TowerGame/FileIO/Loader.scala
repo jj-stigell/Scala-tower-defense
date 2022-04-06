@@ -1,9 +1,10 @@
 package TowerGame.FileIO
 
 import TowerGame.Enemies.Enemy
-import TowerGame.FileIO.Reader.{readEnemies, readMap, readWaves}
+import TowerGame.FileIO.Reader.{readEnemies, readHealth, readMap, readWaves}
 import TowerGame.Helpers.Updater
-import TowerGame.{Area, Game, Settings, WaveController}
+import TowerGame.{Area, Game, Player, Settings, WaveController}
+
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
 import javax.swing.{JFileChooser, JFrame}
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -19,26 +20,50 @@ object Loader {
   var loadedEnemies: Buffer[Enemy] = Buffer[Enemy]()
   var loadedCurrentWave: Int = 0
   var loadedMaxWaves: Int = 0
+  var loadedMaxHealth: Int = 0
+  var loadedCurrentHealth: Int = 0
+  var loadedMoney: Int = 777
 
   // Load map, new map from file, save game form file or next map from the default maps list in Settings.scala file.
   def loadMap(fromFile: Boolean = false) = {
 
     if (fromFile) {
+
+      // Set new map, max health and starting money
       Settings.setMap(this.loadedMap)
-      Updater.resetWaves()
-      WaveController.currentWave = this.loadedCurrentWave
-      WaveController.maxWaves = this.loadedMaxWaves
+      Settings.maxHealth = loadedMaxHealth
+      Settings.startingMoney = loadedMoney
       Settings.maxWaves = this.loadedMaxWaves
       Settings.numberOfEnemies = this.loadedEnemies.length
+
+      // Reset waves and area, resetArea(true) for cleaning the towers
+      Updater.resetWaves()
+      Updater.resetArea(true)
+
+      // After resetting the player set current health to one loaded ffrom file
+      Player.health = loadedCurrentHealth
+
+      // Set the correct waves
+      WaveController.currentWave = this.loadedCurrentWave
+      WaveController.maxWaves = this.loadedMaxWaves
+
+      // Update stats, conditions and buttons
+      Updater.updateStats()
+      Updater.updateConditions()
+      Updater.updateButtons()
+
+      // Start drawing the new map
       Game.refreshMap()
-      Area.updatePathAndDirs()
+      // Update the enemy paths and directions to match the new map
+      Area.updateAreaPathAndDirs()
+      // Set current map to max maps so game ends if player finishes the loaded game.
       this.currentMap = this.maxMaps
     } else {
       if (currentMap != maxMaps) {
         Settings.setMap(Settings.allMaps(currentMap))
         Updater.resetWaves()
         Game.refreshMap()
-        Area.updatePathAndDirs()
+        Area.updateAreaPathAndDirs()
         currentMap += 1
       }
     }
@@ -50,6 +75,7 @@ object Loader {
     var mapRead = false
     var enemiesRead = false
     var wavesRead = false
+    var playerRead = false
 
     val fileChooser = new JFileChooser
     fileChooser.setDialogTitle("Choose a sav-file with the map and settings")
@@ -85,6 +111,9 @@ object Loader {
               case "#waves" =>
                 wavesRead = true
                 readWaves(linesIn)
+              case "#health" =>
+                playerRead = true
+                readHealth(linesIn)
               case _ => linesIn.readLine()
             }
           }

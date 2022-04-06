@@ -44,7 +44,7 @@ object Game extends SimpleSwingApplication {
   val moneyInTheBank = new Label
   moneyInTheBank.text = s"Money: ${Player.moneyIntheBank}€"
   val waveNumber = new Label
-  waveNumber.text = s"Current wave: ${WaveController.currentWave}/${Settings.maxWaves}"
+  waveNumber.text = s"Current wave: ${WaveController.currentWave}/${WaveController.maxWaves}"
 
   /** Refresh map after setting new map */
   def refreshMap() = {

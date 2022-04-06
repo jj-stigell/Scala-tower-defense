@@ -25,6 +25,8 @@ object Area {
   var initDir: (Int, Int) = PathFinder.findInitialDirection(initLoc)
   var path: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._1)
   var directions: Buffer[(Int, Int)] = (PathFinder.enemyPath(initLoc, initDir)).map(_._2)
+
+  // -1 moves the enemy outside the current map, so it looks like its coming from outside of the map when wave starts
   var correctedInitlLoc: Vector2D = Vector2D(Settings.blockLengthX * (this.initLoc._1 + (-1 * this.initDir._1)), Settings.blockLengthY* (this.initLoc._2 + (-1 * this.initDir._2)))
   var correctedPath: Buffer[Vector2D] = Buffer(this.correctedInitlLoc) ++ this.path.map( x => Vector2D(x._1 * Settings.blockLengthX.toDouble, x._2 * Settings.blockLengthY.toDouble))
 
@@ -86,7 +88,7 @@ object Area {
   }
 
   /** Update the enemy path and directions after loading new map */
-  def updatePathAndDirs() = {
+  def updateAreaPathAndDirs() = {
     this.initLoc = PathFinder.enemyInitialLocation()
     this.initDir = PathFinder.findInitialDirection(this.initLoc)
     this.path = (PathFinder.enemyPath(this.initLoc, this.initDir)).map(_._1)

@@ -84,11 +84,11 @@ object Updater {
   }
 
   /** Reset the game area for the next wave. */
-  def resetArea() = {
+  def resetArea(resetting: Boolean = false) = {
     Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
     Area.tick = 0
     Area.enemies = Buffer[Enemy]()
-    if (Game.gameOver || Game.mapWon) Area.towers = Buffer[Tower]() // Reset the towers only if game over or ready for the nex map
+    if (Game.gameOver || Game.mapWon || resetting) Area.towers = Buffer[Tower]() // Reset the towers only if game over or ready for the nex map
   }
 
   /** Resets all waves, stats and area for a new game. */
