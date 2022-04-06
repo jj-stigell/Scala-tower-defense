@@ -1,6 +1,7 @@
 package TowerGame.FileIO
 
-import TowerGame.{Area, Settings, WaveController}
+import TowerGame.{Area, Player, Settings, WaveController}
+
 import java.io.{File, PrintWriter}
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.{JFileChooser, JFrame}
@@ -9,10 +10,13 @@ import javax.swing.{JFileChooser, JFrame}
 object Saver {
 
     def saveGame() = {
-        val maxWaves = WaveController.maxWaves
-        val enemies = Area.numberOfEnemies
-        val currentWave = WaveController.currentWave
-        val map = Settings.map
+        val maxWaves: Int = WaveController.maxWaves
+        val enemies: Int  = Area.numberOfEnemies
+        val currentWave: Int  = WaveController.currentWave
+        val map: Array[Array[Int]] = Settings.map
+        val health: Int  = Player.getHealth
+        val maxHealth: Int  = Settings.maxHealth
+        val money: Int  = Player.moneyIntheBank
 
         val fileChooser = new JFileChooser
         fileChooser.setDialogTitle("Choose a location to save the game")
@@ -34,6 +38,10 @@ object Saver {
             saveFile.println("#ENEMY")
             saveFile.println(s"0/$enemies")
             //saveFile.println(s"1/$enemies")   // Missing still different types of enemies
+            saveFile.println("#HEALTH")
+            saveFile.println(s"$health/$maxHealth")
+            saveFile.println("#MONEY")
+            saveFile.println(money)
             saveFile.println("#WAVES")
             saveFile.println(s"$currentWave/$maxWaves")
             saveFile.close()

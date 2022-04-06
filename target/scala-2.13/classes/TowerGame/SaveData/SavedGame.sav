@@ -32,22 +32,19 @@
 0/5
 1/7
 
-#WAVES
-20/25
-
 #TOWERS
 0/5
 1/7
 
-#LOCATIONS
+#TOWERLOCATIONS
 (1,2), (2,3)
 (1,2), (2,3)
 
-#PLAYER
+#HEALTH
 10/20
+
+#MONEY
 300
 
-missing:
-- towers
-- player money
-- player health
+#WAVES
+20/25

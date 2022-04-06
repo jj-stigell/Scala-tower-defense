@@ -1,7 +1,7 @@
 package TowerGame.FileIO
 
 import TowerGame.Enemies.Enemy
-import TowerGame.FileIO.Reader.{readEnemies, readHealth, readMap, readWaves}
+import TowerGame.FileIO.Reader.{readEnemies, readHealth, readMap, readMoney, readWaves}
 import TowerGame.Helpers.Updater
 import TowerGame.{Area, Game, Player, Settings, WaveController}
 
@@ -22,7 +22,7 @@ object Loader {
   var loadedMaxWaves: Int = 0
   var loadedMaxHealth: Int = 0
   var loadedCurrentHealth: Int = 0
-  var loadedMoney: Int = 777
+  var loadedMoney: Int = 0
 
   // Load map, new map from file, save game form file or next map from the default maps list in Settings.scala file.
   def loadMap(fromFile: Boolean = false) = {
@@ -75,7 +75,8 @@ object Loader {
     var mapRead = false
     var enemiesRead = false
     var wavesRead = false
-    var playerRead = false
+    var healthRead = false
+    var moneyRead = false
 
     val fileChooser = new JFileChooser
     fileChooser.setDialogTitle("Choose a sav-file with the map and settings")
@@ -112,8 +113,11 @@ object Loader {
                 wavesRead = true
                 readWaves(linesIn)
               case "#health" =>
-                playerRead = true
+                healthRead = true
                 readHealth(linesIn)
+              case "#money" =>
+                moneyRead = true
+                readMoney(linesIn)
               case _ => linesIn.readLine()
             }
           }

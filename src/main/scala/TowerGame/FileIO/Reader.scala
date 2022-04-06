@@ -80,7 +80,7 @@ object Reader {
 	 * @param reader	BufferedReader
 	 * @return				Last read line
 	 */
-		def readHealth(reader: BufferedReader): String = {
+	def readHealth(reader: BufferedReader): String = {
 
 		var line = reader.readLine()
 
@@ -89,6 +89,25 @@ object Reader {
 				val numbers = line.split("/").map(_.toInt)
 				Loader.loadedCurrentHealth = numbers(0)
 				Loader.loadedMaxHealth = numbers(1)
+			}
+			line = reader.readLine()
+		}
+
+		line
+	}
+
+		/**
+	 * Read the amount of money player has in the bank.
+	 * @param reader	BufferedReader
+	 * @return				Last read line
+	 */
+	def readMoney(reader: BufferedReader): String = {
+
+		var line = reader.readLine()
+
+		while (line != null && !line.trim.startsWith("#")) {
+			if (line.nonEmpty) {
+				Loader.loadedMoney = line.toInt
 			}
 			line = reader.readLine()
 		}
