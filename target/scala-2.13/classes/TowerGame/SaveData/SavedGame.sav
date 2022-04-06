@@ -12,9 +12,30 @@
 # 1 = big enemy
 # "enemy type" [0 or 1] / "amount of enemies" [0 - 100]
 
+# Towers are added one enemy type per row under the TOWER.
+# 0 = small tower
+# 1 = big tower
+# "tower type" [0 or 1] / "amount of towers" [0 - 100]
+
+# Towers locations are added under TOWERLOCATION. Each tower has one
+# location coordinate (x, y) which is separated from others with comma ",".
+# Amount of locations must match with the amount of specific towers and
+# location coordinates should not go outside the map perimeter.
+# First row of locations is for small towers.
+# Second row of locations is for big towers.
+
+# Set the healthpoints under the HEALTH.
+# Must be positive integer.
+# "Current health" / "Max. health"
+
+# Set the money in the bank under the MONEY.
+# Must be positive integer.
+
 # Set the number of waves under the WAVES.
 # Must be positive integer.
 # "Current wave" / "Max. waves"
+
+### EXAMPLE SAV-FILE ###
 
 #MAP
 0,2,0,0,0,0,0,0,0,0,0,0
@@ -32,11 +53,11 @@
 0/5
 1/7
 
-#TOWERS
+#TOWER
 0/5
 1/7
 
-#TOWERLOCATIONS
+#TOWERLOCATION
 (1,2), (2,3)
 (1,2), (2,3)
 
