@@ -17,7 +17,8 @@ object Area {
   var numberOfEnemies: Int = Settings.numberOfEnemies
   var tick: Int = 0
   var towerLocation: Vector2D = Vector2D(0, 0)
-  val towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
+  //val towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
+  var newTower: Tower = new SmallTower(Vector2D(0, 0))
 
   // Initialize the starting location of enemies and the direction and calculate path and directions on the map
   var initLoc: (Int, Int) = PathFinder.enemyInitialLocation()
@@ -50,7 +51,7 @@ object Area {
 
   /** Check for new tower that it is not blocking with the enemy path or towers previously placed on the map */
   def checkBlocking() = {
-    if (towers.exists(tower => (tower.getLocation.x - towerLocation.x).abs < towerSize && (tower.getLocation.y - towerLocation.y).abs < towerSize) ||
+    if (towers.exists(tower => (tower.getLocation.x - towerLocation.x).abs < newTower.towerSize && (tower.getLocation.y - towerLocation.y).abs < newTower.towerSize) ||
         towerBannedPath.exists(spots => (spots._1._1 <= towerLocation.x && towerLocation.x <= spots._2._1 && spots._1._2 <= towerLocation.y && towerLocation.y <= spots._2._2))) {
       Game.blocked = true
     } else {
@@ -67,7 +68,7 @@ object Area {
     if (Game.blocked) g.setColor(new Color(255, 0, 0))
     else g.setColor(new Color(0, 255, 0))
 
-    val circle = new Ellipse2D.Double(10, 10, towerSize, towerSize)
+    val circle = new Ellipse2D.Double(10, 10, newTower.towerSize, newTower.towerSize)
     val oldTransform = g.getTransform
     g.translate(towerLocation.x, towerLocation.y)
     g.fill(circle)
@@ -76,9 +77,10 @@ object Area {
 
   /** Place the new tower to the map */
   def placeTower(x: Int, y: Int) = {
-    towers += new SmallTower(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
+    newTower.changeLocation(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
+    towers += newTower
     Game.towerBuying = false
-    Player.removeMoney(Settings.towerPrice)
+    Player.removeMoney(newTower.price)
     Updater.updateStats()
     Updater.updateButtons()
   }

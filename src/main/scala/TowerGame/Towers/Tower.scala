@@ -19,10 +19,14 @@ abstract class Tower(location: Vector2D) {
   val coolDownPerCycle: Int
   val damageGivenPerHit: Int  // Damage given to the enemy if tower shoots
   val price: Int
+  var towerLocation: Vector2D
   var coolDownCounter = 0
 
   /** Location vector of the tower */
-  def getLocation = this.location
+  def getLocation = this.towerLocation
+
+  /** Set new location for the tower, used to update newly placed towers location */
+  def changeLocation(newLocation: Vector2D) = this.towerLocation = newLocation
 
   /**
    * Scan the tower proximity and if enemy is found attack one of the enemies.
@@ -32,7 +36,7 @@ abstract class Tower(location: Vector2D) {
     if (this.coolDownCounter > 0) {
       this.coolDownCounter -= this.coolDownPerCycle
     } else {
-      var foundEnemies = enemies.filter(enemy => enemy.isAlive && (enemy.getLocation.x - this.location.x).abs < range && (enemy.getLocation.y - this.location.y).abs < range)
+      var foundEnemies = enemies.filter(enemy => enemy.isAlive && (enemy.getLocation.x - this.towerLocation.x).abs < range && (enemy.getLocation.y - this.towerLocation.y).abs < range)
       if (foundEnemies.nonEmpty){
         this.shoot(foundEnemies.head)
       }
@@ -56,20 +60,20 @@ abstract class Tower(location: Vector2D) {
     val circle = new Ellipse2D.Double(10, 10, this.towerSize, this.towerSize)
     g.setColor(this.towerColor)
     val oldTransform = g.getTransform
-    g.translate(this.location.x, this.location.y)
+    g.translate(this.towerLocation.x, this.towerLocation.y)
     g.fill(circle)
     g.setTransform(oldTransform)
 
     // Cool down meter indicating when tower can shoot again
     var coolMeter = new Rectangle(45, 10, this.coolDownTime, Settings.height / 100)
     g.setColor(this.greenBar)
-    g.translate(this.location.x, this.location.y)
+    g.translate(this.towerLocation.x, this.towerLocation.y)
     g.fill(coolMeter)
     g.setTransform(oldTransform)
 
     coolMeter = new Rectangle(45, 10, this.coolDownCounter, Settings.height / 100)
     g.setColor(this.redBar)
-    g.translate(this.location.x, this.location.y)
+    g.translate(this.towerLocation.x, this.towerLocation.y)
     g.fill(coolMeter)
     g.setTransform(oldTransform)
   }

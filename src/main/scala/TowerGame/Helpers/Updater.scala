@@ -31,7 +31,8 @@ object Updater {
       Game.nextMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
-      Game.buyTowerButton.visible = false
+      Game.buySmallTower.visible = false
+      Game.buyBigTower.visible = false
       Game.startButton.visible = false
       Game.healthPoints.visible = false
       Game.moneyInTheBank.visible = false
@@ -41,7 +42,8 @@ object Updater {
       Game.nextMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
-      Game.buyTowerButton.visible = false
+      Game.buySmallTower.visible = false
+      Game.buyBigTower.visible = false
       Game.startButton.visible = false
       Game.healthPoints.visible = false
       Game.moneyInTheBank.visible = false
@@ -51,7 +53,8 @@ object Updater {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = false
       Game.loadGameButton.visible = false
-      Game.buyTowerButton.visible = false
+      Game.buySmallTower.visible = false
+      Game.buyBigTower.visible = false
       Game.startButton.visible = false
       Game.healthPoints.visible = false
       Game.moneyInTheBank.visible = false
@@ -60,12 +63,14 @@ object Updater {
       Game.restartMap.visible = false
       Game.saveGameButton.visible = true
       Game.loadGameButton.visible = true
-      Game.buyTowerButton.visible = true
+      Game.buySmallTower.visible = true
+      Game.buyBigTower.visible = true
       Game.startButton.visible = true
       Game.healthPoints.visible = true
       Game.moneyInTheBank.visible = true
       Game.waveNumber.visible = true
-      if (Player.moneyIntheBank >= Settings.towerPrice) Game.buyTowerButton.enabled = true else Game.buyTowerButton.enabled = false
+      if (Player.moneyIntheBank >= Settings.smallTowerPrice) Game.buySmallTower.enabled = true else Game.buySmallTower.enabled = false
+      if (Player.moneyIntheBank >= Settings.bigTowerPrice) Game.buyBigTower.enabled = true else Game.buyBigTower.enabled = false
       if (Game.roundOver) {
         Game.startButton.enabled = true
         Game.saveGameButton.enabled = true

@@ -1,7 +1,9 @@
 package TowerGame
 
 import TowerGame.FileIO.{Loader, Saver}
-import TowerGame.Helpers.Updater
+import TowerGame.Helpers.{Updater, Vector2D}
+import TowerGame.Towers.{BigTower, SmallTower}
+
 import java.awt.event.ActionListener
 import java.awt.{Color, Graphics2D, RenderingHints}
 import javax.swing.JOptionPane
@@ -29,7 +31,8 @@ object Game extends SimpleSwingApplication {
   val loadGameButton = new Button("Load Game")
   val saveGameButton = new Button("Save Game")
   val quitGameButton = new Button("Quit")
-  val buyTowerButton = new Button("Buy Tower: " + Settings.towerPrice + "$")
+  val buySmallTower = new Button(s"Buy Small Tower: ${Settings.smallTowerPrice}€")
+  val buyBigTower = new Button(s"Buy Big Tower: ${Settings.bigTowerPrice}€")
 
   val restartMap = new Button("Restart Game")
   restartMap.visible = false
@@ -125,7 +128,8 @@ object Game extends SimpleSwingApplication {
     controlPanel.contents += nextMap
     controlPanel.contents += restartMap
     controlPanel.contents += startButton
-    controlPanel.contents += buyTowerButton
+    controlPanel.contents += buySmallTower
+    controlPanel.contents += buyBigTower
     controlPanel.contents += healthPoints
     controlPanel.contents += moneyInTheBank
     controlPanel.contents += waveNumber
@@ -140,7 +144,8 @@ object Game extends SimpleSwingApplication {
     listenTo(arena.mouse.clicks)
     listenTo(arena.mouse.moves)
     listenTo(startButton)
-    listenTo(buyTowerButton)
+    listenTo(buySmallTower)
+    listenTo(buyBigTower)
     listenTo(loadGameButton)
     listenTo(saveGameButton)
     listenTo(restartMap)
@@ -154,7 +159,12 @@ object Game extends SimpleSwingApplication {
       case clickEvent: ButtonClicked => {
         clickEvent.source match {
           case Game.startButton => WaveController.launchNewWave()
-          case Game.buyTowerButton => towerBuying = true
+          case Game.buySmallTower =>
+            towerBuying = true
+            Area.newTower = new SmallTower(Vector2D(0, 0))
+          case Game.buyBigTower =>
+            towerBuying = true
+            Area.newTower = new BigTower(Vector2D(0, 0))
           case Game.loadGameButton => Loader.loadGame()
           case Game.saveGameButton => Saver.saveGame()
           case Game.restartMap => Updater.resetWaves()
