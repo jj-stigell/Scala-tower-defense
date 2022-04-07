@@ -1,8 +1,9 @@
 package TowerGame.FileIO
 
 import TowerGame.Enemies.Enemy
-import TowerGame.FileIO.Reader.{readEnemies, readHealth, readMap, readMoney, readWaves}
-import TowerGame.Helpers.Updater
+import TowerGame.FileIO.Reader._
+import TowerGame.Helpers.{Updater, Vector2D}
+import TowerGame.Towers.Tower
 import TowerGame.{Area, Game, Player, Settings, WaveController}
 
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
@@ -23,6 +24,8 @@ object Loader {
   var loadedMaxHealth: Int = 0
   var loadedCurrentHealth: Int = 0
   var loadedMoney: Int = 0
+  var loadedTowers: Buffer[Tower] = Buffer[Tower]()
+  var loadedTowerLocations: Array[Vector2D] = Array[Vector2D]()
 
   // Load map, new map from file, save game form file or next map from the default maps list in Settings.scala file.
   def loadMap(fromFile: Boolean = false) = {
@@ -52,6 +55,13 @@ object Loader {
       Updater.updateConditions()
       Updater.updateButtons()
 
+      // Add towers if any was loaded
+      if (loadedTowers.nonEmpty) {
+        var i = 0
+        for (tower <- loadedTowers) { tower.changeLocation(loadedTowerLocations(i)); i += 1 }
+        Area.towers = this.loadedTowers
+      }
+
       // Start drawing the new map
       Game.refreshMap()
       // Update the enemy paths and directions to match the new map
@@ -77,6 +87,8 @@ object Loader {
     var wavesRead = false
     var healthRead = false
     var moneyRead = false
+    var towersRead = false
+    var locationsRead = false
 
     val fileChooser = new JFileChooser
     fileChooser.setDialogTitle("Choose a sav-file with the map and settings")
@@ -118,6 +130,12 @@ object Loader {
               case "#money" =>
                 moneyRead = true
                 readMoney(linesIn)
+              case "#tower" =>
+                towersRead = true
+                readTowers(linesIn)
+              case "#towerlocation" =>
+                locationsRead = true
+                readLocations(linesIn)
               case _ => linesIn.readLine()
             }
           }

@@ -1,7 +1,10 @@
 package TowerGame.FileIO
 
 import TowerGame.Area.{correctedPath, directions}
-import TowerGame.Enemies.{BigEnemy, Enemy, SmallEnemy}
+import TowerGame.Enemies._
+import TowerGame.Helpers.Vector2D
+import TowerGame.Towers._
+
 import java.io.BufferedReader
 import scala.collection.mutable.Buffer
 import scala.util.Random
@@ -31,7 +34,7 @@ object Reader {
   }
 
 	/**
-	 * Read the amount of enemies
+	 * Read the amount and type of enemies.
 	 * @param reader 	BufferedReader
 	 * @return 				Last read line
 	 */
@@ -112,6 +115,52 @@ object Reader {
 			line = reader.readLine()
 		}
 
+		line
+	}
+
+	/**
+	 * Read the amount and type of towers.
+	 * @param reader	BufferedReader
+	 * @return				Last read line
+	 */
+	def readTowers(reader: BufferedReader): String = {
+
+		var towers: Buffer[Tower] = Buffer[Tower]()
+		var line = reader.readLine()
+
+		while (line != null && !line.trim.startsWith("#")) {
+			if (line.nonEmpty) {
+				var numbers = line.split("/").map(_.toInt)
+				if (numbers(0) == 0) for (i <- 1 to numbers(1)) towers += new SmallTower(Vector2D(0,0))
+				else if (numbers(0) == 1) for (i <- 1 to numbers(1)) towers += new BigTower(Vector2D(0,0))
+			}
+			line = reader.readLine()
+		}
+
+		Loader.loadedTowers = towers
+		line
+	}
+
+		/**
+	 * Read the location of each tower.
+	 * @param reader	BufferedReader
+	 * @return				Last read line
+	 */
+	def readLocations(reader: BufferedReader): String = {
+
+		var locations: Array[Vector2D] = Array[Vector2D]()
+		var line = reader.readLine()
+
+		while (line != null && !line.trim.startsWith("#")) {
+			if (line.nonEmpty) {
+				var locationsString = line.split(";").map(x => x.split(","))
+				val locationsVectors = locationsString.map(x => Vector2D(x(0).toDouble, x(1).toDouble))
+				locations = locations ++ locationsVectors
+			}
+			line = reader.readLine()
+		}
+
+		Loader.loadedTowerLocations = locations
 		line
 	}
 
