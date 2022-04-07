@@ -1,10 +1,12 @@
 package TowerGame.FileIO
 
+import TowerGame.Towers.Tower
 import TowerGame.{Area, Player, Settings, WaveController}
 
 import java.io.{File, PrintWriter}
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.{JFileChooser, JFrame}
+import scala.collection.mutable.Buffer
 
 /** Save game state (map, enemies, waves and towers) to a sav-file */
 object Saver {
@@ -17,6 +19,7 @@ object Saver {
         val health: Int  = Player.getHealth
         val maxHealth: Int  = Settings.maxHealth
         val money: Int  = Player.moneyIntheBank
+        val towers: Buffer[Tower] = Area.towers
 
         val fileChooser = new JFileChooser
         fileChooser.setDialogTitle("Choose a location to save the game")
@@ -37,7 +40,20 @@ object Saver {
             for (row <- map) saveFile.println(row.mkString(","))
             saveFile.println("#ENEMY")
             saveFile.println(s"0/$enemies")
-            //saveFile.println(s"1/$enemies")   // Missing still different types of enemies
+
+            if (towers.nonEmpty) {
+                val smallTowers = towers.filter(_.towerType == "small")
+                val bigTowers = towers.filter(_.towerType == "big")
+                saveFile.println("#TOWER")
+                saveFile.println(s"0/${smallTowers.length}")
+                saveFile.println(s"1/${bigTowers.length}")
+                saveFile.println("#TOWERLOCATION")
+                smallTowers.foreach(tower => saveFile.print(s"${tower.getLocation.x},${tower.getLocation.y};"))
+                saveFile.println()
+                bigTowers.foreach(tower => saveFile.print(s"${tower.getLocation.x},${tower.getLocation.y};"))
+                saveFile.println()
+            }
+
             saveFile.println("#HEALTH")
             saveFile.println(s"$health/$maxHealth")
             saveFile.println("#MONEY")
@@ -45,6 +61,10 @@ object Saver {
             saveFile.println("#WAVES")
             saveFile.println(s"$currentWave/$maxWaves")
             saveFile.close()
+
+
+
+
         }
     }
 

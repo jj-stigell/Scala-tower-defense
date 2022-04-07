@@ -16,6 +16,7 @@ abstract class Tower(location: Vector2D) {
   val towerSize: Int
   val range: Double
   val towerColor: Color
+  val towerType: String
   val coolDownPerCycle: Int
   val damageGivenPerHit: Int  // Damage given to the enemy if tower shoots
   val price: Int

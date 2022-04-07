@@ -17,7 +17,6 @@ object Area {
   var numberOfEnemies: Int = Settings.numberOfEnemies
   var tick: Int = 0
   var towerLocation: Vector2D = Vector2D(0, 0)
-  //val towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
   var newTower: Tower = new SmallTower(Vector2D(0, 0))
 
   // Initialize the starting location of enemies and the direction and calculate path and directions on the map
