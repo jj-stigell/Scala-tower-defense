@@ -2,6 +2,7 @@ package TowerGame
 
 import TowerGame.Enemies.{BigEnemy, Enemy, SmallEnemy}
 import TowerGame.Helpers.{PathFinder, Updater, Vector2D}
+import TowerGame.Player.Player
 import TowerGame.Towers.{SmallTower, Tower}
 
 import java.awt.Graphics2D

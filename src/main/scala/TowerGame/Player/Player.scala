@@ -1,22 +1,28 @@
-package TowerGame
+package TowerGame.Player
 
 import TowerGame.Enemies.Enemy
+import TowerGame.{Game, Settings}
 
-/** Object for controlling player money and health */
+/** Object for controlling player money and health. */
 object Player {
 
   var health: Int = Settings.maxHealth
   var alive: Boolean = true
   var money: Int = Settings.startingMoney
 
+  /** REturn the current health of the player. */
   def getHealth: Int = this.health
 
+  /** Check if the player is still alive. */
   def isAlive: Boolean = this.alive
 
+  /** Check the amount of money the player has. */
   def moneyIntheBank: Int = this.money
 
+  /** Add money to the player. */
   def addMoney(amount: Int): Unit = this.money = this.money + amount
 
+  /** Remove money after buying towers. */
   def removeMoney(amount: Int): Unit = this.money = this.money - amount
 
   /** Resets player's all stats */

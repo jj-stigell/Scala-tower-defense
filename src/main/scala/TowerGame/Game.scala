@@ -40,9 +40,9 @@ object Game extends SimpleSwingApplication {
   nextMap.visible = false
 
   val healthPoints = new Label
-  healthPoints.text = s"Current Health: ${Player.getHealth}/${Settings.maxHealth}"
+  healthPoints.text = s"Current Health: ${Player.Player.getHealth}/${Settings.maxHealth}"
   val moneyInTheBank = new Label
-  moneyInTheBank.text = s"Money: ${Player.moneyIntheBank}€"
+  moneyInTheBank.text = s"Money: ${Player.Player.moneyIntheBank}€"
   val waveNumber = new Label
   waveNumber.text = s"Current wave: ${WaveController.currentWave}/${WaveController.maxWaves}"
 

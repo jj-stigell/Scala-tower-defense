@@ -1,8 +1,9 @@
 package TowerGame.FileIO
 
 import TowerGame.Enemies.Enemy
+import TowerGame.Player.Player
 import TowerGame.Towers.Tower
-import TowerGame.{Area, Player, Settings, WaveController}
+import TowerGame.{Area, Settings, WaveController}
 
 import java.io.{File, PrintWriter}
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -57,7 +58,6 @@ object Saver {
                 bigTowers.foreach(tower => saveFile.print(s"${tower.getLocation.x},${tower.getLocation.y};"))
                 saveFile.println()
             }
-
             saveFile.println("#HEALTH")
             saveFile.println(s"$health/$maxHealth")
             saveFile.println("#MONEY")
@@ -65,10 +65,6 @@ object Saver {
             saveFile.println("#WAVES")
             saveFile.println(s"$currentWave/$maxWaves")
             saveFile.close()
-
-
-
-
         }
     }
 

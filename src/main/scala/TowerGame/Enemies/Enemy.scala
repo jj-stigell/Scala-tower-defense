@@ -1,7 +1,7 @@
 package TowerGame.Enemies
 
 import TowerGame.Helpers.{Updater, Vector2D}
-import TowerGame.Player
+import TowerGame.Player.Player
 
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
