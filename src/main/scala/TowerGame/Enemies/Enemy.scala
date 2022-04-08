@@ -15,6 +15,7 @@ import scala.swing.Color
 class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) {
 
   var speed: Double = 9.0
+  var enemyType: String = "default"
   var rewardFromDestroying: Int = 10
   var damageGivenPerHit: Int = 1                                                        // How much enemy damages the player if enemy reaches end of the map
   var enemyColor: Color = new Color(255, 0, 0)
@@ -31,8 +32,10 @@ class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) {
   var path = enemyPath.drop(2)                                                          // Drop first 2, because first is set as the first location and second one as the first turning point
   var directions = enemyDirections.drop(1)                                              // Drop first, already as the initial direction
 
+  /** Check if the enemy is still alive or destroyed. */
   def isAlive: Boolean = this.alive
 
+  /** Only launched enemies move on the map. */
   def launchEnemy(): Unit = this.launched = true
 
   /**

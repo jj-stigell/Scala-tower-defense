@@ -1,7 +1,7 @@
 package TowerGame.Helpers
 
 import TowerGame.Area.{correctedPath, directions}
-import TowerGame.Enemies.{Enemy, SmallEnemy}
+import TowerGame.Enemies.{BigEnemy, Enemy, SmallEnemy}
 import TowerGame.FileIO.Loader
 import TowerGame.Towers.Tower
 import TowerGame._
@@ -87,11 +87,25 @@ object Updater {
 
   /** Reset the game area for the next wave. */
   def resetArea(resetting: Boolean = false) = {
+
+    println("small enemies before update: " + Area.enemies.count(_.enemyType == "small"))
+    println("big enemies before update: " + Area.enemies.count(_.enemyType == "big"))
+    println("current wave: " + WaveController.currentWave)
+
+    // Previous count of enemies is multplied with the new wave number
     Area.enemies = {
       var enemyBuf = Buffer[Enemy]()
-      for (i <- 1 to WaveController.currentWave * Settings.enemyMultiplier) enemyBuf += new SmallEnemy(correctedPath, directions)
+      for (i <- 1 to WaveController.currentWave * Area.enemies.count(_.enemyType == "small")) enemyBuf += new SmallEnemy(correctedPath, directions)
+      for (i <- 1 to WaveController.currentWave * Area.enemies.count(_.enemyType == "big")) enemyBuf += new BigEnemy(correctedPath, directions)
       enemyBuf
     }
+
+    println("small enemies after update: " + Area.enemies.count(_.enemyType == "small"))
+    println("big enemies after update: " + Area.enemies.count(_.enemyType == "big"))
+
+    println("amount of enemies: " + Area.enemies.length)
+    println()
+
     Area.tick = 0
     if (Game.gameOver || Game.mapWon || resetting) Area.towers = Buffer[Tower]() // Reset the towers only if game over or ready for the nex map
   }

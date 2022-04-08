@@ -1,8 +1,9 @@
 package TowerGame
 
-import TowerGame.Enemies.{Enemy, SmallEnemy}
+import TowerGame.Enemies.{BigEnemy, Enemy, SmallEnemy}
 import TowerGame.Helpers.{PathFinder, Updater, Vector2D}
 import TowerGame.Towers.{SmallTower, Tower}
+
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
@@ -24,10 +25,12 @@ object Area {
   // Path the enemy moves that is banned from adding towers
   var towerBannedPath = PathFinder.findBannedAreas(correctedPath)
 
-  // Form a buffer with enemies
+  // Form a buffer with enemies, initialize with small enemies matching the multiplier number and few big enemies
   var enemies: Buffer[Enemy] = {
     var enemyBuf = Buffer[Enemy]()
     for (i <- 1 to Settings.enemyMultiplier) enemyBuf += new SmallEnemy(correctedPath, directions)
+    enemyBuf += new BigEnemy(correctedPath, directions)
+    enemyBuf += new BigEnemy(correctedPath, directions)
     enemyBuf
   }
 
@@ -42,6 +45,8 @@ object Area {
 
   /** When space steps one time unit forward, all enemies move a step forward */
   def step() = {
+
+    enemies.foreach(enemy => if (enemy.isAlive) println("x on: " + enemy.getLocation.x + " y on: " + enemy.getLocation.y))
 
     if (tick % Settings.correctedInterval == 0) {
       val nonActive = this.enemies.filter(_.launched == false)

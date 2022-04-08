@@ -15,7 +15,7 @@ object Settings {
   var smallTowerPrice: Int = 10
   var bigTowerPrice: Int = 100
   var startingMoney: Int = 10
-  var maxHealth: Int = 150
+  var maxHealth: Int = 1450
 
   // Tower placing
   var xCorrection = 40

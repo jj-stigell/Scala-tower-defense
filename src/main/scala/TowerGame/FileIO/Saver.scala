@@ -1,5 +1,6 @@
 package TowerGame.FileIO
 
+import TowerGame.Enemies.Enemy
 import TowerGame.Towers.Tower
 import TowerGame.{Area, Player, Settings, WaveController}
 
@@ -13,7 +14,7 @@ object Saver {
 
     def saveGame() = {
         val maxWaves: Int = WaveController.maxWaves
-        val enemies: Int  = Area.enemies.length
+        val enemies: Buffer[Enemy]  = Area.enemies
         val currentWave: Int  = WaveController.currentWave
         val map: Array[Array[Int]] = Settings.map
         val health: Int  = Player.getHealth
@@ -35,11 +36,14 @@ object Saver {
             val path = fileChooser.getSelectedFile.getAbsolutePath
             val saveDir = new File(path + ".sav")
             val saveFile = new PrintWriter(saveDir)
+            val smallEnemies = enemies.filter(_.enemyType == "small")
+            val bigEnemies = enemies.filter(_.enemyType == "big")
 
             saveFile.println("#MAP")
             for (row <- map) saveFile.println(row.mkString(","))
             saveFile.println("#ENEMY")
-            saveFile.println(s"0/$enemies")
+            saveFile.println(s"0/${smallEnemies.length}")
+            saveFile.println(s"1/${bigEnemies.length}")
 
             if (towers.nonEmpty) {
                 val smallTowers = towers.filter(_.towerType == "small")
