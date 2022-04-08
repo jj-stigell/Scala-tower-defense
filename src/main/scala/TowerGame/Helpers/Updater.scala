@@ -86,11 +86,12 @@ object Updater {
   }
 
   /** Reset the game area for the next wave. */
-  def resetArea(resetting: Boolean = false) = {
+  def resetArea(loadingFromFile: Boolean = false, enemies: Buffer[Enemy] = Buffer[Enemy]()) = {
 
     // Previous count of enemies is multiplied with the new wave number
     Area.enemies = {
       var enemyBuf = Buffer[Enemy]()
+      if (loadingFromFile) enemyBuf = enemies
       for (i <- 1 to WaveController.currentWave * Area.enemies.count(_.enemyType == "small")) enemyBuf += new SmallEnemy(correctedPath, directions)
       for (i <- 1 to WaveController.currentWave * Area.enemies.count(_.enemyType == "big")) enemyBuf += new BigEnemy(correctedPath, directions)
       enemyBuf.foreach(_.reCalcDirections())
@@ -98,7 +99,7 @@ object Updater {
     }
 
     Area.tick = 0
-    if (Game.gameOver || Game.mapWon || resetting) Area.towers = Buffer[Tower]() // Reset the towers only if game over or ready for the nex map
+    if (Game.gameOver || Game.mapWon || loadingFromFile) Area.towers = Buffer[Tower]() // Reset the towers only if game over, resetting or ready for the nex map
   }
 
   /** Resets all waves, stats and area for a new game. */

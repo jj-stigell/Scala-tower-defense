@@ -24,7 +24,7 @@ object Settings {
 
   // Enemy
   val enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
-  val enemyMultiplier: Int = 5                              // Multiplier for increasing amount of enemies every round
+  val enemyMultiplier: Int = 2                              // Multiplier for increasing amount of enemies every round
   val correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length

@@ -41,7 +41,7 @@ object Loader {
 
       // Reset waves and area, resetArea(true) for cleaning the towers
       Updater.resetWaves()
-      Updater.resetArea(true)
+      Updater.resetArea(true, loadedEnemies)
 
       // After resetting the player set current health to one loaded ffrom file
       Player.health = loadedCurrentHealth
@@ -82,13 +82,13 @@ object Loader {
   // Load game from sav-file.
   def loadGame() = {
 
-    var mapRead = false
-    var enemiesRead = false
-    var wavesRead = false
-    var healthRead = false
-    var moneyRead = false
-    var towersRead = false
-    var locationsRead = false
+    var mapRead: Boolean = false
+    var enemiesRead: Boolean = false
+    var wavesRead: Boolean = false
+    var healthRead: Boolean = false
+    var moneyRead: Boolean = false
+    var towersRead: Boolean = false
+    var locationsRead: Boolean = false
 
     val fileChooser = new JFileChooser
     fileChooser.setDialogTitle("Choose a sav-file with the map and settings")

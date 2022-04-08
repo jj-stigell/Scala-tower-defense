@@ -14,10 +14,8 @@ object WaveController {
       currentWave += 1
       Updater.resetArea()
       Updater.updateStats()
-      Game.startButton.enabled = false
-      Game.saveGameButton.enabled = false
-      Game.loadGameButton.enabled = false
       Game.roundOver = false
+      Updater.updateButtons()
     }
   }
 
