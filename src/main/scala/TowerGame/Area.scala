@@ -10,14 +10,6 @@ import scala.swing.Color
 import scala.swing.event.MouseMoved
 
 object Area {
-  
-  // Store enemies and towers into buffers
-  var enemies: Buffer[Enemy] = Buffer[Enemy]()
-  var towers: Buffer[Tower] = Buffer[Tower]()
-  var numberOfEnemies: Int = Settings.numberOfEnemies
-  var tick: Int = 0
-  var towerLocation: Vector2D = Vector2D(0, 0)
-  var newTower: Tower = new SmallTower(Vector2D(0, 0))
 
   // Initialize the starting location of enemies and the direction and calculate path and directions on the map
   var initLoc: (Int, Int) = PathFinder.enemyInitialLocation()
@@ -32,28 +24,49 @@ object Area {
   // Path the enemy moves that is banned from adding towers
   var towerBannedPath = PathFinder.findBannedAreas(correctedPath)
 
+  // Form a buffer with enemies
+  var enemies: Buffer[Enemy] = {
+    var enemyBuf = Buffer[Enemy]()
+    for (i <- 1 to Settings.enemyMultiplier) enemyBuf += new SmallEnemy(correctedPath, directions)
+    enemyBuf
+  }
+
+  // Set the first enemy active
+  enemies.head.launchEnemy()
+
+  var towers: Buffer[Tower] = Buffer[Tower]()
+  //var numberOfEnemies: Int = Settings.enemyMultiplier
+  var tick: Int = 0
+  var towerLocation: Vector2D = Vector2D(0, 0)
+  var newTower: Tower = new SmallTower(Vector2D(0, 0))
+
   /** When space steps one time unit forward, all enemies move a step forward */
   def step() = {
-    if (numberOfEnemies > 0 && tick % Settings.correctedInterval == 0) {
-      this.enemies += new SmallEnemy(correctedPath, directions)
-      this.numberOfEnemies -= 1
+
+    if (tick % Settings.correctedInterval == 0) {
+      val nonActive = this.enemies.filter(_.launched == false)
+      if (nonActive.nonEmpty) nonActive.head.launchEnemy()
     }
     this.tick += 1
-    this.enemies.foreach(_.move())
+    this.enemies
+      .filter(_.launched == true)
+      .foreach(_.move())
     this.towers.foreach(_.scanProximity(this.enemies))
   }
 
   /** Drawing all enemies to the map */
   def draw(g: Graphics2D) = {
-    enemies.foreach(_.draw(g))
-    towers.foreach(_.draw(g))
+    this.enemies
+      .filter(_.launched == true)
+      .foreach(_.draw(g))
+    this.towers.foreach(_.draw(g))
     if (Game.towerBuying) this.drawNewTower(g)
   }
 
   /** Check for new tower that it is not blocking with the enemy path or towers previously placed on the map */
   def checkBlocking() = {
-    if (towers.exists(tower => (tower.getLocation.x - towerLocation.x).abs < newTower.towerSize && (tower.getLocation.y - towerLocation.y).abs < newTower.towerSize) ||
-        towerBannedPath.exists(spots => (spots._1._1 <= towerLocation.x && towerLocation.x <= spots._2._1 && spots._1._2 <= towerLocation.y && towerLocation.y <= spots._2._2))) {
+    if (this.towers.exists(tower => (tower.getLocation.x - this.towerLocation.x).abs < newTower.towerSize && (tower.getLocation.y - this.towerLocation.y).abs < this.newTower.towerSize) ||
+        this.towerBannedPath.exists(spots => (spots._1._1 <= this.towerLocation.x && this.towerLocation.x <= spots._2._1 && spots._1._2 <= this.towerLocation.y && this.towerLocation.y <= spots._2._2))) {
       Game.blocked = true
     } else {
       Game.blocked = false
@@ -61,27 +74,27 @@ object Area {
   }
 
   /** Update the location of the tower that is being placed on the map */
-  def newTowerLocation(locationMouse: MouseMoved) = towerLocation = Vector2D(locationMouse.point.x - Settings.xCorrection, locationMouse.point.y - Settings.yCorrection)
+  def newTowerLocation(locationMouse: MouseMoved) = this.towerLocation = Vector2D(locationMouse.point.x - Settings.xCorrection, locationMouse.point.y - Settings.yCorrection)
 
   /** Draw the new tower that is being placed */
   def drawNewTower(g: Graphics2D) = {
-    checkBlocking()
+    this.checkBlocking()
     if (Game.blocked) g.setColor(new Color(255, 0, 0))
     else g.setColor(new Color(0, 255, 0))
 
     val circle = new Ellipse2D.Double(10, 10, newTower.towerSize, newTower.towerSize)
     val oldTransform = g.getTransform
-    g.translate(towerLocation.x, towerLocation.y)
+    g.translate(this.towerLocation.x, this.towerLocation.y)
     g.fill(circle)
     g.setTransform(oldTransform)
   }
 
   /** Place the new tower to the map */
   def placeTower(x: Int, y: Int) = {
-    newTower.changeLocation(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
-    towers += newTower
+    this.newTower.changeLocation(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
+    this.towers += this.newTower
     Game.towerBuying = false
-    Player.removeMoney(newTower.price)
+    Player.removeMoney(this.newTower.price)
     Updater.updateStats()
     Updater.updateButtons()
   }

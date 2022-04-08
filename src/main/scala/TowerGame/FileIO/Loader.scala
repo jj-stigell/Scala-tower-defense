@@ -37,7 +37,7 @@ object Loader {
       Settings.maxHealth = loadedMaxHealth
       Settings.startingMoney = loadedMoney
       Settings.maxWaves = this.loadedMaxWaves
-      Settings.numberOfEnemies = this.loadedEnemies.length
+      Settings.enemyMultiplier = this.loadedEnemies.length
 
       // Reset waves and area, resetArea(true) for cleaning the towers
       Updater.resetWaves()

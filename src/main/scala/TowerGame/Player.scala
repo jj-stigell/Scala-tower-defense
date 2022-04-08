@@ -19,7 +19,7 @@ object Player {
 
   def removeMoney(amount: Int): Unit = this.money = this.money - amount
 
-  /** Resets player  */
+  /** Resets player's all stats */
   def resetPlayer() = {
     this.health = Settings.maxHealth
     this.alive = true

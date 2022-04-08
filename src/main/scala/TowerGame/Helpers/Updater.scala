@@ -1,9 +1,11 @@
 package TowerGame.Helpers
 
-import TowerGame.Enemies.Enemy
+import TowerGame.Area.{correctedPath, directions}
+import TowerGame.Enemies.{Enemy, SmallEnemy}
 import TowerGame.FileIO.Loader
 import TowerGame.Towers.Tower
 import TowerGame._
+
 import scala.collection.mutable.Buffer
 
 /** Helping funtions for updating/resetting buttons, game condition, maps and routes */
@@ -85,9 +87,12 @@ object Updater {
 
   /** Reset the game area for the next wave. */
   def resetArea(resetting: Boolean = false) = {
-    Area.numberOfEnemies = WaveController.currentWave * Settings.numberOfEnemies
+    Area.enemies = {
+      var enemyBuf = Buffer[Enemy]()
+      for (i <- 1 to WaveController.currentWave * Settings.enemyMultiplier) enemyBuf += new SmallEnemy(correctedPath, directions)
+      enemyBuf
+    }
     Area.tick = 0
-    Area.enemies = Buffer[Enemy]()
     if (Game.gameOver || Game.mapWon || resetting) Area.towers = Buffer[Tower]() // Reset the towers only if game over or ready for the nex map
   }
 

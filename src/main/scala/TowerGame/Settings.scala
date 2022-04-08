@@ -24,7 +24,7 @@ object Settings {
   // Enemy
   var interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
   var enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
-  var numberOfEnemies: Int = 5                             // How many enemies in total appears on the map
+  var enemyMultiplier: Int = 5                              // Multiplier for increasing amount of enemies every round
   var correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length

@@ -13,7 +13,7 @@ object Saver {
 
     def saveGame() = {
         val maxWaves: Int = WaveController.maxWaves
-        val enemies: Int  = Area.numberOfEnemies
+        val enemies: Int  = Area.enemies.length
         val currentWave: Int  = WaveController.currentWave
         val map: Array[Array[Int]] = Settings.map
         val health: Int  = Player.getHealth

@@ -25,12 +25,15 @@ class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) {
   var location: Vector2D = enemyPath.head                                               // Initial location of the enemy
   var directionVector: Vector2D = enemyDirections.head                                  // Initial direction (head of directions) set as the speed
   var alive: Boolean = true
+  var launched: Boolean = false
   var playerHit: Boolean = false
   var turningPoint: Vector2D = enemyPath(1)                                             // Start with the first turning point
   var path = enemyPath.drop(2)                                                          // Drop first 2, because first is set as the first location and second one as the first turning point
   var directions = enemyDirections.drop(1)                                              // Drop first, already as the initial direction
 
   def isAlive: Boolean = this.alive
+
+  def launchEnemy(): Unit = this.launched = true
 
   /**
    * For tower to check the location of the enemy.
