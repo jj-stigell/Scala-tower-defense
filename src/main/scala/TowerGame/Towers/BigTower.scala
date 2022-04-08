@@ -1,7 +1,8 @@
 package TowerGame.Towers
 
+import TowerGame.Config.Settings
 import TowerGame.Helpers.Vector2D
-import TowerGame.Settings
+
 import scala.swing.Color
 
 /** Big type tower, slow at shooting but effective with good range */

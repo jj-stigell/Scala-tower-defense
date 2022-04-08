@@ -1,6 +1,8 @@
 package TowerGame.Helpers
 
 import TowerGame.Area.{correctedPath, directions}
+import TowerGame.Config.Settings
+import TowerGame.Controllers.WaveController
 import TowerGame.Enemies.{BigEnemy, Enemy, SmallEnemy}
 import TowerGame.FileIO.Loader
 import TowerGame.Towers.Tower

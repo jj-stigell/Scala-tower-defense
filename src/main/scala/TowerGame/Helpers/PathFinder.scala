@@ -1,6 +1,7 @@
 package TowerGame.Helpers
 
-import TowerGame.Settings
+import TowerGame.Config.Settings
+
 import scala.collection.mutable
 import scala.collection.mutable.Buffer
 

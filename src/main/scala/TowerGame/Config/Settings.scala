@@ -1,4 +1,4 @@
-package TowerGame
+package TowerGame.Config
 
 /** Settings for the game, do not edit any other part of the game code except these */
 object Settings {
@@ -6,8 +6,8 @@ object Settings {
   // Game
   val width: Int = 1440
   val height: Int = 960
-  val interval: Int = 6                                     // Game update interval
-  val fullHeight: Int = height + 40                         // Take into account the control panel at the bottom
+  val interval: Int = 6 // Game update interval
+  val fullHeight: Int = height + 40 // Take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false
   var maxWaves: Int = 5
@@ -23,8 +23,8 @@ object Settings {
   val yCorrection = 40
 
   // Enemy
-  val enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
-  val enemyMultiplier: Int = 2                              // Multiplier for increasing amount of enemies every round
+  val enemyInterval: Int = 200 // Time between enemy addition, in milliseconds
+  val enemyMultiplier: Int = 2 // Multiplier for increasing amount of enemies every round
   val correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length
@@ -79,9 +79,10 @@ object Settings {
 
   /**
    * Set new map for the game and update blocks and lengths
+   *
    * @param newMap New map Array[Array[Int]]
    */
-  def setMap(newMap: Array[Array[Int]] ) = {
+  def setMap(newMap: Array[Array[Int]]) = {
     this.map = newMap
     this.totalHorizontalBlocks = this.map(0).length
     this.totalVerticalBlocks = this.map.length

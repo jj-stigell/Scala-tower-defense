@@ -1,5 +1,7 @@
 package TowerGame
 
+import TowerGame.Config.Settings
+import TowerGame.Controllers.WaveController
 import TowerGame.FileIO.{Loader, Saver}
 import TowerGame.Helpers.{Updater, Vector2D}
 import TowerGame.Towers.{BigTower, SmallTower}

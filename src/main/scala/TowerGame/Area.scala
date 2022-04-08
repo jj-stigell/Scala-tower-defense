@@ -1,5 +1,6 @@
 package TowerGame
 
+import TowerGame.Config.Settings
 import TowerGame.Enemies.{BigEnemy, Enemy, SmallEnemy}
 import TowerGame.Helpers.{PathFinder, Updater, Vector2D}
 import TowerGame.Player.Player

@@ -1,9 +1,11 @@
 package TowerGame.FileIO
 
+import TowerGame.Controllers.WaveController
 import TowerGame.Enemies.Enemy
 import TowerGame.Player.Player
 import TowerGame.Towers.Tower
-import TowerGame.{Area, Settings, WaveController}
+import TowerGame.Area
+import TowerGame.Config.Settings
 
 import java.io.{File, PrintWriter}
 import javax.swing.filechooser.FileNameExtensionFilter

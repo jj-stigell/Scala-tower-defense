@@ -1,5 +1,6 @@
 package TowerGame
 
+import TowerGame.Config.Settings
 import TowerGame.Helpers.PathFinder
 import org.junit.Assert._
 import org.junit.Test

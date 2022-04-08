@@ -1,7 +1,8 @@
 package TowerGame.Player
 
+import TowerGame.Config.Settings
 import TowerGame.Enemies.Enemy
-import TowerGame.{Game, Settings}
+import TowerGame.Game
 
 /** Object for controlling player money and health. */
 object Player {

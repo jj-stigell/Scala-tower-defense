@@ -1,11 +1,13 @@
 package TowerGame.FileIO
 
+import TowerGame.Config.Settings
+import TowerGame.Controllers.WaveController
 import TowerGame.Enemies.Enemy
 import TowerGame.FileIO.Reader._
 import TowerGame.Helpers.{Updater, Vector2D}
 import TowerGame.Player.Player
 import TowerGame.Towers.Tower
-import TowerGame.{Area, Game, Settings, WaveController}
+import TowerGame.{Area, Game}
 
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
 import javax.swing.{JFileChooser, JFrame}
