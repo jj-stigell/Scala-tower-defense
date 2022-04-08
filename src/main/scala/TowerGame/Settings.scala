@@ -6,26 +6,26 @@ object Settings {
   // Game
   val width: Int = 1440
   val height: Int = 960
+  val interval: Int = 6                                     // Game update interval
   val fullHeight: Int = height + 40                         // Take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false
   var maxWaves: Int = 5
 
   // Player
-  var smallTowerPrice: Int = 10
-  var bigTowerPrice: Int = 100
-  var startingMoney: Int = 10
-  var maxHealth: Int = 1450
+  var startingMoney: Int = 50
+  var maxHealth: Int = 500
 
-  // Tower placing
-  var xCorrection = 40
-  var yCorrection = 40
+  // Tower
+  val smallTowerPrice: Int = 10
+  val bigTowerPrice: Int = 100
+  val xCorrection = 40
+  val yCorrection = 40
 
   // Enemy
-  var interval: Int = 6                                     // Enemy update interval, in milliseconds, please keep at 6
-  var enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
-  var enemyMultiplier: Int = 5                              // Multiplier for increasing amount of enemies every round
-  var correctedInterval: Int = this.enemyInterval / this.interval
+  val enemyInterval: Int = 200                              // Time between enemy addition, in milliseconds
+  val enemyMultiplier: Int = 5                              // Multiplier for increasing amount of enemies every round
+  val correctedInterval: Int = this.enemyInterval / this.interval
 
   // Each row must be same length
   // 1 road, roads cannot be side to side

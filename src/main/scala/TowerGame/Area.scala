@@ -31,6 +31,7 @@ object Area {
     for (i <- 1 to Settings.enemyMultiplier) enemyBuf += new SmallEnemy(correctedPath, directions)
     enemyBuf += new BigEnemy(correctedPath, directions)
     enemyBuf += new BigEnemy(correctedPath, directions)
+    enemyBuf.foreach(_.reCalcDirections())
     enemyBuf
   }
 
@@ -45,8 +46,6 @@ object Area {
 
   /** When space steps one time unit forward, all enemies move a step forward */
   def step() = {
-
-    enemies.foreach(enemy => if (enemy.isAlive) println("x on: " + enemy.getLocation.x + " y on: " + enemy.getLocation.y))
 
     if (tick % Settings.correctedInterval == 0) {
       val nonActive = this.enemies.filter(_.launched == false)

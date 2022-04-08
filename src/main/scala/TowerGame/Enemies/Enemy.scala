@@ -1,7 +1,8 @@
 package TowerGame.Enemies
 
 import TowerGame.Helpers.{Updater, Vector2D}
-import TowerGame.{Player, Settings}
+import TowerGame.Player
+
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
@@ -12,16 +13,16 @@ import scala.swing.Color
  * @param enemyPath       Full path the enemy moves
  * @param directionSet    All the directions enemy will move on the map, must be multiplied with the enemy speed
  */
-class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) {
+abstract class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) {
 
-  var speed: Double = 9.0
-  var enemyType: String = "default"
-  var rewardFromDestroying: Int = 10
-  var damageGivenPerHit: Int = 1                                                        // How much enemy damages the player if enemy reaches end of the map
-  var enemyColor: Color = new Color(255, 0, 0)
-  var health: Int = 10
-  var enemySize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
-  var enemyDirections = directionSet.map(x => Vector2D(x._1 * this.speed, x._2 * this.speed))
+  val speed: Double
+  val enemyType: String
+  val rewardFromDestroying: Int
+  val damageGivenPerHit: Int
+  val enemyColor: Color
+  var health: Int
+  val enemySize: Int
+  var enemyDirections: Buffer[Vector2D] = directionSet.map(x => Vector2D(x._1 * this.speed, x._2 * this.speed))
 
   var location: Vector2D = enemyPath.head                                               // Initial location of the enemy
   var directionVector: Vector2D = enemyDirections.head                                  // Initial direction (head of directions) set as the speed
@@ -29,8 +30,15 @@ class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int)]) {
   var launched: Boolean = false
   var playerHit: Boolean = false
   var turningPoint: Vector2D = enemyPath(1)                                             // Start with the first turning point
-  var path = enemyPath.drop(2)                                                          // Drop first 2, because first is set as the first location and second one as the first turning point
-  var directions = enemyDirections.drop(1)                                              // Drop first, already as the initial direction
+  var path: Buffer[Vector2D] = enemyPath.drop(2)                                        // Drop first 2, because first is set as the first location and second one as the first turning point
+  var directions: Buffer[Vector2D] = enemyDirections.drop(1)                            // Drop first, already as the initial direction
+
+  /** Recalculate the correct directios after updaeting map, scaled for the enemy speed */
+  def reCalcDirections() = {
+    enemyDirections = directionSet.map(x => Vector2D(x._1 * this.speed, x._2 * this.speed))
+    directionVector = enemyDirections.head
+    directions = enemyDirections.drop(1)
+  }
 
   /** Check if the enemy is still alive or destroyed. */
   def isAlive: Boolean = this.alive
