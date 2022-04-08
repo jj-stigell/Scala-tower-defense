@@ -29,6 +29,9 @@ abstract class Tower(location: Vector2D) {
   /** Set new location for the tower, used to update newly placed towers location */
   def changeLocation(newLocation: Vector2D) = this.towerLocation = newLocation
 
+  /** Reset the coold cold for the tower */
+  def resetCoolDown() = this.coolDownCounter = 0
+
   /**
    * Scan the tower proximity and if enemy is found attack one of the enemies.
    * @param enemies Buffer with all enemies
