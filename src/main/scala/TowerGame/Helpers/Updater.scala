@@ -64,6 +64,7 @@ object Updater {
       Game.moneyInTheBank.visible = false
       Game.waveNumber.visible = false
     } else {
+      Game.nextMap.visible = false
       Game.restartMap.visible = false
       Game.saveGameButton.visible = true
       Game.loadGameButton.visible = true
@@ -110,11 +111,11 @@ object Updater {
     Player.Player.resetPlayer()
     Game.gameOver = false
     Game.mapWon = false
-    Game.roundOver = true
     WaveController.currentWave = 0
     this.updateButtons()
     this.updateStats()
     this.updateConditions()
+    Game.roundOver = true
   }
 
 }

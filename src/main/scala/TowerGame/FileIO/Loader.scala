@@ -73,9 +73,9 @@ object Loader {
     } else {
       if (currentMap != maxMaps) {
         Settings.setMap(Settings.allMaps(currentMap))
+        Area.updateAreaPathAndDirs()
         Updater.resetWaves()
         Game.refreshMap()
-        Area.updateAreaPathAndDirs()
         currentMap += 1
       }
     }

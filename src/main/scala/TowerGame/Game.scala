@@ -55,7 +55,6 @@ object Game extends SimpleSwingApplication {
     this.blockHeight = Settings.blockLengthY
   }
 
-
   /** MainFrame is the application window class in scala-swing */
   def top = new MainFrame {
 
@@ -125,47 +124,47 @@ object Game extends SimpleSwingApplication {
     val controlPanel = new BoxPanel(Orientation.Horizontal)
 
     // Add buttons and labels to panels
-    controlPanel.contents += saveGameButton
-    controlPanel.contents += loadGameButton
-    controlPanel.contents += nextMap
-    controlPanel.contents += restartMap
-    controlPanel.contents += startButton
-    controlPanel.contents += buySmallTower
-    controlPanel.contents += buyBigTower
-    controlPanel.contents += healthPoints
-    controlPanel.contents += moneyInTheBank
-    controlPanel.contents += waveNumber
-    controlPanel.contents += quitGameButton
-    verticalPanel.contents += arena
-    verticalPanel.contents += controlPanel
-    verticalPanel.contents -= controlPanel
-    verticalPanel.contents += controlPanel
-    contents = verticalPanel
+    controlPanel.contents += Game.saveGameButton
+    controlPanel.contents += Game.loadGameButton
+    controlPanel.contents += Game.nextMap
+    controlPanel.contents += Game.restartMap
+    controlPanel.contents += Game.startButton
+    controlPanel.contents += Game.buySmallTower
+    controlPanel.contents += Game.buyBigTower
+    controlPanel.contents += Game.healthPoints
+    controlPanel.contents += Game.moneyInTheBank
+    controlPanel.contents += Game.waveNumber
+    controlPanel.contents += Game.quitGameButton
+    verticalPanel.contents += this.arena
+    verticalPanel.contents += this.controlPanel
+    verticalPanel.contents -= this.controlPanel
+    verticalPanel.contents += this.controlPanel
+    this.contents = verticalPanel
 
     // Ask the object to listed mouse and button events in our arena panel
     listenTo(arena.mouse.clicks)
     listenTo(arena.mouse.moves)
-    listenTo(startButton)
-    listenTo(buySmallTower)
-    listenTo(buyBigTower)
-    listenTo(loadGameButton)
-    listenTo(saveGameButton)
-    listenTo(restartMap)
-    listenTo(nextMap)
-    listenTo(quitGameButton)
+    listenTo(Game.startButton)
+    listenTo(Game.buySmallTower)
+    listenTo(Game.buyBigTower)
+    listenTo(Game.loadGameButton)
+    listenTo(Game.saveGameButton)
+    listenTo(Game.restartMap)
+    listenTo(Game.nextMap)
+    listenTo(Game.quitGameButton)
 
     // And now that the class responds to events
     this.reactions += {
-      case scala.swing.event.MousePressed(src, point, _, _, _) => if (towerBuying && !blocked) Area.placeTower(point.x, point.y)
-      case locationMouse: MouseMoved => if (towerBuying) Area.newTowerLocation(locationMouse)
+      case scala.swing.event.MousePressed(src, point, _, _, _) => if (Game.towerBuying && !Game.blocked) Area.placeTower(point.x, point.y)
+      case locationMouse: MouseMoved => if (Game.towerBuying) Area.newTowerLocation(locationMouse)
       case clickEvent: ButtonClicked => {
         clickEvent.source match {
           case Game.startButton => WaveController.launchNewWave()
           case Game.buySmallTower =>
-            towerBuying = true
+            Game.towerBuying = true
             Area.newTower = new SmallTower(Vector2D(0, 0))
           case Game.buyBigTower =>
-            towerBuying = true
+            Game.towerBuying = true
             Area.newTower = new BigTower(Vector2D(0, 0))
           case Game.loadGameButton => Loader.loadGame()
           case Game.saveGameButton => Saver.saveGame()
