@@ -1,16 +1,20 @@
 package TowerGame.FileIO
 
 import TowerGame.Area.{correctedPath, directions}
+import TowerGame.Config.Settings
 import TowerGame.Enemies._
 import TowerGame.Helpers.Vector2D
 import TowerGame.Towers._
 
 import java.io.BufferedReader
+import javax.swing.JOptionPane
 import scala.collection.mutable.Buffer
 import scala.util.Random
 
 /** Reader has functions for reading from a saved file all the game attributes. */
 object Reader {
+
+	var mapError = false
 
 	/**
 	 * Read line by line the game map.
@@ -22,14 +26,24 @@ object Reader {
 		var map: Array[Array[Int]] = Array(Array())
     var line = reader.readLine()
 
-		while (line != null && !line.trim.startsWith("#")) {
+		while (line != null && !line.trim.startsWith("#") && !mapError) {
 			if (line.nonEmpty) {
-				map = map :+ line.split(",").map(_.toInt)
+
+				try {
+					map = map :+ line.split(",").map(_.toInt)
+				} catch {
+					case numberFormatException: NumberFormatException =>
+						JOptionPane.showMessageDialog(null, s"Read map in the sav-file is corrupted or incorrectly inputted.\nMap is set to default and towers are not placed. Enjoy the game")
+						mapError = true
+						Loader.loadedMap = Settings.defaultMaps(0)
+				}
 			}
 			line = reader.readLine()
 		}
 
-    Loader.loadedMap = map.drop(1)
+		// TODO check that map has only one entry and one exit point
+		if (!mapError) Loader.loadedMap = map.drop(1)	// Drop the first element that is empty
+
 		line
   }
 
@@ -68,11 +82,29 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-				val numbers = line.split("/").map(_.toInt)
-				Loader.loadedCurrentWave = numbers(0)
-				Loader.loadedMaxWaves = numbers(1)
-			}
+
+				try {
+					val numbers = line.split("/")
+					val currentWave = numbers(0).toInt
+					val maxWaves = numbers(1).toInt
+
+					if (currentWave <= maxWaves) {
+						Loader.loadedCurrentWave = currentWave
+						Loader.loadedMaxWaves = maxWaves
+					} else {
+						JOptionPane.showMessageDialog(null, "Current wave was higher than maximum amount of waves, current wave set to maximum.")
+						Loader.loadedCurrentWave = maxWaves
+						Loader.loadedMaxWaves = maxWaves
+					}
+				} catch {
+					case numberFormatException: NumberFormatException =>
+						val wave = 1
+						JOptionPane.showMessageDialog(null, s"Read amount of waves in the sav-file is corrupted or incorrectly inputted.\nWaves are set to ${wave}/${wave}, enjoy the game")
+						Loader.loadedCurrentWave = wave
+						Loader.loadedMaxWaves = wave
+				}
 			line = reader.readLine()
+			}
 		}
 
 		line
@@ -89,9 +121,27 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-				val numbers = line.split("/").map(_.toInt)
-				Loader.loadedCurrentHealth = numbers(0)
-				Loader.loadedMaxHealth = numbers(1)
+
+				try {
+					val numbers = line.split("/")
+					val currentHealth = numbers(0).toInt
+					val maxHealth = numbers(1).toInt
+
+					if (currentHealth <= maxHealth) {
+						Loader.loadedCurrentHealth = currentHealth
+						Loader.loadedMaxHealth = maxHealth
+					} else {
+						JOptionPane.showMessageDialog(null, "Current health points were higher than maximum health points, current health points set to maximum.")
+						Loader.loadedCurrentHealth = maxHealth
+						Loader.loadedMaxHealth = maxHealth
+					}
+				} catch {
+					case numberFormatException: NumberFormatException =>
+						val health = 100
+						JOptionPane.showMessageDialog(null, s"Read amount of health points in the sav-file is corrupted or incorrectly inputted.\nHealth points are set to ${health}/${health}, enjoy the game")
+						Loader.loadedCurrentHealth = health
+						Loader.loadedMaxHealth = health
+				}
 			}
 			line = reader.readLine()
 		}
@@ -101,6 +151,7 @@ object Reader {
 
 		/**
 	 * Read the amount of money player has in the bank.
+	 * Read amount is converted to positive integer.
 	 * @param reader	BufferedReader
 	 * @return				Last read line
 	 */
@@ -110,7 +161,14 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-				Loader.loadedMoney = line.toInt
+				try {
+					Loader.loadedMoney = line.toInt.abs
+				} catch {
+					case formatException: NumberFormatException =>
+						val startMoney = 50
+						Loader.loadedMoney = startMoney
+						JOptionPane.showMessageDialog(null, s"Read amount of money in the sav-file is corrupted or incorrectly inputted.\nAmount of money set to ${startMoney}")
+				}
 			}
 			line = reader.readLine()
 		}
@@ -137,7 +195,7 @@ object Reader {
 			line = reader.readLine()
 		}
 
-		Loader.loadedTowers = towers
+		if (!mapError) Loader.loadedTowers = towers
 		line
 	}
 

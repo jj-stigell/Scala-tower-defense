@@ -32,7 +32,7 @@ object Settings {
   // 2 entry point, must be on the side, only one
   // 3 out point, must be on the side, only one
   // Default maps
-  val allMaps: Array[Array[Array[Int]]] = Array(
+  val defaultMaps: Array[Array[Array[Int]]] = Array(
     Array(
       Array(0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0),
       Array(0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0),
@@ -87,7 +87,7 @@ object Settings {
   )
 
   // Set allMaps head as the first map
-  var map: Array[Array[Int]] = allMaps.head
+  var map: Array[Array[Int]] = defaultMaps.head
 
   // How many blocks the map has, horizontal and vertical and their lengths
   var totalHorizontalBlocks: Int = this.map(0).length

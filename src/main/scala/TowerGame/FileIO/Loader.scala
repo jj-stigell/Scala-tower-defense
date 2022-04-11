@@ -17,7 +17,7 @@ import scala.collection.mutable.Buffer
 object Loader {
 
   var currentMap: Int = 1
-  var maxMaps: Int = Settings.allMaps.length
+  var maxMaps: Int = Settings.defaultMaps.length
 
   // For loading a new map
   var loadedMap: Array[Array[Int]] = Array(Array(0,0))
@@ -72,7 +72,7 @@ object Loader {
       this.currentMap = this.maxMaps
     } else {
       if (currentMap != maxMaps) {
-        Settings.setMap(Settings.allMaps(currentMap))
+        Settings.setMap(Settings.defaultMaps(currentMap))
         Area.updateAreaPathAndDirs()
         Updater.resetWaves()
         Game.refreshMap()
@@ -123,21 +123,21 @@ object Loader {
               case "#enemy" =>
                 enemiesRead = true
                 readEnemies(linesIn)
-              case "#waves" =>
-                wavesRead = true
-                readWaves(linesIn)
-              case "#health" =>
-                healthRead = true
-                readHealth(linesIn)
-              case "#money" =>
-                moneyRead = true
-                readMoney(linesIn)
               case "#tower" =>
                 towersRead = true
                 readTowers(linesIn)
               case "#towerlocation" =>
                 locationsRead = true
                 readLocations(linesIn)
+              case "#health" =>
+                healthRead = true
+                readHealth(linesIn)
+              case "#money" =>
+                moneyRead = true
+                readMoney(linesIn)
+              case "#waves" =>
+                wavesRead = true
+                readWaves(linesIn)
               case _ => linesIn.readLine()
             }
           }
