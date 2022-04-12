@@ -10,7 +10,7 @@ import TowerGame.Towers.Tower
 import TowerGame.{Area, Game}
 
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
-import javax.swing.{JFileChooser, JFrame}
+import javax.swing.{JFileChooser, JFrame, JOptionPane}
 import javax.swing.filechooser.FileNameExtensionFilter
 import scala.collection.mutable.Buffer
 
@@ -141,8 +141,11 @@ object Loader {
               case _ => linesIn.readLine()
             }
           }
-          // Load the new map with enemies
-          this.loadMap(true)
+          if (mapRead && enemiesRead && wavesRead && healthRead && moneyRead) {
+            this.loadMap(true)
+          } else {
+            JOptionPane.showMessageDialog(null, "Something went wrong when reading the sav-file.\nTo load a game, the saved file must include at least map, enemies, waves, health and money.")
+          }
 
         } finally {
           // Close open streams

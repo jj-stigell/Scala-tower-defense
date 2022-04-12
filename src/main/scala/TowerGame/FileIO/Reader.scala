@@ -14,7 +14,7 @@ import scala.util.Random
 /** Reader has functions for reading from a saved file all the game attributes. */
 object Reader {
 
-	var mapError = false
+	var mapError: Boolean = false
 
 	/**
 	 * Read line by line the game map.
@@ -33,7 +33,7 @@ object Reader {
 					map = map :+ line.split(",").map(_.toInt)
 				} catch {
 					case numberFormatException: NumberFormatException =>
-						JOptionPane.showMessageDialog(null, s"Read map in the sav-file is corrupted or incorrectly inputted.\nMap is set to default and towers are not placed. Enjoy the game")
+						JOptionPane.showMessageDialog(null, "Read map in the sav-file is corrupted or incorrectly inputted.\nMap is set to default and towers are not placed. Enjoy the game")
 						mapError = true
 						Loader.loadedMap = Settings.defaultMaps(0)
 				}
@@ -41,8 +41,35 @@ object Reader {
 			line = reader.readLine()
 		}
 
-		// TODO check that map has only one entry and one exit point
-		if (!mapError) Loader.loadedMap = map.drop(1)	// Drop the first element that is empty
+		if (!mapError) {
+
+			map = map.drop(1)
+			var invalid = false
+			var entry = 0
+			var exit = 0
+			// Check that all rows are equal in length
+			val mapUniform = map.forall(row => map(0).length == row.length)
+
+			for (row <- map) {
+
+				for (value <- row) {
+					value match {
+						case 0 => // Tower area
+						case 1 => // Path
+						case 2 => entry += 1
+						case 3 => exit += 1
+						case _ => invalid = true
+					}
+				}
+			}
+
+			if (entry != 1 || exit != 1 || invalid || !mapUniform) {
+				JOptionPane.showMessageDialog(null, "Read map in the sav-file is corrupted or incorrectly inputted.\nMap is set to default and towers are not placed. Enjoy the game")
+				Loader.loadedMap = Settings.defaultMaps(0)
+			} else {
+				Loader.loadedMap = map // Drop the first element that is empty
+			}
+		}
 
 		line
   }
