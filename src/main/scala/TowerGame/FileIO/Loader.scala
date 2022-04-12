@@ -20,7 +20,7 @@ object Loader {
   var maxMaps: Int = Settings.defaultMaps.length
 
   // For loading a new map
-  var loadedMap: Array[Array[Int]] = Array(Array(0,0))
+  var loadedMap: Array[Array[Int]] = Array(Array())
   var loadedEnemies: Buffer[Enemy] = Buffer[Enemy]()
   var loadedCurrentWave: Int = 0
   var loadedMaxWaves: Int = 0
@@ -58,10 +58,13 @@ object Loader {
       Updater.updateButtons()
 
       // Add towers if any was loaded
-      if (loadedTowers.nonEmpty) {
+      if (loadedTowers.nonEmpty && loadedTowers.length == loadedTowerLocations.length) {
         var i = 0
         for (tower <- loadedTowers) { tower.changeLocation(loadedTowerLocations(i)); i += 1 }
         Area.towers = this.loadedTowers
+      } else {
+        Area.towers = Buffer[Tower]()
+        JOptionPane.showMessageDialog(null, "Something went wrong with tower placement.\nTowers resetted.")
       }
 
       // Start drawing the new map
