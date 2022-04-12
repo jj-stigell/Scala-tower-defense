@@ -69,6 +69,7 @@ object Loader {
 
       // Start drawing the new map
       Game.refreshMap()
+      Game.roundOver = true
       // Update the enemy paths and directions to match the new map
       Area.updateAreaPathAndDirs()
       // Set current map to max maps so game ends if player finishes the loaded game.
