@@ -7,7 +7,7 @@ Raportoitavia asioita ovat:
 - Oletko tässä vaiheessa (suurin piirtein) edellä vai jäljessä projektisuunnitelmassa arvioimaasi tilannetta.
 
 
-Keskiviikko 23.2.2022
+Keskiviikko 23.2.2022:
 
 - Initial commit, hieman myöhässä, pahoittelen, paljon kiireitä kurssien ja duunin kanssa ja sekoitin viikot keskenään eli eka raportti viikon myöhässä.
 - Peruspohja on tehty pelille. Mallina käytettiin hieman Laama ja asteroidi pelejä.
@@ -19,7 +19,7 @@ Keskiviikko 23.2.2022
 - Päätin kokeilla tehdä pathfinderin joilloin custom kartat helpottuu, hieman vaikea.
 
 
-Keskiviikko 30.3.2022
+Keskiviikko 30.3.2022:
 
 - Pathfinder ja sen testit ovat valmiita, random kartan voi laittaa map arrayhin settings.scala tiedostoon ja sille muodostetaan polku sisältäne suunnat ja käännökset.
   Ei kovin kaunis algoritmi mutta hoitaa hommansa ja se suoritetaan vain kerran kartan latauksen aikana eli varmaan turha alkaa optimoimaan.
@@ -35,4 +35,15 @@ Keskiviikko 30.3.2022
 - Pelin voitto mahdollisuus, kun pääsee läpi viimeisen kartan voittaa pelin.
 - Olen saanut kirittyä projektisuunnitelmaa ja uskon, että 13.4 mennessä pitäisi olla täysin toimiva eka versio pelistä.
 
-Keskiviikko 13.4.2022
+
+Keskiviikko 13.4.2022:
+
+- Torni ja vihollis-luokan laajennus. Nyt on olemassa kaksi eri tornia (iso ja pieni) ja vihollista (iso ja pieni) joilla on eri ominaisuuksia.
+- Pelin voi tallentaa sav-päätteiseen tiedostoon ja pelin voi ladata myös tiedostosta. Peli tiedoston latauksessa tarkastetaan, että tiedosto on
+  ehjä. Jos siinä on puutteita, väärin tehty kartta, yms. näistä tulee viesti pelaajalle ja tietyissä tapauksissa karttaa ei ladata. Joissain
+  tapauksissa kartta ladataan mutta arvoja (raha, healt points, jne.) asetetaan default arvoihin.
+- Pelin voi myös sulkea quit napista.
+- GUI:n eri napit ovat käytettävissä riippuen pelin tilasta. Esim. taistelun aikana peliä ei voi ladata tai tallentaa.
+- Muutama luokka on hieman huonosti kirjoitettu, ja yritän hieman parantaa näiden toimintaa, mutta en hinkkaa niitä loputtomiin.
+- Työaika 30h (yhteensä 70h).
+- Olen suunnitelman mukaisessa tilanteessa ja yritän viimeistellä projektin tällä viikolla muiden kiireiden takia.
