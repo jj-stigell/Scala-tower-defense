@@ -19,7 +19,7 @@ abstract class Tower(location: Vector2D) {
   val towerColor: Color
   val towerType: String
   val coolDownPerCycle: Int
-  val damageGivenPerHit: Int  // Damage given to the enemy if tower shoots
+  val damageGivenPerHit: Int        // Damage given to the enemy if tower shoots
   val price: Int
   var towerLocation: Vector2D
   var coolDownCounter = 0
@@ -69,7 +69,7 @@ abstract class Tower(location: Vector2D) {
     g.fill(circle)
     g.setTransform(oldTransform)
 
-    // Cool down meter indicating when tower can shoot again
+    // Cooldown-meter indicating when tower can shoot again
     var coolMeter = new Rectangle(45, 10, this.coolDownTime, Settings.height / 100)
     g.setColor(this.greenBar)
     g.translate(this.towerLocation.x, this.towerLocation.y)

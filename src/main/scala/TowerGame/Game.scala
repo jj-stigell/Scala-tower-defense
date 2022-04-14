@@ -35,10 +35,9 @@ object Game extends SimpleSwingApplication {
   val quitGameButton = new Button("Quit")
   val buySmallTower = new Button(s"Buy Small Tower: ${Settings.smallTowerPrice}€")
   val buyBigTower = new Button(s"Buy Big Tower: ${Settings.bigTowerPrice}€")
-
   val restartMap = new Button("Restart Game")
-  restartMap.visible = false
   val nextMap = new Button("Next Map")
+  restartMap.visible = false
   nextMap.visible = false
 
   val healthPoints = new Label
@@ -48,14 +47,14 @@ object Game extends SimpleSwingApplication {
   val waveNumber = new Label
   waveNumber.text = s"Current wave: ${WaveController.currentWave}/${WaveController.maxWaves}"
 
-  /** Refresh map after setting new map */
+  /** Refresh map after setting new map. */
   def refreshMap() = {
     this.map = Settings.map
     this.blockWidth = Settings.blockLengthX
     this.blockHeight = Settings.blockLengthY
   }
 
-  /** MainFrame is the application window class in scala-swing */
+  /** MainFrame is the application window class in scala-swing. */
   def top = new MainFrame {
 
     title = Settings.title
@@ -64,12 +63,11 @@ object Game extends SimpleSwingApplication {
     preferredSize = new Dimension(width, fullHeight)
     maximumSize = new Dimension(width, fullHeight)
 
-    /** The panel inside our window, where the enemies are moving */
+    /** The panel inside our window, where the enemies are moving. */
     val arena = new Panel {
 
       /**
        * Standard panel is just a dull box where we can add other components.
-       *
        * Overriding the paintComponent method enables drawing own graphics.  It gets as a parameter
        * a Graphics2D object, through which it is possible to draw into the object,
        * change colors, coordinates, line thickness etc.
@@ -110,7 +108,7 @@ object Game extends SimpleSwingApplication {
             rowNumber += 1
           }
 
-          // Ask Graphics2D to provide us smoother graphics, i.e., antialising
+          // Ask Graphics2D to provide smoother graphics
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
           // Draw the area
@@ -141,7 +139,7 @@ object Game extends SimpleSwingApplication {
     verticalPanel.contents += this.controlPanel
     this.contents = verticalPanel
 
-    // Ask the object to listed mouse and button events in our arena panel
+    // Ask the object to listen mouse and button events in our arena panel
     listenTo(arena.mouse.clicks)
     listenTo(arena.mouse.moves)
     listenTo(Game.startButton)
@@ -153,7 +151,7 @@ object Game extends SimpleSwingApplication {
     listenTo(Game.nextMap)
     listenTo(Game.quitGameButton)
 
-    // And now that the class responds to events
+    // Respond to events
     this.reactions += {
       case scala.swing.event.MousePressed(src, point, _, _, _) => if (Game.towerBuying && !Game.blocked) Area.placeTower(point.x, point.y)
       case locationMouse: MouseMoved => if (Game.towerBuying) Area.newTowerLocation(locationMouse)
@@ -205,7 +203,6 @@ object Game extends SimpleSwingApplication {
      */
     val timer = new javax.swing.Timer(Settings.interval, listener)
     timer.start()
-
   }
 
 }

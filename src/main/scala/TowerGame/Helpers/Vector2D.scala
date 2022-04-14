@@ -6,14 +6,14 @@ case class Vector2D(x: Double, y: Double) {
   val length = math.hypot(x, y)
   val angle = math.atan2(y, x)
 
-  /** create a new vector with a revised angle and scaled length */
+  /** create a new vector with a revised angle and scaled length. */
   def derive(angleOff: Double, lengthTimes: Double) = {
     val newLen = length * lengthTimes
     val newAngle = angle + angleOff
     Vector2D(math.cos(newAngle) * newLen, math.sin(newAngle) * newLen)
   }
 
-  /** Add two vectors and return their sum vector */
+  /** Add two vectors and return their sum vector. */
   def +(other: Vector2D) = {
     Vector2D(x + other.x, y + other.y)
   }

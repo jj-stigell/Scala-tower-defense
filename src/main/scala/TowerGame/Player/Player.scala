@@ -11,7 +11,7 @@ object Player {
   var alive: Boolean = true
   var money: Int = Settings.startingMoney
 
-  /** REturn the current health of the player. */
+  /** Return the current health of the player. */
   def getHealth: Int = this.health
 
   /** Check if the player is still alive. */

@@ -6,8 +6,8 @@ object Settings {
   // Game
   val width: Int = 1440
   val height: Int = 960
-  val interval: Int = 6 // Game update interval
-  val fullHeight: Int = height + 40 // Take into account the control panel at the bottom
+  val interval: Int = 6               // Game update interval
+  val fullHeight: Int = height + 40   // Take into account the control panel at the bottom
   val title: String = "TowerDefense"
   val resizable: Boolean = false
   var maxWaves: Int = 2
@@ -31,7 +31,6 @@ object Settings {
   // 1 road, roads cannot be side to side
   // 2 entry point, must be on the side, only one
   // 3 out point, must be on the side, only one
-  // Default maps
   val defaultMaps: Array[Array[Array[Int]]] = Array(
     Array(
       Array(0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0),
@@ -90,14 +89,13 @@ object Settings {
   var map: Array[Array[Int]] = defaultMaps.head
 
   // How many blocks the map has, horizontal and vertical and their lengths
-  var totalHorizontalBlocks: Int = this.map(0).length
+  var totalHorizontalBlocks: Int = this.map.head.length
   var totalVerticalBlocks: Int = this.map.length
   var blockLengthX: Int = this.width / this.totalHorizontalBlocks
   var blockLengthY: Int = this.height / this.totalVerticalBlocks
 
   /**
    * Set new map for the game and update blocks and lengths
-   *
    * @param newMap New map Array[Array[Int]]
    */
   def setMap(newMap: Array[Array[Int]]) = {
