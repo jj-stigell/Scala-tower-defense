@@ -14,12 +14,13 @@ import javax.swing.{JFileChooser, JFrame, JOptionPane}
 import javax.swing.filechooser.FileNameExtensionFilter
 import scala.collection.mutable.Buffer
 
+/** Object for loading game either from file or next map from settings. */
 object Loader {
 
   var currentMap: Int = 1
   var maxMaps: Int = Settings.defaultMaps.length
 
-  // For loading a new map
+  // For loading new map from a sav-file
   var loadedMap: Array[Array[Int]] = Array(Array())
   var loadedEnemies: Buffer[Enemy] = Buffer[Enemy]()
   var loadedCurrentWave: Int = 0
@@ -30,8 +31,17 @@ object Loader {
   var loadedTowers: Buffer[Tower] = Buffer[Tower]()
   var loadedTowerLocations: Array[Vector2D] = Array[Vector2D]()
 
-  // Load map, new map from file, save game form file or next map from the default maps list in Settings.scala file.
-  def loadMap(fromFile: Boolean = false) = {
+  var mapError: Boolean = false
+  var mapRead: Boolean = false
+  var enemiesRead: Boolean = false
+  var wavesRead: Boolean = false
+  var healthRead: Boolean = false
+  var moneyRead: Boolean = false
+  var towersRead: Boolean = false
+  var locationsRead: Boolean = false
+
+  /** Load map, new map from file, save game from file or next map from the default maps list in the settings. */
+  def loadMap(fromFile: Boolean = false, mapError: Boolean = false) = {
 
     if (fromFile) {
 
@@ -57,14 +67,14 @@ object Loader {
       Updater.updateConditions()
       Updater.updateButtons()
 
-      // Add towers if any was loaded
-      if (loadedTowers.nonEmpty && loadedTowers.length == loadedTowerLocations.length) {
+      // Add towers if any was loaded and there are no errors in loading the map
+      if (towersRead && mapError) {
+        Area.towers = Buffer[Tower]()
+      } else if (towersRead && loadedTowers.nonEmpty && loadedTowers.length == loadedTowerLocations.length) {
         var i = 0
         for (tower <- loadedTowers) { tower.changeLocation(loadedTowerLocations(i)); i += 1 }
         Area.towers = this.loadedTowers
-      } else {
-        Area.towers = Buffer[Tower]()
-        JOptionPane.showMessageDialog(null, "Something went wrong with tower placement.\nTowers resetted.")
+        Area.towers.foreach(_.updateSize())
       }
 
       // Start drawing the new map
@@ -74,6 +84,11 @@ object Loader {
       Area.updateAreaPathAndDirs()
       // Set current map to max maps so game ends if player finishes the loaded game.
       this.currentMap = this.maxMaps
+      // Check if all the towers have matching locations
+      if (towersRead && loadedTowers.length != loadedTowerLocations.length) {
+        Area.towers = Buffer[Tower]()
+        JOptionPane.showMessageDialog(null, "Something went wrong with tower placement. Check sav-file\nTowers resetted.")
+      }
     } else {
       if (currentMap != maxMaps) {
         Settings.setMap(Settings.defaultMaps(currentMap))
@@ -85,16 +100,8 @@ object Loader {
     }
   }
 
-  // Load game from sav-file.
-  def loadGame() = {
-
-    var mapRead: Boolean = false
-    var enemiesRead: Boolean = false
-    var wavesRead: Boolean = false
-    var healthRead: Boolean = false
-    var moneyRead: Boolean = false
-    var towersRead: Boolean = false
-    var locationsRead: Boolean = false
+  /** Load game from sav-file. */
+  def loadFromFile() = {
 
     val fileChooser = new JFileChooser
     fileChooser.setDialogTitle("Choose a sav-file with the map and settings")
@@ -115,6 +122,18 @@ object Loader {
 
         try {
           var currentLine = linesIn.readLine()
+          // Reset booleans
+          mapError = false
+          mapRead = false
+          enemiesRead = false
+          wavesRead = false
+          healthRead = false
+          moneyRead = false
+          towersRead = false
+          locationsRead = false
+
+          // Reset towers incase new sav-file that is loaded does not have any towers
+          loadedTowers = Buffer[Tower]()
 
           while (currentLine != null) {
             currentLine = currentLine.trim.toLowerCase
@@ -146,7 +165,7 @@ object Loader {
             }
           }
           if (mapRead && enemiesRead && wavesRead && healthRead && moneyRead) {
-            this.loadMap(true)
+            this.loadMap(true, mapError)
           } else {
             JOptionPane.showMessageDialog(null, "Something went wrong when reading the sav-file.\nTo load a game, the saved file must include at least map, enemies, waves, health and money.")
           }
@@ -160,9 +179,9 @@ object Loader {
         }
       } catch {
         case notFound: FileNotFoundException =>
-        // Response here to a failed file opening.
+          JOptionPane.showMessageDialog(null, "Something went wrong when reading the sav-file.\nCould not find the sav-file")
         case e: IOException =>
-        // Response here to unsuccessful reading
+          JOptionPane.showMessageDialog(null, "Something went wrong when reading the sav-file.\nCheck the sav-file")
       }
     }
   }

@@ -9,12 +9,9 @@ import TowerGame.Towers._
 import java.io.BufferedReader
 import javax.swing.JOptionPane
 import scala.collection.mutable.Buffer
-import scala.util.Random
 
 /** Reader has functions for reading from a saved file all the game attributes. */
 object Reader {
-
-	var mapError: Boolean = false
 
 	/**
 	 * Read line by line the game map.
@@ -26,7 +23,7 @@ object Reader {
 		var map: Array[Array[Int]] = Array(Array())
     var line = reader.readLine()
 
-		while (line != null && !line.trim.startsWith("#") && !mapError) {
+		while (line != null && !line.trim.startsWith("#") && !Loader.mapError) {
 			if (line.nonEmpty) {
 
 				try {
@@ -34,16 +31,15 @@ object Reader {
 				} catch {
 					case numberFormatException: NumberFormatException =>
 						JOptionPane.showMessageDialog(null, "Read map in the sav-file is corrupted or incorrectly inputted.\nMap is set to default and towers are not placed. Enjoy the game")
-						mapError = true
+						Loader.mapError = true
 						Loader.loadedMap = Settings.defaultMaps(0)
 				}
 			}
 			line = reader.readLine()
 		}
 
-		if (!mapError) {
-
-			map = map.drop(1)
+		if (!Loader.mapError) {
+			map = map.drop(1) // Drop the first element that is empty
 			var invalid = false
 			var entry = 0
 			var exit = 0
@@ -51,7 +47,6 @@ object Reader {
 			val mapUniform = map.forall(row => map(0).length == row.length)
 
 			for (row <- map) {
-
 				for (value <- row) {
 					value match {
 						case 0 => // Tower area
@@ -65,9 +60,10 @@ object Reader {
 
 			if (entry != 1 || exit != 1 || invalid || !mapUniform) {
 				JOptionPane.showMessageDialog(null, "Read map in the sav-file is corrupted or incorrectly inputted.\nMap is set to default and towers are not placed. Enjoy the game")
+				Loader.mapError = true
 				Loader.loadedMap = Settings.defaultMaps(0)
 			} else {
-				Loader.loadedMap = map // Drop the first element that is empty
+				Loader.loadedMap = map
 			}
 		}
 
@@ -86,10 +82,19 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-				var numbers = line.split("/").map(_.toInt)
-				if (numbers(0) == 0) for (i <- 1 to numbers(1)) enemies += new SmallEnemy(correctedPath, directions)
-				else if (numbers(0) == 1) for (i <- 1 to numbers(1)) enemies += new BigEnemy(correctedPath, directions)
-				Random.shuffle(enemies)
+
+				try {
+					var numbers = line.split("/").map(_.toInt)
+					if (numbers(0) == 0) for (i <- 1 to numbers(1)) enemies += new SmallEnemy(correctedPath, directions)
+					else if (numbers(0) == 1) for (i <- 1 to numbers(1)) enemies += new BigEnemy(correctedPath, directions)
+				} catch {
+					case numberFormatException: NumberFormatException =>
+						JOptionPane.showMessageDialog(null, "Error reading enemies from sav-file. Check the file.\nEnemies are set to random, enjoy the game")
+						enemies += new SmallEnemy(correctedPath, directions)
+						enemies += new BigEnemy(correctedPath, directions)
+						enemies += new SmallEnemy(correctedPath, directions)
+						enemies += new BigEnemy(correctedPath, directions)
+				}
 			}
 			line = reader.readLine()
 		}
@@ -109,7 +114,6 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-
 				try {
 					val numbers = line.split("/")
 					val currentWave = numbers(0).toInt
@@ -125,10 +129,9 @@ object Reader {
 					}
 				} catch {
 					case numberFormatException: NumberFormatException =>
-						val wave = 1
-						JOptionPane.showMessageDialog(null, s"Read amount of waves in the sav-file is corrupted or incorrectly inputted.\nWaves are set to ${wave}/${wave}, enjoy the game")
-						Loader.loadedCurrentWave = wave
-						Loader.loadedMaxWaves = wave
+						JOptionPane.showMessageDialog(null, "Read amount of waves in the sav-file are corrupted or incorrectly inputted.\nWaves are set to 0/1, enjoy the game")
+						Loader.loadedCurrentWave = 0
+						Loader.loadedMaxWaves = 1
 				}
 			line = reader.readLine()
 			}
@@ -165,7 +168,7 @@ object Reader {
 				} catch {
 					case numberFormatException: NumberFormatException =>
 						val health = 100
-						JOptionPane.showMessageDialog(null, s"Read amount of health points in the sav-file is corrupted or incorrectly inputted.\nHealth points are set to ${health}/${health}, enjoy the game")
+						JOptionPane.showMessageDialog(null, s"Read amount of health points in the sav-file are corrupted or incorrectly inputted.\nHealth points are set to ${health}/${health}, enjoy the game")
 						Loader.loadedCurrentHealth = health
 						Loader.loadedMaxHealth = health
 				}
@@ -192,9 +195,8 @@ object Reader {
 					Loader.loadedMoney = line.toInt.abs
 				} catch {
 					case formatException: NumberFormatException =>
-						val startMoney = 50
-						Loader.loadedMoney = startMoney
-						JOptionPane.showMessageDialog(null, s"Read amount of money in the sav-file is corrupted or incorrectly inputted.\nAmount of money set to ${startMoney}")
+						Loader.loadedMoney = 50
+						JOptionPane.showMessageDialog(null, s"Read amount of money in the sav-file is corrupted or incorrectly inputted.\nAmount of money set to ${Loader.loadedMoney}")
 				}
 			}
 			line = reader.readLine()
@@ -215,14 +217,19 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-				var numbers = line.split("/").map(_.toInt)
-				if (numbers(0) == 0) for (i <- 1 to numbers(1)) towers += new SmallTower(Vector2D(0,0))
-				else if (numbers(0) == 1) for (i <- 1 to numbers(1)) towers += new BigTower(Vector2D(0,0))
+				try {
+					var numbers = line.split("/").map(_.toInt)
+					if (numbers(0) == 0) for (i <- 1 to numbers(1)) towers += new SmallTower(Vector2D(0,0))
+					else if (numbers(0) == 1) for (i <- 1 to numbers(1)) towers += new BigTower(Vector2D(0,0))
+				} catch {
+					case formatException: NumberFormatException =>
+						JOptionPane.showMessageDialog(null, s"Read tower types in the sav-file are corrupted or incorrectly inputted.\nNo towers will be added from saved file.")
+				}
 			}
 			line = reader.readLine()
 		}
 
-		if (!mapError) Loader.loadedTowers = towers
+		if (!Loader.mapError) Loader.loadedTowers = towers
 		line
 	}
 
@@ -238,9 +245,14 @@ object Reader {
 
 		while (line != null && !line.trim.startsWith("#")) {
 			if (line.nonEmpty) {
-				var locationsString = line.split(";").map(x => x.split(","))
-				val locationsVectors = locationsString.map(x => Vector2D(x(0).toDouble, x(1).toDouble))
-				locations = locations ++ locationsVectors
+				try {
+					var locationsString = line.split(";").map(x => x.split(","))
+					val locationsVectors = locationsString.map(x => Vector2D(x(0).toDouble, x(1).toDouble))
+					locations = locations ++ locationsVectors
+				} catch {
+					case formatException: NumberFormatException =>
+						JOptionPane.showMessageDialog(null, s"Read tower locations in the sav-file are corrupted or incorrectly inputted.\nNo towers will be added from saved file.")
+				}
 			}
 			line = reader.readLine()
 		}
