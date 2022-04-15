@@ -33,7 +33,7 @@ abstract class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int
   var path: Buffer[Vector2D] = enemyPath.drop(2)                                        // Drop first 2, because first is set as the first location and second one as the first turning point
   var directions: Buffer[Vector2D] = enemyDirections.drop(1)                            // Drop first, already as the initial direction
 
-  /** Recalculate the correct directios after updaeting map, scaled for the enemy speed */
+  /** Recalculate the correct directios after updating map, scaled for the enemy speed */
   def reCalcDirections() = {
     enemyDirections = directionSet.map(x => Vector2D(x._1 * this.speed, x._2 * this.speed))
     directionVector = enemyDirections.head
@@ -47,7 +47,7 @@ abstract class Enemy(enemyPath: Buffer[Vector2D], directionSet: Buffer[(Int, Int
   def launchEnemy(): Unit = this.launched = true
 
   /**
-   * For tower to check the location of the enemy.
+   * For the tower to check the location of the enemy.
    * @return Location Vector2D
    */
   def getLocation: Vector2D = this.location

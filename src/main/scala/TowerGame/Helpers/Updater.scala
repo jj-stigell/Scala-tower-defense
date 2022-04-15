@@ -102,7 +102,8 @@ object Updater {
     }
 
     Area.tick = 0
-    if (Game.gameOver || Game.mapWon || loadingFromFile) Area.towers = Buffer[Tower]() // Reset the towers only if game over, resetting or ready for the nex map
+    // Reset the towers only if game over, resetting map or ready for the nex map
+    if (Game.gameOver || Game.mapWon || loadingFromFile) Area.towers = Buffer[Tower]()
   }
 
   /** Resets all waves, stats and area for a new game. */

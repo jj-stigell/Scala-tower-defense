@@ -12,39 +12,42 @@ import javax.swing.JOptionPane
 import scala.swing._
 import scala.swing.event.{ButtonClicked, MouseMoved}
 
+/** Game object for drawing the GUI and buttons for the game window. */
 object Game extends SimpleSwingApplication {
 
-  val width = Settings.width
-  val height = Settings.height
-  val fullHeight = Settings.fullHeight
-  var map = Settings.map
-  var blockWidth = Settings.blockLengthX
-  var blockHeight = Settings.blockLengthY
+  // Window parameters and game map are loaded from settings
+  val width: Int = Settings.width
+  val height: Int = Settings.height
+  val fullHeight: Int = Settings.fullHeight
+  var map: Array[Array[Int]] = Settings.map
+  var blockWidth: Int = Settings.blockLengthX
+  var blockHeight: Int = Settings.blockLengthY
 
-  var gameOver = false
-  var mapWon = false
-  var gameWon = false
-  var roundOver = true
-  var towerBuying = false
-  var blocked = false
+  var gameOver: Boolean = false
+  var mapWon: Boolean = false
+  var gameWon: Boolean = false
+  var roundOver: Boolean = true
+  var towerBuying: Boolean = false
+  var blocked: Boolean = false
 
-  // Buttons and labels
-  val startButton = new Button("Start new wave!")
-  val loadGameButton = new Button("Load Game")
-  val saveGameButton = new Button("Save Game")
-  val quitGameButton = new Button("Quit")
-  val buySmallTower = new Button(s"Buy Small Tower: ${Settings.smallTowerPrice}€")
-  val buyBigTower = new Button(s"Buy Big Tower: ${Settings.bigTowerPrice}€")
-  val restartMap = new Button("Restart Game")
-  val nextMap = new Button("Next Map")
+  // Buttons
+  val startButton: Button = new Button("Start new wave!")
+  val loadGameButton: Button = new Button("Load Game")
+  val saveGameButton: Button = new Button("Save Game")
+  val quitGameButton: Button = new Button("Quit")
+  val buySmallTower: Button = new Button(s"Buy Small Tower: ${Settings.smallTowerPrice}€")
+  val buyBigTower: Button = new Button(s"Buy Big Tower: ${Settings.bigTowerPrice}€")
+  val restartMap: Button = new Button("Restart Game")
+  val nextMap: Button = new Button("Next Map")
   restartMap.visible = false
   nextMap.visible = false
 
-  val healthPoints = new Label
+  // Labels
+  val healthPoints: Label = new Label
   healthPoints.text = s"Current Health: ${Player.Player.getHealth}/${Settings.maxHealth}"
-  val moneyInTheBank = new Label
+  val moneyInTheBank: Label = new Label
   moneyInTheBank.text = s"Money: ${Player.Player.moneyIntheBank}€"
-  val waveNumber = new Label
+  val waveNumber: Label = new Label
   waveNumber.text = s"Current wave: ${WaveController.currentWave}/${WaveController.maxWaves}"
 
   /** Refresh map after setting new map. */
@@ -88,7 +91,7 @@ object Game extends SimpleSwingApplication {
           g.setColor(new Color(198, 140, 83))
           var rowNumber = 0
 
-          // Draw path and tower at the end
+          // Draw the map with path and tower placing area
           for (row <- map) {
             var columnNumber = 0
             for (element <- row) {
@@ -118,8 +121,8 @@ object Game extends SimpleSwingApplication {
     }
 
     // Panels
-    val verticalPanel = new BoxPanel(Orientation.Vertical)
-    val controlPanel = new BoxPanel(Orientation.Horizontal)
+    val verticalPanel: BoxPanel = new BoxPanel(Orientation.Vertical)
+    val controlPanel: BoxPanel = new BoxPanel(Orientation.Horizontal)
 
     // Add buttons and labels to panels
     controlPanel.contents += Game.saveGameButton
@@ -151,7 +154,7 @@ object Game extends SimpleSwingApplication {
     listenTo(Game.nextMap)
     listenTo(Game.quitGameButton)
 
-    // Respond to events
+    // Respond to events based on input
     this.reactions += {
       case scala.swing.event.MousePressed(src, point, _, _, _) => if (Game.towerBuying && !Game.blocked) Area.placeTower(point.x, point.y)
       case locationMouse: MouseMoved => if (Game.towerBuying) Area.newTowerLocation(locationMouse)
@@ -164,7 +167,7 @@ object Game extends SimpleSwingApplication {
           case Game.buyBigTower =>
             Game.towerBuying = true
             Area.newTower = new BigTower(Vector2D(0, 0))
-          case Game.loadGameButton => Loader.loadGame()
+          case Game.loadGameButton => Loader.loadFromFile()
           case Game.saveGameButton => Saver.saveGame()
           case Game.restartMap => Updater.resetWaves()
           case Game.nextMap => Loader.loadMap()
@@ -181,13 +184,7 @@ object Game extends SimpleSwingApplication {
      */
     val listener = new ActionListener() {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
-        if (Game.gameOver) {
-          Updater.updateButtons()
-          arena.repaint()
-        } else if (Game.mapWon) {
-          Updater.updateButtons()
-          arena.repaint()
-        } else if (Game.roundOver) {
+        if (Game.gameOver || Game.mapWon || Game.roundOver) {
           Updater.updateButtons()
           arena.repaint()
         } else {

@@ -42,4 +42,5 @@ case class Vector2D(x: Double, y: Double) {
     else
       this
   }
+
 }

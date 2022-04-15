@@ -26,14 +26,14 @@ object Player {
   /** Remove money after buying towers. */
   def removeMoney(amount: Int): Unit = this.money = this.money - amount
 
-  /** Resets player's all stats */
+  /** Resets player's all stats. */
   def resetPlayer() = {
     this.health = Settings.maxHealth
     this.alive = true
     this.money = Settings.startingMoney
   }
 
-  /** Once enemy reaches the end point it will give damage to the player, varies depending on the enemy type */
+  /** Once enemy reaches the end point it will give damage to the player, varies depending on the enemy type. */
   def getHitByEnemy(enemy: Enemy): Unit = {
     this.health -= enemy.damageGivenPerHit
     if (this.health <= 0) {

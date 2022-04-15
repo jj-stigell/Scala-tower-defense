@@ -12,6 +12,11 @@ import scala.collection.mutable.Buffer
 import scala.swing.Color
 import scala.swing.event.MouseMoved
 
+/**
+ * Area object that stores the enemies and towers in the game.
+ * Takes care of drawing and placing new towers on the screen and checking that new tower
+ * does not cross the enmy path or overlap with existing towers.
+ */
 object Area {
 
   // Initialize the starting location of enemies and the direction and calculate path and directions on the map
@@ -27,11 +32,10 @@ object Area {
   // Path the enemy moves that is banned from adding towers
   var towerBannedPath = PathFinder.findBannedAreas(correctedPath)
 
-  // Form a buffer with enemies, initialize with small enemies matching the multiplier number and few big enemies
+  // Form a buffer with enemies, initialize with small enemies matching the multiplier number and one big enemy
   var enemies: Buffer[Enemy] = {
     var enemyBuf = Buffer[Enemy]()
     for (i <- 1 to Settings.enemyMultiplier) enemyBuf += new SmallEnemy(correctedPath, directions)
-    enemyBuf += new BigEnemy(correctedPath, directions)
     enemyBuf += new BigEnemy(correctedPath, directions)
     enemyBuf.foreach(_.reCalcDirections())
     enemyBuf
@@ -41,12 +45,11 @@ object Area {
   enemies.head.launchEnemy()
 
   var towers: Buffer[Tower] = Buffer[Tower]()
-  //var numberOfEnemies: Int = Settings.enemyMultiplier
   var tick: Int = 0
   var towerLocation: Vector2D = Vector2D(0, 0)
   var newTower: Tower = new SmallTower(Vector2D(0, 0))
 
-  /** When space steps one time unit forward, all enemies move a step forward */
+  /** When space steps one time unit forward, all enemies move a step forward and towers scan their proximity. */
   def step() = {
 
     if (tick % Settings.correctedInterval == 0) {
@@ -60,7 +63,7 @@ object Area {
     this.towers.foreach(_.scanProximity(this.enemies))
   }
 
-  /** Drawing all enemies to the map */
+  /** Drawing all enemies, towers and placing tower to the map. */
   def draw(g: Graphics2D) = {
     this.enemies
       .filter(_.launched == true)
@@ -69,7 +72,7 @@ object Area {
     if (Game.towerBuying) this.drawNewTower(g)
   }
 
-  /** Check for new tower that it is not blocking with the enemy path or towers previously placed on the map */
+  /** Check for new tower that it is not blocking with the enemy path or towers previously placed on the map. */
   def checkBlocking() = {
     if (this.towers.exists(tower => (tower.getLocation.x - this.towerLocation.x).abs < newTower.towerSize && (tower.getLocation.y - this.towerLocation.y).abs < this.newTower.towerSize) ||
         this.towerBannedPath.exists(spots => (spots._1._1 <= this.towerLocation.x && this.towerLocation.x <= spots._2._1 && spots._1._2 <= this.towerLocation.y && this.towerLocation.y <= spots._2._2))) {
@@ -79,10 +82,10 @@ object Area {
     }
   }
 
-  /** Update the location of the tower that is being placed on the map */
+  /** Update the location of the tower that is being placed on the map. Location is based on the player mouse location. */
   def newTowerLocation(locationMouse: MouseMoved) = this.towerLocation = Vector2D(locationMouse.point.x - Settings.xCorrection, locationMouse.point.y - Settings.yCorrection)
 
-  /** Draw the new tower that is being placed */
+  /** Draw the new tower that is being placed. If blocked do not allow placing and indicate with red color, otherwise green color. */
   def drawNewTower(g: Graphics2D) = {
     this.checkBlocking()
     if (Game.blocked) g.setColor(new Color(255, 0, 0))
@@ -95,7 +98,7 @@ object Area {
     g.setTransform(oldTransform)
   }
 
-  /** Place the new tower to the map */
+  /** Place the new tower to the map in the location (x,y) and update stats and buttons. */
   def placeTower(x: Int, y: Int) = {
     this.newTower.changeLocation(Vector2D(x - Settings.xCorrection, y - Settings.yCorrection))
     this.towers += this.newTower
@@ -105,7 +108,7 @@ object Area {
     Updater.updateButtons()
   }
 
-  /** Update the enemy path and directions after loading new map */
+  /** Update the enemy path and directions after loading new map. */
   def updateAreaPathAndDirs() = {
     this.initLoc = PathFinder.enemyInitialLocation()
     this.initDir = PathFinder.findInitialDirection(this.initLoc)

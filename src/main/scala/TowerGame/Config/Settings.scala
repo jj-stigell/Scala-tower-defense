@@ -8,9 +8,9 @@ object Settings {
   val height: Int = 960
   val interval: Int = 6               // Game update interval
   val fullHeight: Int = height + 40   // Take into account the control panel at the bottom
-  val title: String = "TowerDefense"
+  val title: String = "Balls Tower Defense"
   val resizable: Boolean = false
-  var maxWaves: Int = 2
+  var maxWaves: Int = 3
 
   // Player
   var startingMoney: Int = 50
@@ -18,9 +18,9 @@ object Settings {
 
   // Tower
   val smallTowerPrice: Int = 10
-  val bigTowerPrice: Int = 100
-  val xCorrection = 40
-  val yCorrection = 40
+  val bigTowerPrice: Int = 250
+  val xCorrection: Int = 40
+  val yCorrection: Int = 40
 
   // Enemy
   val enemyInterval: Int = 200 // Time between enemy addition, in milliseconds
