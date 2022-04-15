@@ -1,11 +1,12 @@
 # The game map is formed under the #MAP.
 # Each row represents row on a grid style map that has dimensions m x n.
-# Minimum recommended size is 5x5
+# Minimum recommended size is 5x5.
+# Enemy paths cannot cross each other or go side-by-side.
 # Symbols are:
 # 0 = Area where towers are placed
 # 1 = Enemy path
-# 2 = Enemy start point, must be on the side of the map
-# 3 = End of the enemy path, player must protect this area
+# 2 = Enemy start point, must be on the side of the map, there shall be only one entry point
+# 3 = End of the enemy path, player must protect this area, there shall be only one exit point
 
 # Enemies are added one enemy type per row under the #ENEMY.
 # 0 = small enemy

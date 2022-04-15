@@ -16,6 +16,7 @@ import scala.collection.mutable.Buffer
 object Saver {
 
     def saveGame() = {
+        // Collect all data from the game
         val maxWaves: Int = WaveController.maxWaves
         val enemies: Buffer[Enemy]  = Area.enemies
         val currentWave: Int  = WaveController.currentWave
@@ -25,6 +26,7 @@ object Saver {
         val money: Int  = Player.moneyIntheBank
         val towers: Buffer[Tower] = Area.towers
 
+        // Open a file chooser
         val fileChooser = new JFileChooser
         fileChooser.setDialogTitle("Choose a location to save the game")
 
@@ -48,6 +50,7 @@ object Saver {
             saveFile.println(s"0/${smallEnemies.length}")
             saveFile.println(s"1/${bigEnemies.length}")
 
+            // Towers are saved only if there exists towers on the map
             if (towers.nonEmpty) {
                 val smallTowers = towers.filter(_.towerType == "small")
                 val bigTowers = towers.filter(_.towerType == "big")
