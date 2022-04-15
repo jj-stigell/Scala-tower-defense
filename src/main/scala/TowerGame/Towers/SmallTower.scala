@@ -6,10 +6,11 @@ import TowerGame.Helpers.Vector2D
 import scala.swing.Color
 
 /** Small type tower, fast at shooting but not so effective */
-class SmallTower(location: Vector2D) extends Tower(location) {
+class SmallTower(location: Vector2D) extends Tower {
   val towerColor: Color = new Color(23, 67, 125)
   val towerType: String = "small"
-  val towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / 3)
+  val size = 3  // Smaller the size, bigger the tower
+  var towerSize: Int = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / this.size)
   val coolDownTime: Int = 50
   val range: Double = 130
   val coolDownPerCycle: Int = 1

@@ -9,12 +9,13 @@ import java.awt.geom.Ellipse2D
 import scala.collection.mutable.Buffer
 import scala.swing.{Color, Rectangle}
 
-abstract class Tower(location: Vector2D) {
+abstract class Tower {
 
   val redBar: Color = new Color(255, 0, 0)
   val greenBar: Color = new Color(0, 255, 0)
   val coolDownTime: Int
-  val towerSize: Int
+  var towerSize: Int
+  val size: Int
   val range: Double
   val towerColor: Color
   val towerType: String
@@ -29,6 +30,9 @@ abstract class Tower(location: Vector2D) {
 
   /** Set new location for the tower, used to update newly placed towers location */
   def changeLocation(newLocation: Vector2D) = this.towerLocation = newLocation
+
+  /** Update tower sizes after loading fr mofile, otherwise size is decided by the size of the previous map settings. */
+  def updateSize() = this.towerSize = (((Settings.width / Settings.totalHorizontalBlocks) + (Settings.height / Settings.totalVerticalBlocks)) / this.size)
 
   /** Reset the coold cold for the tower */
   def resetCoolDown() = this.coolDownCounter = 0
