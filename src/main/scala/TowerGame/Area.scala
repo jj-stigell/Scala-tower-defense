@@ -45,7 +45,7 @@ object Area {
   enemies.head.launchEnemy()
 
   var towers: Buffer[Tower] = Buffer[Tower]()
-  var tick: Int = 0
+  var tick: Int = 0 // For timing when to release next enemy
   var towerLocation: Vector2D = Vector2D(0, 0)
   var newTower: Tower = new SmallTower(Vector2D(0, 0))
 
